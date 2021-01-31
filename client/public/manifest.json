@@ -1,0 +1,15 @@
+{
+  "short_name": "Easy Tracker",
+  "name": "A light-weight and easy to use bug tracker!",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ff7300",
+  "background_color": "#ffffff"
+}
