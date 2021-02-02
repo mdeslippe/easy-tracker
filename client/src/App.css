@@ -1,5 +1,50 @@
 :root {
   --primary-color: #ff7300;
   --secondary-color: #ffffff;
+  --darker-secondary-color: #dddddd;
   --text-color: #000000;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+.button {
+  display: inline-block;
+
+  color: black;
+  background: var(--darker-secondary-color);
+
+  text-align: center;
+  text-decoration: none;
+
+  min-width: 100px;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.button:hover {
+  filter:brightness(90%)
+}
+
+.flex-column-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#hamburger-menu .bar{
+  margin: 3px;
+  height: 3px;
+  width: 25px;
+  background-color: var(--secondary-color);
+  border-radius: 10%;
 }

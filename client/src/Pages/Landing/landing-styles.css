@@ -1,0 +1,223 @@
+:root {
+    --raw-nav-height: calc(40px + 2rem);
+}
+
+#container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    grid-template-areas: 
+    "header"
+    "main"
+    "footer";
+}
+
+/* Navigation Bar */
+nav {
+    grid-area: header;
+    background: var(--primary-color);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+nav #nav-container {
+    max-width: 1920px;
+    width: 100vw;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav #left-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav #left-buttons #logo {
+    height: 40px;
+}
+
+nav #left-buttons #logo:hover {
+    filter: opacity(80%);
+}
+
+nav #right-buttons #hamburger-menu {
+    display: none;
+}
+
+nav #right-buttons #login {
+    margin-left: 0.5rem;
+}
+
+/* Navigation mobile format. */
+@media(max-width: 725px) {
+    
+    nav #right-buttons > a {
+        display: none;
+    }
+
+    nav #right-buttons #hamburger-menu {
+        display: block;
+    }
+
+
+}
+
+/* Main Content */
+main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile welcome format. */
+@media(max-width: 725px) {
+    
+    main #welcome-container {
+        flex-direction: column;
+        justify-content: space-evenly;
+        text-align: center;
+    }
+
+}
+
+main #welcome-container {
+    /* The max resolution supported is 4k */
+    max-height: 2160px;
+    max-width: 100%;
+    height: calc(100vh - var(--raw-nav-height));
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+main #welcome-container div {
+    width: 50%;
+    min-width: 250px;
+    max-width: 640px;
+    margin: 0px 10rem;
+}
+
+/* Adjust the font size at different resolutions. */
+main #welcome-message {
+    font-size: 20px;
+}
+
+@media(max-width: 975px) {
+    main #welcome-container div {
+        margin: 0px 10%;
+    }
+}
+
+@media(max-width: 1400px) {
+    main #welcome-message {
+        font-size: 16px;
+    }
+}
+
+@media(max-width: 1250px) {
+    main #welcome-message {
+        font-size: 13px;
+    }
+}
+
+main #welcome-image {
+    width: 70%;
+}
+
+main #feature-container {
+    max-width: 1920px;
+    width: 100%;
+    border: solid black 1px;
+}
+
+/* Mobile feature container. */
+@media(max-width: 725px) {
+    
+    main #feature-container div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    main #feature-container div:nth-child(2n) {
+        flex-direction: column-reverse;
+    }
+
+    main .feature-text:nth-child(2n+1), .feature-image:nth-child(2n) {
+        background: var(--primary-color);
+        border-top: none;
+        border-bottom: none;
+    }
+
+    main .feature-text:nth-child(2n), .feature-image:nth-child(2n+1) {
+        background: var(--secondary-color);
+        border-top: none;
+        border-bottom: none;
+    }
+
+    main .feature-image {
+        border-top: none;
+        border-bottom: none;
+    }
+
+    main .feature-text, main .feature-image {
+        height: 50%;
+        width: 100%;
+    }
+
+    main .feature {
+        border: solid black 1px;
+    }
+
+}
+
+main #feature-container div {
+    /* The max height supported is 4k resolution */
+    max-height: 475px;
+    height: 50vh;
+    width: 100%;
+    display: flex;
+}
+
+@media(min-width: 726px) {
+    main .feature-text {
+        background: var(--primary-color);
+    }
+
+    main .feature-text, main .feature-image {
+        height: 50%;
+        width: 100%;
+        border: solid black 1px;
+    }
+}
+
+main #signup-container {
+    max-height: 700px;
+    height: 50vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+main #signup-icon {
+    width: 10%;
+}
+
+main #signup-icon:hover {
+    filter: brightness(120%);
+}
+
+footer {
+    grid-area: footer;
+    background: var(--darker-secondary-color);
+    text-align: center;
+    padding: 0.5rem;
+}

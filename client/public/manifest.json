@@ -6,7 +6,17 @@
       "src": "favicon.svg",
       "sizes": "64x64",
       "type": "image/svg+xml"
-    }
+    },
+    {
+      "src": "/img/logo/logo-black.svg",
+      "sizes": "1000x1000",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/img/logo/logo-orange.svg",
+      "sizes": "1000x1000",
+      "type": "image/svg+xml"
+    },
   ],
   "start_url": ".",
   "display": "standalone",
