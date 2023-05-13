@@ -1,6 +1,6 @@
 {
     "log": {
-        "minimumLogLevel": "info"
+        "minimumLogLevel": "debug"
     },
     "http": {
         "host": "127.0.0.1",

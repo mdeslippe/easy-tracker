@@ -1,6 +1,5 @@
-use std::{error::Error, fs};
-
 use serde::{Deserialize, Serialize};
+use std::{error::Error, fs};
 
 /// The server's configuration.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -44,14 +43,18 @@ impl Config {
     ///
     /// Loads and returns the server configuration from the `config.json` configuration file.
     ///
+    /// # Arguments
+    ///
+    /// `path` - The path of the configuration file that will be loaded.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
     /// - If loading and parsing the file was successful, the configuration will be returned.
     /// - If an error occurs while loading or parsing the file, the error will be returned.
-    pub(crate) fn load_config() -> Result<Self, Box<dyn Error>> {
+    pub(crate) fn load_config(path: String) -> Result<Self, Box<dyn Error>> {
         // Load the configuration file into a string.
-        let raw_json_config: String = fs::read_to_string("config.json")?;
+        let raw_json_config: String = fs::read_to_string(path)?;
 
         // Convert the string to a Config struct.
         let config: Config = serde_json::from_str(&raw_json_config)?;
