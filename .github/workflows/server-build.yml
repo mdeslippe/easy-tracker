@@ -1,0 +1,26 @@
+name: Server Binary Release Build
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+env:
+    CARGO_TERM_COLOR: always
+
+jobs:
+    build:
+        name: Server Release Build
+        runs-on: ubuntu-latest
+        env:
+            SQLX_OFFLINE: true
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+            - uses: actions-rs/cargo@v1
+              with:
+                  command: build
+                  args: --release --all-features --manifest-path ./server/Cargo.toml
