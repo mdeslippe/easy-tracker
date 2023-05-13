@@ -19,6 +19,8 @@ Before installing, make sure you have the latest stable version of [Rust](https:
 <br />
 **log** - A lightweight logging library for Rust.
 <br />
+**no-panic** - A macro that requires the compiler to prove a function cannot panic.
+<br />
 **openssl** - OpenSSL bindings for Rust.
 <br />
 **serde** - A framework for serializing and deserializing Rust data structures.
