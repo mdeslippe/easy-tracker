@@ -37,7 +37,7 @@ pub(crate) struct HttpConfig {
     pub(crate) certificate_key_path: String,
 }
 
-/// The Config implementation.
+/// An implementation for the Config struct.
 impl Config {
     /// # Description
     ///
