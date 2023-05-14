@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fs};
 
-/// The server's configuration.
+/// The configuration for the server.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Config {
@@ -41,7 +41,7 @@ pub(crate) struct HttpConfig {
 impl Config {
     /// # Description
     ///
-    /// Loads and returns the server configuration from the `config.json` configuration file.
+    /// Load the server configuration from the file at the file path specified.
     ///
     /// # Arguments
     ///

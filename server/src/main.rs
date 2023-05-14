@@ -78,7 +78,8 @@ async fn main() -> std::io::Result<()> {
 /// Get the file path of the server's configuration file.
 ///
 /// If arguments are passed in when executing the application, that will be used as the file path.
-/// If arguments are not passed in when executing the application, a default file path will be used.
+/// If arguments are not passed in when executing the application, this this will attempt to load
+/// it from the present working directory.
 ///
 /// Note that the returned path could be malformed or could be a path to a file that does not exist.
 ///
