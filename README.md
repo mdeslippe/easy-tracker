@@ -6,7 +6,7 @@ Easy Tracker is a web-based utility that enables users to easily monitor the cur
 
 ### Server
 
-The [server](https://github.com/mdeslippe/easy-tracker/tree/main/server) directory contains source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language.
+The [server](https://github.com/mdeslippe/easy-tracker/tree/main/server) directory contains the source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language.
 
 ## Contributions
 
