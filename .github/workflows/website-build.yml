@@ -1,0 +1,34 @@
+name: Website Bundle Release Build
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+defaults:
+    run:
+        working-directory: website
+
+jobs:
+    build_and_test:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [18.x]
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  cache-dependency-path: ./website/package-lock.json
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+            - run: npm ci
+              working-directory: website
+            - run: npm run build --if-present
+              working-directory: website
+            - run: npm test --if-present
+              working-directory: website
