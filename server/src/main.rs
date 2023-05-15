@@ -1,9 +1,10 @@
 pub(crate) mod config;
+pub(crate) mod injector;
 
+use crate::{config::Config, injector::DependencyInjector};
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
-use config::Config;
 use openssl::ssl::{SslAcceptor, SslAcceptorBuilder, SslFiletype, SslMethod};
-use std::env;
+use std::{env, sync::Arc};
 
 /// # Description
 ///
@@ -48,10 +49,18 @@ async fn main() -> std::io::Result<()> {
     // Put the configuration in a reference counted Data struct, so we can use it as application data.
     let config_data: Data<Config> = Data::new(config.clone());
 
+    // Create the dependency injector.
+    let dependency_injector: Arc<DependencyInjector> = Arc::new(
+        DependencyInjector::create_from_config(&config)
+            .await
+            .expect("Failed to create the dependency injector"),
+    );
+
     // Define an actix application factory closure.
     let app_factory = move || {
         App::new()
             .app_data(config_data.clone())
+            .app_data(Arc::clone(&dependency_injector))
             .wrap(Logger::default())
     };
 

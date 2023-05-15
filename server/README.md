@@ -30,3 +30,7 @@ The repository contains a self-signed SSL/TLS certificate for **DEVELOPMENT PURP
 **serde** - A framework for serializing and deserializing Rust data structures.
 <br />
 **serde_json** - A JSON extension for `serde`.
+<br />
+**shaku** - A compile time dependency injection framework for Rust.
+<br />
+**shaku_actix** - An integration between `shaku` and `actix-web`.
