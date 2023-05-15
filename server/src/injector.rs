@@ -1,8 +1,6 @@
-use std::error::Error;
-
-use shaku::module;
-
 use crate::config::Config;
+use shaku::module;
+use std::error::Error;
 
 // Create the dependency injector module.
 module! {

@@ -33,4 +33,4 @@ The repository contains a self-signed SSL/TLS certificate for **DEVELOPMENT PURP
 <br />
 **shaku** - A compile time dependency injection framework for Rust.
 <br />
-**shaku_actix** - An integration between shaku and Actix Web.
+**shaku_actix** - An integration between `shaku` and `actix-web`.
