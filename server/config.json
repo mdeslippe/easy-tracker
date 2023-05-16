@@ -7,5 +7,10 @@
         "port": 443,
         "certificatePath": "tls_certificate.pem",
         "certificateKeyPath": "tls_certificate_key.pem"
+    },
+    "database": {
+        "connectionString": "mysql://root:password@localhost/easy_tracker",
+        "minimumConnections": 0,
+        "maximumConnections": 100
     }
 }

@@ -10,6 +10,9 @@ pub(crate) struct Config {
 
     /// The server's http configuration.
     pub(crate) http: HttpConfig,
+
+    /// The server's database configuration.
+    pub(crate) database: DatabaseConfig,
 }
 
 /// The logging configuration for the server.
@@ -35,6 +38,20 @@ pub(crate) struct HttpConfig {
 
     /// The path of the certificate key the http server will use.
     pub(crate) certificate_key_path: String,
+}
+
+/// The database configuration for the server.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct DatabaseConfig {
+    /// The connection string that will be used to acquire database connections.
+    pub(crate) connection_string: String,
+
+    /// The minimum amount of database connections that must be maintained.
+    pub(crate) minimum_connections: u32,
+
+    /// The maximum amount of database connections that are allowed.
+    pub(crate) maximum_connections: u32,
 }
 
 /// An implementation for the Config struct.
