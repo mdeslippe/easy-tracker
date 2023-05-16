@@ -20,6 +20,8 @@ The repository contains a self-signed SSL/TLS certificate for **DEVELOPMENT PURP
 
 **actix-web** - A powerful, pragmatic, and extremely fast web framework for Rust.
 <br />
+**async-trait** - Type erasure for async trait methods.
+<br />
 **env_logger** - A logging implementation for the `log` crate.
 <br />
 **log** - A lightweight logging library for Rust.

@@ -1,4 +1,5 @@
 pub(crate) mod config;
+pub(crate) mod database;
 pub(crate) mod injector;
 
 use crate::{config::Config, injector::DependencyInjector};
