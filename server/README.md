@@ -34,3 +34,7 @@ The repository contains a self-signed SSL/TLS certificate for **DEVELOPMENT PURP
 **shaku** - A compile time dependency injection framework for Rust.
 <br />
 **shaku_actix** - An integration between `shaku` and `actix-web`.
+<br />
+**sqlx** - A pure Rust SQL crate featuring compile-time checked queries without a DSL.
+<br />
+**time** - A date and time library.
