@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 actix-web = { version = "4.3.1", features = ["openssl"] }
+async-trait = "0.1.68"
 env_logger = { version = "0.10.0", features = ["color"] }
 log = "0.4.17"
 no-panic = "0.1.22"
@@ -13,3 +14,5 @@ serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 shaku = "0.6.1"
 shaku_actix = "0.2.0"
+sqlx = { version = "0.6.3", features = ["runtime-actix-native-tls", "mysql", "macros", "time", "tls", "offline"] }
+time = { version = "0.3.21", features = ["serde"] }
