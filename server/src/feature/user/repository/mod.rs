@@ -1,10 +1,11 @@
 use crate::feature::user::model::User;
 use async_trait::async_trait;
+use shaku::{Component, Interface};
 use sqlx::Error;
 
 /// A user repository trait.
 #[async_trait]
-pub(crate) trait UserRepository {
+pub(crate) trait UserRepository: Interface {
     /// # Description
     ///
     /// Insert a user into the user repository.
@@ -20,7 +21,7 @@ pub(crate) trait UserRepository {
     /// that was inserted.
     /// - If the insertion is not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn insert(&user: User) -> Result<u64, Error>;
+    async fn insert(&self, user: &User) -> Result<u64, Error>;
 
     /// # Description
     ///
@@ -36,7 +37,7 @@ pub(crate) trait UserRepository {
     /// - If the query was successful, the Ok variant will be returned with an optional user.
     /// - If the query was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn get_by_id(&id: u64) -> Result<Option<User>, Error>;
+    async fn get_by_id(&self, id: &u64) -> Result<Option<User>, Error>;
 
     /// # Description
     ///
@@ -52,7 +53,7 @@ pub(crate) trait UserRepository {
     /// - If the query was successful, the Ok variant will be returned with an optional user.
     /// - If the query was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn get_by_username(&username: String) -> Result<Option<User>, Error>;
+    async fn get_by_username(&self, username: &String) -> Result<Option<User>, Error>;
 
     /// # Description
     ///
@@ -68,7 +69,7 @@ pub(crate) trait UserRepository {
     /// - If the query was successful, the Ok variant will be returned with an optional user.
     /// - If the query was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn get_by_email(&email: String) -> Result<Option<User>, Error>;
+    async fn get_by_email(&self, email: &String) -> Result<Option<User>, Error>;
 
     /// # Description
     ///
@@ -85,7 +86,7 @@ pub(crate) trait UserRepository {
     /// modified.
     /// - If the update was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn update(&user: User) -> Result<u64, Error>;
+    async fn update(&self, user: &User) -> Result<u64, Error>;
 
     /// # Description
     ///
@@ -102,5 +103,38 @@ pub(crate) trait UserRepository {
     /// deleted.
     /// - If the deletion was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn delete(&id: u64) -> Result<u64, Error>;
+    async fn delete(&self, id: &u64) -> Result<u64, Error>;
+}
+
+/// A UserRepositoryImpl struct.
+#[derive(Component)]
+#[shaku(interface = UserRepository)]
+pub(crate) struct UserRepositoryImpl;
+
+/// A UserRepository implementation for the UserRepositoryImpl struct.
+#[async_trait]
+impl UserRepository for UserRepositoryImpl {
+    async fn insert(&self, user: &User) -> Result<u64, Error> {
+        todo!();
+    }
+
+    async fn get_by_id(&self, id: &u64) -> Result<Option<User>, Error> {
+        todo!();
+    }
+
+    async fn get_by_username(&self, username: &String) -> Result<Option<User>, Error> {
+        todo!();
+    }
+
+    async fn get_by_email(&self, email: &String) -> Result<Option<User>, Error> {
+        todo!();
+    }
+
+    async fn update(&self, user: &User) -> Result<u64, Error> {
+        todo!();
+    }
+
+    async fn delete(&self, id: &u64) -> Result<u64, Error> {
+        todo!();
+    }
 }
