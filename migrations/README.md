@@ -4,7 +4,7 @@ This directory contains the migrations for the Easy Tracker MySQL database. All 
 
 ## Installation Guide
 
-Before you will be able to run any migrations, you must globally install the [sqlx-cli](<(https://crates.io/crates/sqlx-cli)>)
+Before you will be able to run any migrations, you must globally install the [sqlx-cli](https://crates.io/crates/sqlx-cli)
 rust crate.
 
 1. If you have not already done so, clone the repository and navigate to the to **base directory**, if you are not in this directory, the cli tool will not be able to find the migrations.
