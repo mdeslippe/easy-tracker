@@ -1,5 +1,6 @@
 pub(crate) mod config;
 pub(crate) mod database;
+pub(crate) mod feature;
 pub(crate) mod injector;
 
 use crate::{config::Config, injector::DependencyInjector};
