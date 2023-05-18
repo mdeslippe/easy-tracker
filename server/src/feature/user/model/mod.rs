@@ -12,7 +12,7 @@ pub(crate) struct User {
     #[serde(with = "time::serde::rfc3339")]
     pub(crate) account_created_at: OffsetDateTime,
 
-    /// The date and time the user's password was last reset.
+    /// The date and time the user's password was last reset at.
     #[serde(with = "time::serde::rfc3339")]
     pub(crate) password_reset_at: OffsetDateTime,
 
