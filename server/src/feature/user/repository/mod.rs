@@ -1,4 +1,4 @@
-use crate::feature::user::model::User;
+use crate::{common::enumeration::QueryContext, feature::user::model::User};
 use async_trait::async_trait;
 use shaku::{Component, Interface};
 use sqlx::Error;
@@ -14,6 +14,8 @@ pub(crate) trait UserRepository: Interface {
     ///
     /// `user` - The user to insert into the user repository.
     ///
+    /// `context` - The query context the insertion will be executed in.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
@@ -21,7 +23,7 @@ pub(crate) trait UserRepository: Interface {
     /// that was inserted.
     /// - If the insertion is not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn insert(&self, user: &User) -> Result<u64, Error>;
+    async fn insert(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error>;
 
     /// # Description
     ///
@@ -31,13 +33,15 @@ pub(crate) trait UserRepository: Interface {
     ///
     /// `id` - The id of the user to query from the user repository.
     ///
+    /// `context` - The query context the query will be executed in.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
     /// - If the query was successful, the Ok variant will be returned with an optional user.
     /// - If the query was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn get_by_id(&self, id: &u64) -> Result<Option<User>, Error>;
+    async fn get_by_id(&self, id: &u64, context: &mut QueryContext) -> Result<Option<User>, Error>;
 
     /// # Description
     ///
@@ -47,13 +51,19 @@ pub(crate) trait UserRepository: Interface {
     ///
     /// `username` - The username of the user to query from the user repository.
     ///
+    /// `context` - The query context the query will be executed in.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
     /// - If the query was successful, the Ok variant will be returned with an optional user.
     /// - If the query was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn get_by_username(&self, username: &String) -> Result<Option<User>, Error>;
+    async fn get_by_username(
+        &self,
+        username: &String,
+        context: &mut QueryContext,
+    ) -> Result<Option<User>, Error>;
 
     /// # Description
     ///
@@ -63,13 +73,19 @@ pub(crate) trait UserRepository: Interface {
     ///
     /// `email` - The email address of the user to query from the user repository.
     ///
+    /// `context` - The query context the query will be executed in.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
     /// - If the query was successful, the Ok variant will be returned with an optional user.
     /// - If the query was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn get_by_email(&self, email: &String) -> Result<Option<User>, Error>;
+    async fn get_by_email(
+        &self,
+        email: &String,
+        context: &mut QueryContext,
+    ) -> Result<Option<User>, Error>;
 
     /// # Description
     ///
@@ -79,6 +95,8 @@ pub(crate) trait UserRepository: Interface {
     ///
     /// `user` - The user to update in the user repository.
     ///
+    /// `context` - The query context the update will be executed in.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
@@ -86,7 +104,7 @@ pub(crate) trait UserRepository: Interface {
     /// modified.
     /// - If the update was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn update(&self, user: &User) -> Result<u64, Error>;
+    async fn update(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error>;
 
     /// # Description
     ///
@@ -96,6 +114,8 @@ pub(crate) trait UserRepository: Interface {
     ///
     /// `id` - The id of the user to delete from the user repository.
     ///
+    /// `context` - The query context the deletion will be executed in.
+    ///
     /// # Returns
     ///
     /// This function returns a result:
@@ -103,7 +123,7 @@ pub(crate) trait UserRepository: Interface {
     /// deleted.
     /// - If the deletion was not successful, the Err variant will be returned with the error that
     /// occurred.
-    async fn delete(&self, id: &u64) -> Result<u64, Error>;
+    async fn delete(&self, id: &u64, context: &mut QueryContext) -> Result<u64, Error>;
 }
 
 /// A UserRepositoryImpl struct.
@@ -114,27 +134,35 @@ pub(crate) struct UserRepositoryImpl;
 /// A UserRepository implementation for the UserRepositoryImpl struct.
 #[async_trait]
 impl UserRepository for UserRepositoryImpl {
-    async fn insert(&self, user: &User) -> Result<u64, Error> {
+    async fn insert(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error> {
         todo!();
     }
 
-    async fn get_by_id(&self, id: &u64) -> Result<Option<User>, Error> {
+    async fn get_by_id(&self, id: &u64, context: &mut QueryContext) -> Result<Option<User>, Error> {
         todo!();
     }
 
-    async fn get_by_username(&self, username: &String) -> Result<Option<User>, Error> {
+    async fn get_by_username(
+        &self,
+        username: &String,
+        context: &mut QueryContext,
+    ) -> Result<Option<User>, Error> {
         todo!();
     }
 
-    async fn get_by_email(&self, email: &String) -> Result<Option<User>, Error> {
+    async fn get_by_email(
+        &self,
+        email: &String,
+        context: &mut QueryContext,
+    ) -> Result<Option<User>, Error> {
         todo!();
     }
 
-    async fn update(&self, user: &User) -> Result<u64, Error> {
+    async fn update(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error> {
         todo!();
     }
 
-    async fn delete(&self, id: &u64) -> Result<u64, Error> {
+    async fn delete(&self, id: &u64, context: &mut QueryContext) -> Result<u64, Error> {
         todo!();
     }
 }
