@@ -1,6 +1,6 @@
 # The Easy Tracker Migrations
 
-This directory contains migrations for the Easy Tracker MySQL database. All migrations are managed using the [sqlx-cli](https://crates.io/crates/sqlx-cli), a command-line utility for managing migrations with [sqlx](https://github.com/launchbadge/sqlx).
+This directory contains the migrations for the Easy Tracker MySQL database. All migrations are managed using the [sqlx-cli](https://crates.io/crates/sqlx-cli), a command-line utility for managing migrations with [sqlx](https://github.com/launchbadge/sqlx).
 
 ## Installation Guide
 

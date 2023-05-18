@@ -8,6 +8,10 @@ Easy Tracker is a web-based utility that enables users to easily monitor the cur
 
 ## Project Overview
 
+### Migrations
+
+The [migrations](https://github.com/mdeslippe/easy-tracker/tree/main/migrations) directory contains the migrations for the Easy Tracker MySQL database. All migrations are managed using the [sqlx-cli](https://crates.io/crates/sqlx-cli), a command-line utility for managing migrations with [sqlx](https://github.com/launchbadge/sqlx).
+
 ### Server
 
 The [server](https://github.com/mdeslippe/easy-tracker/tree/main/server) directory contains the source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language.
