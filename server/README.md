@@ -20,15 +20,21 @@ The repository contains a self-signed SSL/TLS certificate for **DEVELOPMENT PURP
 
 **actix-web** - A powerful, pragmatic, and extremely fast web framework for Rust.
 <br />
+**argon2** - A pure Rust implementation of the Argon2 password hashing function with support for the Argon2d, Argon2i, and Argon2id algorithmic variants.
+<br />
 **async-trait** - Type erasure for async trait methods.
 <br />
 **env_logger** - A logging implementation for the `log` crate.
+<br />
+**jsonwebtoken** - A library for JWT encoding an decoding.
 <br />
 **log** - A lightweight logging library for Rust.
 <br />
 **no-panic** - A macro that requires the compiler to prove a function cannot panic.
 <br />
 **openssl** - OpenSSL bindings for Rust.
+<br />
+**rand** - A utility to generate random numbers.
 <br />
 **serde** - A framework for serializing and deserializing Rust data structures.
 <br />
