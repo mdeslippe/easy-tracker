@@ -1,4 +1,7 @@
-use crate::{config::Config, database::DatabaseConnectionFactoryImpl};
+use crate::{
+    config::Config, database::DatabaseConnectionFactoryImpl,
+    feature::user::repository::UserRepositoryImpl,
+};
 use shaku::module;
 use sqlx::{mysql::MySqlPoolOptions, MySql, Pool};
 use std::error::Error;
@@ -7,7 +10,11 @@ use std::error::Error;
 module! {
     pub(crate) DependencyInjector {
         components = [
-            DatabaseConnectionFactoryImpl
+            // Database
+            DatabaseConnectionFactoryImpl,
+
+            // User
+            UserRepositoryImpl
         ],
         providers = []
     }

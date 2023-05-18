@@ -1,7 +1,8 @@
 use crate::{common::enumeration::QueryContext, feature::user::model::User};
 use async_trait::async_trait;
 use shaku::{Component, Interface};
-use sqlx::Error;
+use sqlx::{Error, Row};
+use time::OffsetDateTime;
 
 /// A user repository trait.
 #[async_trait]
@@ -135,11 +136,87 @@ pub(crate) struct UserRepositoryImpl;
 #[async_trait]
 impl UserRepository for UserRepositoryImpl {
     async fn insert(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error> {
-        todo!();
+        // Prepare the query.
+        let query = sqlx::query!(
+            r#"
+                INSERT INTO `users` (
+                    `id`,
+                    `account_created_at`,
+                    `password_reset_at`,
+                    `profile_picture_url`,
+                    `username`,
+                    `password`,
+                    `email`,
+                    `email_is_verified`,
+                    `password_reset_is_required`,
+                    `account_is_locked`,
+                    `account_is_banned`
+                ) VALUES (
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?
+                ) RETURNING `id`;
+            "#,
+            user.id,
+            user.account_created_at,
+            user.password_reset_at,
+            user.profile_picture_url,
+            user.username,
+            user.password,
+            user.email,
+            user.email_is_verified,
+            user.password_reset_is_required,
+            user.account_is_locked,
+            user.account_is_banned
+        );
+
+        // Execute the query.
+        let result = match context {
+            QueryContext::Connection(connection) => query.fetch_one(connection).await,
+            QueryContext::Transaction(transaction) => query.fetch_one(transaction).await,
+        }?;
+
+        return result.try_get(0);
     }
 
     async fn get_by_id(&self, id: &u64, context: &mut QueryContext) -> Result<Option<User>, Error> {
-        todo!();
+        // Prepare the query.
+        let query = sqlx::query_as!(
+            User,
+            r#"
+                SELECT
+                    `id` AS `id: u64`,
+                    `account_created_at` AS `account_created_at: OffsetDateTime`,
+                    `password_reset_at` AS `password_reset_at: OffsetDateTime`,
+                    `profile_picture_url` AS `profile_picture_url: String`,
+                    `username` AS `username: String`,
+                    `password` AS `password: String`,
+                    `email` AS `email: String`,
+                    `email_is_verified` AS `email_is_verified: bool`,
+                    `password_reset_is_required` AS `password_reset_is_required: bool`,
+                    `account_is_locked` AS `account_is_locked: bool`,
+                    `account_is_banned` AS `account_is_banned: bool`
+                FROM
+                    `users`
+                WHERE
+                    `id` = ?;
+            "#,
+            id
+        );
+
+        // Execute the query.
+        return match context {
+            QueryContext::Connection(connection) => query.fetch_optional(connection).await,
+            QueryContext::Transaction(transaction) => query.fetch_optional(transaction).await,
+        };
     }
 
     async fn get_by_username(
@@ -147,7 +224,35 @@ impl UserRepository for UserRepositoryImpl {
         username: &String,
         context: &mut QueryContext,
     ) -> Result<Option<User>, Error> {
-        todo!();
+        // Prepare the query.
+        let query = sqlx::query_as!(
+            User,
+            r#"
+                SELECT
+                    `id` AS `id: u64`,
+                    `account_created_at` AS `account_created_at: OffsetDateTime`,
+                    `password_reset_at` AS `password_reset_at: OffsetDateTime`,
+                    `profile_picture_url` AS `profile_picture_url: String`,
+                    `username` AS `username: String`,
+                    `password` AS `password: String`,
+                    `email` AS `email: String`,
+                    `email_is_verified` AS `email_is_verified: bool`,
+                    `password_reset_is_required` AS `password_reset_is_required: bool`,
+                    `account_is_locked` AS `account_is_locked: bool`,
+                    `account_is_banned` AS `account_is_banned: bool`
+                FROM
+                    `users`
+                WHERE
+                    `username` = ?;
+            "#,
+            username
+        );
+
+        // Execute the query.
+        return match context {
+            QueryContext::Connection(connection) => query.fetch_optional(connection).await,
+            QueryContext::Transaction(transaction) => query.fetch_optional(transaction).await,
+        };
     }
 
     async fn get_by_email(
@@ -155,14 +260,97 @@ impl UserRepository for UserRepositoryImpl {
         email: &String,
         context: &mut QueryContext,
     ) -> Result<Option<User>, Error> {
-        todo!();
+        // Prepare the query.
+        let query = sqlx::query_as!(
+            User,
+            r#"
+                SELECT
+                    `id` AS `id: u64`,
+                    `account_created_at` AS `account_created_at: OffsetDateTime`,
+                    `password_reset_at` AS `password_reset_at: OffsetDateTime`,
+                    `profile_picture_url` AS `profile_picture_url: String`,
+                    `username` AS `username: String`,
+                    `password` AS `password: String`,
+                    `email` AS `email: String`,
+                    `email_is_verified` AS `email_is_verified: bool`,
+                    `password_reset_is_required` AS `password_reset_is_required: bool`,
+                    `account_is_locked` AS `account_is_locked: bool`,
+                    `account_is_banned` AS `account_is_banned: bool`
+                FROM
+                    `users`
+                WHERE
+                    `email` = ?;
+            "#,
+            email
+        );
+
+        // Execute the query.
+        return match context {
+            QueryContext::Connection(connection) => query.fetch_optional(connection).await,
+            QueryContext::Transaction(transaction) => query.fetch_optional(transaction).await,
+        };
     }
 
     async fn update(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error> {
-        todo!();
+        // Prepare the query.
+        let query = sqlx::query!(
+            r#"
+                UPDATE
+                    `users`
+                SET
+                    `account_created_at` = ?,
+                    `password_reset_at` = ?,
+                    `profile_picture_url` = ?,
+                    `username` = ?,
+                    `password` = ?,
+                    `email` = ?,
+                    `email_is_verified` = ?,
+                    `password_reset_is_required` = ?,
+                    `account_is_locked` = ?,
+                    `account_is_banned` = ?
+                WHERE
+                    `id` = ?;
+            "#,
+            user.account_created_at,
+            user.password_reset_at,
+            user.profile_picture_url,
+            user.username,
+            user.password,
+            user.email,
+            user.email_is_verified,
+            user.password_reset_is_required,
+            user.account_is_locked,
+            user.account_is_banned,
+            user.id
+        );
+
+        // Execute the query.
+        let result = match context {
+            QueryContext::Connection(connection) => query.execute(connection).await,
+            QueryContext::Transaction(transaction) => query.execute(transaction).await,
+        }?;
+
+        return Ok(result.rows_affected());
     }
 
     async fn delete(&self, id: &u64, context: &mut QueryContext) -> Result<u64, Error> {
-        todo!();
+        // Prepare the query.
+        let query = sqlx::query!(
+            r#"
+                DELETE FROM
+                    `users`
+                WHERE
+                    `id` = ?;
+            "#,
+            id
+        );
+
+        // Execute the query.
+        let result = match context {
+            QueryContext::Connection(connection) => query.execute(connection).await,
+            QueryContext::Transaction(transaction) => query.execute(transaction).await,
+        }?;
+
+        return Ok(result.rows_affected());
     }
 }
