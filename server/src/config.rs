@@ -13,6 +13,9 @@ pub(crate) struct Config {
 
     /// The server's database configuration.
     pub(crate) database: DatabaseConfig,
+
+    /// The server's jwt configuration.
+    pub(crate) jwt: JwtConfig,
 }
 
 /// The logging configuration for the server.
@@ -52,6 +55,17 @@ pub(crate) struct DatabaseConfig {
 
     /// The maximum amount of database connections that are allowed.
     pub(crate) maximum_connections: u32,
+}
+
+/// The jwt configuration for the server.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct JwtConfig {
+    /// The private key that will be used to create tokens.
+    pub(crate) private_key_path: String,
+
+    /// The public key that will be used to verify tokens.
+    pub(crate) public_key_path: String,
 }
 
 /// An implementation for the Config struct.

@@ -1,16 +1,20 @@
 {
-    "log": {
-        "minimumLogLevel": "debug"
-    },
-    "http": {
-        "host": "127.0.0.1",
-        "port": 443,
-        "certificatePath": "tls_certificate.pem",
-        "certificateKeyPath": "tls_certificate_key.pem"
-    },
-    "database": {
-        "connectionString": "mysql://root:password@localhost/easy_tracker",
-        "minimumConnections": 0,
-        "maximumConnections": 100
-    }
+  "log": {
+    "minimumLogLevel": "debug"
+  },
+  "http": {
+    "host": "127.0.0.1",
+    "port": 443,
+    "certificatePath": "tls_certificate.pem",
+    "certificateKeyPath": "tls_certificate_key.pem"
+  },
+  "database": {
+    "connectionString": "mysql://root:password@localhost/easy_tracker",
+    "minimumConnections": 0,
+    "maximumConnections": 100
+  },
+  "jwt": {
+    "privateKeyPath": "jwt_private.key",
+    "publicKeyPath": "jwt_public.key"
+  }
 }
