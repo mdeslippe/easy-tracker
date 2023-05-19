@@ -4,10 +4,10 @@ pub(crate) mod database;
 pub(crate) mod feature;
 pub(crate) mod injector;
 
-use crate::{config::Config, injector::DependencyInjector};
+use crate::{common::utility::get_config_path, config::Config, injector::DependencyInjector};
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 use openssl::ssl::{SslAcceptor, SslAcceptorBuilder, SslFiletype, SslMethod};
-use std::{env, sync::Arc};
+use std::sync::Arc;
 
 /// # Description
 ///
@@ -83,30 +83,4 @@ async fn main() -> std::io::Result<()> {
         .expect("Failed to bind the server to the host and port configured")
         .run()
         .await;
-}
-
-/// # Description
-///
-/// Get the file path of the server's configuration file.
-///
-/// If arguments are passed in when executing the application, that will be used as the file path.
-/// If arguments are not passed in when executing the application, this this will attempt to load
-/// it from the present working directory.
-///
-/// Note that the returned path could be malformed or could be a path to a file that does not exist.
-///
-/// # Returns
-///
-/// The file path of the server's configuration file.
-fn get_config_path() -> String {
-    // Get arguments that were passed in when executing the application.
-    let args: Vec<String> = env::args().collect();
-
-    // If a configuration file path was specified return that, otherwise return the default path.
-    if args.len() > 1 {
-        // The first argument will always be the name of the file being executed, so we must skip it.
-        return args.iter().skip(1).map(|s| s.chars()).flatten().collect();
-    } else {
-        return String::from("config.json");
-    }
 }
