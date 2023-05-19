@@ -30,7 +30,7 @@ pub(crate) fn get_config_path() -> String {
 
 /// # Description
 ///
-/// Create a string with randomly generated characters.
+/// Create a randomly generated string.
 ///
 /// # Arguments
 ///
