@@ -10,6 +10,7 @@ async-trait = "0.1.68"
 env_logger = { version = "0.10.0", features = ["color"] }
 jsonwebtoken = "8.3.0"
 log = "0.4.17"
+nameof = "1.2.2"
 no-panic = "0.1.22"
 openssl = { version = "0.10.52", features = ["v111"] }
 rand = { version = "0.8.5", features = ["log"] }
@@ -19,3 +20,4 @@ shaku = "0.6.1"
 shaku_actix = "0.2.0"
 sqlx = { version = "0.6.3", features = ["runtime-actix-native-tls", "mysql", "macros", "time", "tls", "offline"] }
 time = { version = "0.3.21", features = ["serde"] }
+validator = { version = "0.16.0", features = ["derive", "unic"] }
