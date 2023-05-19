@@ -16,4 +16,5 @@ CREATE TABLE `users` (
 	UNIQUE INDEX `email` (`email`) USING HASH
 )
 COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
