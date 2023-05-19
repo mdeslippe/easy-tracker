@@ -7,7 +7,7 @@ pub(crate) struct UserClaims {
     /// The id of the user the token belongs to.
     pub(crate) id: u64,
 
-    /// The date and time the token expires (UTC).
+    /// The date and time the token expires at (UTC).
     pub(crate) exp: i64,
 
     /// The date and time the token was issued at (UTC).
