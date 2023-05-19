@@ -17,12 +17,12 @@ use rand::{distributions::Alphanumeric, thread_rng, Rng};
 /// The file path of the server's configuration file.
 pub(crate) fn get_config_path() -> String {
     // Get arguments that were passed in when executing the application.
-    let args: Vec<String> = env::args().collect();
+    // The first argument will always be the name of the program being executed, so we must skip it.
+    let args: Vec<String> = env::args().skip(1).collect();
 
     // If a configuration file path was specified return that, otherwise return the default path.
-    if args.len() > 1 {
-        // The first argument will always be the name of the file being executed, so we must skip it.
-        return args.iter().skip(1).map(|s| s.chars()).flatten().collect();
+    if args.len() > 0 {
+        return args.join(" ");
     } else {
         return String::from("config.json");
     }
