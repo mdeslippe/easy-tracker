@@ -69,6 +69,8 @@ verify the signature.
 <br />
 **log** - A lightweight logging library for Rust.
 <br />
+**nameof** - A macro to determine the string name of a binding, type, const, or function.
+<br />
 **no-panic** - A macro that requires the compiler to prove a function cannot panic.
 <br />
 **openssl** - OpenSSL bindings for Rust.
@@ -86,3 +88,5 @@ verify the signature.
 **sqlx** - A pure Rust SQL crate featuring compile-time checked queries without a DSL.
 <br />
 **time** - A date and time library.
+<br />
+**validator** - Macros to simplify struct validation.
