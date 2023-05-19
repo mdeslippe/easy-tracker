@@ -1,7 +1,5 @@
 use sqlx::{pool::PoolConnection, MySql, Transaction};
 
-/// # Description
-///
 /// An enumeration of all of the possible contexts a query can be executed in.
 pub(crate) enum QueryContext<'a> {
     /// # Description
