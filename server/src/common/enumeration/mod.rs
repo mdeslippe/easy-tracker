@@ -33,7 +33,7 @@ pub(crate) enum QueryContext<'a> {
 pub(crate) enum InsertionResult<T, I, E> {
     /// # Description
     ///
-    /// The Ok variant will be returned if the insertion is successful.
+    /// The Ok variant will be returned if the insertion was successful.
     Ok(T),
 
     /// # Description

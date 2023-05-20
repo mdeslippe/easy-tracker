@@ -23,7 +23,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns an insertion result:
-    /// - If the insertion is successful, the Ok variant will be returned with the user's information.
+    /// - If the insertion is successful, the Ok variant will be returned with the user that was inserted.
     /// - If the user being inserted contains validation errors, the Invalid variant will be returned
     /// with the validation errors that were detected.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -42,7 +42,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns an insertion result:
-    /// - If the insertion is successful, the Ok variant will be returned with the user's information.
+    /// - If the insertion is successful, the Ok variant will be returned with the user that was inserted.
     /// - If the user being inserted contains validation errors, the Invalid variant will be returned
     /// with the validation errors that were detected.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -63,7 +63,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns a query result:
-    /// - If the query is successful and finds a user, the Ok variant will be returned with the user's
+    /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -82,7 +82,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns a query result:
-    /// - If the query is successful and finds a user, the Ok variant will be returned with the user's
+    /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -103,7 +103,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns a query result:
-    /// - If the query is successful and finds a user, the Ok variant will be returned with the user's
+    /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -122,7 +122,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns a query result:
-    /// - If the query is successful and finds a user, the Ok variant will be returned with the user's
+    /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -143,7 +143,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns a query result:
-    /// - If the query is successful and finds a user, the Ok variant will be returned with the user's
+    /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -162,7 +162,7 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns a query result:
-    /// - If the query is successful and finds a user, the Ok variant will be returned with the user's
+    /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
@@ -183,6 +183,10 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns an update result:
+    /// - If the update is successful, the Ok variant will be returned with the user updated.
+    /// - If the user that is being updated could not be found, the NotFound variant will be returned.
+    /// - If the user being updated contains validation errors, the Invalid variant will be returned
+    /// with the validation errors that were detected.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
     async fn update(&self, user: &User) -> UpdateResult<User, ValidationErrors, Box<dyn Error>>;
 
@@ -199,6 +203,10 @@ pub(crate) trait UserService: Interface {
     /// # Returns
     ///
     /// This functions returns an update result:
+    /// - If the update is successful, the Ok variant will be returned with the user updated.
+    /// - If the user that is being updated could not be found, the NotFound variant will be returned.
+    /// - If the user being updated contains validation errors, the Invalid variant will be returned
+    /// with the validation errors that were detected.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
     async fn update_with_context(
         &self,
