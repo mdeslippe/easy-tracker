@@ -67,7 +67,7 @@ pub(crate) trait UserService: Interface {
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
-    async fn get_by_id(&self, id: u64) -> QueryResult<User, Box<dyn Error>>;
+    async fn get_by_id(&self, id: &u64) -> QueryResult<User, Box<dyn Error>>;
 
     /// # Description
     ///
@@ -88,7 +88,7 @@ pub(crate) trait UserService: Interface {
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
     async fn get_by_id_with_context(
         &self,
-        id: u64,
+        id: &u64,
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>>;
 
@@ -229,7 +229,7 @@ pub(crate) trait UserService: Interface {
     /// returned.
     /// - If the user being deleted could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
-    async fn delete(&self, id: u64) -> DeletionResult<Box<dyn Error>>;
+    async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>>;
 
     /// # Description
     ///
@@ -250,7 +250,7 @@ pub(crate) trait UserService: Interface {
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
     async fn delete_with_context(
         &self,
-        id: u64,
+        id: &u64,
         context: &mut QueryContext,
     ) -> DeletionResult<Box<dyn Error>>;
 }
