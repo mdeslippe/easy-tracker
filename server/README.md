@@ -16,24 +16,23 @@ When starting the server, you may optionally specify a path to the server's conf
 
 The repository contains a self-signed SSL/TLS certificate for **DEVELOPMENT PURPOSES ONLY**. It is advised that you **DO NOT** use this certificate in production.
 
-## User Authentication
-
-[JSON Web Tokens (JWT)](https://www.rfc-editor.org/rfc/rfc7519) are used for request
-authentication after users have logged in. As stated in the RFC, JSON Web Token (JWT) is a
-compact, URL-safe means of representing claims to be transferred between two parties. The
-claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature
-(JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims
-to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or
-encrypted.
-
-The server is configured to use the RS256 algorithm to sign and verify tokens.
-RS256 is an asymmetric algorithm that uses a private key to sign tokens, and a public key to
-verify the signature.
-
 ## Password Hashing
 
-The [Argon2id v19](https://en.wikipedia.org/wiki/Argon2) password hashing algorithm is used to
-hash user passwords.
+The [Argon2id v19](https://en.wikipedia.org/wiki/Argon2) password hashing algorithm is used to hash user passwords.
+
+## User Authentication
+
+[JSON Web Tokens (JWT)](https://www.rfc-editor.org/rfc/rfc7519) are used for request authentication after users have logged in. As stated in the RFC, JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties. The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
+
+The server is configured to use the RS256 algorithm to sign and verify tokens. RS256 is an asymmetric algorithm that uses a private key to sign tokens, and a public key to verify the signature.
+
+## Testing
+
+The standard cargo testing utility is used for testing.
+
+All tests should be written in a new file called `tests.rs`. The new file must be declared in the module of the code it is testing, if it is not, the `cargo test` command will not detect it. Make sure to give test modules the `#[cfg(test)]` attribute; this will allow the module to be picked up by the `cargo test` command, and ensures the test cases will not be compiled into the binary when building the project.
+
+It is recommended that test cases are ran on a single thread, this can be achieved by using the following command: `cargo test -- --test-threads 1`. If multiple threads are used, deadlocks may occur in the database; deadlocks are a normal thing to occur and actual code should check for them, but tests do not need to.
 
 ## Dependencies
 
