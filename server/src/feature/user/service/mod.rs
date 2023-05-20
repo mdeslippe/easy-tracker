@@ -289,11 +289,14 @@ impl UserService for UserServiceImpl {
             Err(error) => return InsertionResult::Err(Box::new(error)),
         };
 
-        // Start a transaction and put it in a query context.
-        let mut context = match connection.begin().await {
-            Ok(transaction) => QueryContext::Transaction(transaction),
+        // Start a transaction.
+        let transaction = match connection.begin().await {
+            Ok(transaction) => transaction,
             Err(error) => return InsertionResult::Err(Box::new(error)),
         };
+
+        // Create the query context.
+        let mut context = QueryContext::Transaction(transaction);
 
         // Perform the insertion.
         let insertion_result = self.insert_with_context(user, &mut context).await;
@@ -403,11 +406,14 @@ impl UserService for UserServiceImpl {
     }
 
     async fn get_by_id(&self, id: &u64) -> QueryResult<User, Box<dyn Error>> {
-        // Acquire a database connection and put it in a query context.
-        let mut context = match __self.connection_factory.get_connection().await {
-            Ok(connection) => QueryContext::Connection(connection),
+        // Acquire a database connection.
+        let connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
             Err(error) => return QueryResult::Err(Box::new(error)),
         };
+
+        // Create the query context.
+        let mut context = QueryContext::Connection(connection);
 
         // Perform the query.
         return self.get_by_id_with_context(id, &mut context).await;
@@ -432,11 +438,14 @@ impl UserService for UserServiceImpl {
     }
 
     async fn get_by_username(&self, username: &String) -> QueryResult<User, Box<dyn Error>> {
-        // Acquire a database connection and put it in a query context.
-        let mut context = match __self.connection_factory.get_connection().await {
-            Ok(connection) => QueryContext::Connection(connection),
+        // Acquire a database connection.
+        let connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
             Err(error) => return QueryResult::Err(Box::new(error)),
         };
+
+        // Create the query context.
+        let mut context = QueryContext::Connection(connection);
 
         // Perform the query.
         return self
@@ -467,11 +476,14 @@ impl UserService for UserServiceImpl {
     }
 
     async fn get_by_email(&self, email: &String) -> QueryResult<User, Box<dyn Error>> {
-        // Acquire a database connection and put it in a query context.
-        let mut context = match __self.connection_factory.get_connection().await {
-            Ok(connection) => QueryContext::Connection(connection),
+        // Acquire a database connection.
+        let connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
             Err(error) => return QueryResult::Err(Box::new(error)),
         };
+
+        // Create the query context.
+        let mut context = QueryContext::Connection(connection);
 
         // Perform the query.
         return self.get_by_email_with_context(email, &mut context).await;
@@ -502,11 +514,14 @@ impl UserService for UserServiceImpl {
             Err(error) => return UpdateResult::Err(Box::new(error)),
         };
 
-        // Start a transaction and put it in a query context.
-        let mut context = match connection.begin().await {
-            Ok(transaction) => QueryContext::Transaction(transaction),
+        // Start a transaction.
+        let transaction = match connection.begin().await {
+            Ok(transaction) => transaction,
             Err(error) => return UpdateResult::Err(Box::new(error)),
         };
+
+        // Create the query context.
+        let mut context = QueryContext::Transaction(transaction);
 
         // Perform the update.
         let update_result = self.update_with_context(user, &mut context).await;
@@ -642,11 +657,14 @@ impl UserService for UserServiceImpl {
     }
 
     async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>> {
-        // Acquire a database connection and put it in a query context.
-        let mut context = match __self.connection_factory.get_connection().await {
-            Ok(connection) => QueryContext::Connection(connection),
+        // Acquire a database connection.
+        let connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
             Err(error) => return DeletionResult::Err(Box::new(error)),
         };
+
+        // Create the query context.
+        let mut context = QueryContext::Connection(connection);
 
         // Perform the deletion.
         return self.delete_with_context(id, &mut context).await;
