@@ -388,7 +388,14 @@ impl UserService for UserServiceImpl {
     }
 
     async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection and put it in a query context.
+        let mut context = match __self.connection_factory.get_connection().await {
+            Ok(connection) => QueryContext::Connection(connection),
+            Err(error) => return DeletionResult::Err(Box::new(error)),
+        };
+
+        // Perform the deletion.
+        return self.delete_with_context(id, &mut context).await;
     }
 
     async fn delete_with_context(
@@ -396,6 +403,17 @@ impl UserService for UserServiceImpl {
         id: &u64,
         context: &mut QueryContext,
     ) -> DeletionResult<Box<dyn Error>> {
-        todo!();
+        // Perform the deletion.
+        let rows_deleted = match __self.user_repository.delete(id, context).await {
+            Ok(rows_deleted) => rows_deleted,
+            Err(error) => return DeletionResult::Err(Box::new(error)),
+        };
+
+        // Return the result.
+        if rows_deleted > 0 {
+            return DeletionResult::Ok;
+        } else {
+            return DeletionResult::NotFound;
+        }
     }
 }
