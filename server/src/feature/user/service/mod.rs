@@ -299,13 +299,13 @@ impl UserService for UserServiceImpl {
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>> {
         // Perform the query.
-        let query = match __self.user_repository.get_by_id(id, context).await {
+        let result = match __self.user_repository.get_by_id(id, context).await {
             Ok(user_option) => user_option,
             Err(error) => return QueryResult::Err(Box::new(error)),
         };
 
         // If the user was found, return the user, otherwise return not found.
-        return match query {
+        return match result {
             Some(user) => QueryResult::Ok(user),
             None => QueryResult::NotFound,
         };
@@ -330,7 +330,7 @@ impl UserService for UserServiceImpl {
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>> {
         // Perform the query.
-        let query = match __self
+        let result = match __self
             .user_repository
             .get_by_username(username, context)
             .await
@@ -340,7 +340,7 @@ impl UserService for UserServiceImpl {
         };
 
         // If the user was found, return the user, otherwise return not found.
-        return match query {
+        return match result {
             Some(user) => QueryResult::Ok(user),
             None => QueryResult::NotFound,
         };
@@ -363,13 +363,13 @@ impl UserService for UserServiceImpl {
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>> {
         // Perform the query.
-        let query = match __self.user_repository.get_by_email(email, context).await {
+        let result = match __self.user_repository.get_by_email(email, context).await {
             Ok(user_option) => user_option,
             Err(error) => return QueryResult::Err(Box::new(error)),
         };
 
         // If the user was found, return the user, otherwise return not found.
-        return match query {
+        return match result {
             Some(user) => QueryResult::Ok(user),
             None => QueryResult::NotFound,
         };
