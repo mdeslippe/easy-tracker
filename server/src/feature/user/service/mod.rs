@@ -108,7 +108,7 @@ pub(crate) trait UserService: Interface {
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
-    async fn get_by_username(&self, username: String) -> QueryResult<User, Box<dyn Error>>;
+    async fn get_by_username(&self, username: &String) -> QueryResult<User, Box<dyn Error>>;
 
     /// # Description
     ///
@@ -129,7 +129,7 @@ pub(crate) trait UserService: Interface {
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
     async fn get_by_username_with_context(
         &self,
-        username: String,
+        username: &String,
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>>;
 
@@ -148,7 +148,7 @@ pub(crate) trait UserService: Interface {
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
-    async fn get_by_email(&self, email: String) -> QueryResult<User, Box<dyn Error>>;
+    async fn get_by_email(&self, email: &String) -> QueryResult<User, Box<dyn Error>>;
 
     /// # Description
     ///
@@ -169,7 +169,7 @@ pub(crate) trait UserService: Interface {
     /// - If an unexpected error occurs, the Err variant will be returned with the error that occurred.
     async fn get_by_email_with_context(
         &self,
-        email: String,
+        email: &String,
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>>;
 
@@ -283,7 +283,14 @@ impl UserService for UserServiceImpl {
     }
 
     async fn get_by_id(&self, id: &u64) -> QueryResult<User, Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection and put it in a query context.
+        let mut context = match __self.connection_factory.get_connection().await {
+            Ok(connection) => QueryContext::Connection(connection),
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // Perform the query.
+        return self.get_by_id_with_context(id, &mut context).await;
     }
 
     async fn get_by_id_with_context(
@@ -291,31 +298,81 @@ impl UserService for UserServiceImpl {
         id: &u64,
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>> {
-        todo!();
+        // Perform the query.
+        let query = match __self.user_repository.get_by_id(id, context).await {
+            Ok(user_option) => user_option,
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // If the user was found, return the user, otherwise return not found.
+        return match query {
+            Some(user) => QueryResult::Ok(user),
+            None => QueryResult::NotFound,
+        };
     }
 
-    async fn get_by_username(&self, username: String) -> QueryResult<User, Box<dyn Error>> {
-        todo!();
+    async fn get_by_username(&self, username: &String) -> QueryResult<User, Box<dyn Error>> {
+        // Acquire a database connection and put it in a query context.
+        let mut context = match __self.connection_factory.get_connection().await {
+            Ok(connection) => QueryContext::Connection(connection),
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // Perform the query.
+        return self
+            .get_by_username_with_context(username, &mut context)
+            .await;
     }
 
     async fn get_by_username_with_context(
         &self,
-        username: String,
+        username: &String,
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>> {
-        todo!();
+        // Perform the query.
+        let query = match __self
+            .user_repository
+            .get_by_username(username, context)
+            .await
+        {
+            Ok(user_option) => user_option,
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // If the user was found, return the user, otherwise return not found.
+        return match query {
+            Some(user) => QueryResult::Ok(user),
+            None => QueryResult::NotFound,
+        };
     }
 
-    async fn get_by_email(&self, email: String) -> QueryResult<User, Box<dyn Error>> {
-        todo!();
+    async fn get_by_email(&self, email: &String) -> QueryResult<User, Box<dyn Error>> {
+        // Acquire a database connection and put it in a query context.
+        let mut context = match __self.connection_factory.get_connection().await {
+            Ok(connection) => QueryContext::Connection(connection),
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // Perform the query.
+        return self.get_by_email_with_context(email, &mut context).await;
     }
 
     async fn get_by_email_with_context(
         &self,
-        email: String,
+        email: &String,
         context: &mut QueryContext,
     ) -> QueryResult<User, Box<dyn Error>> {
-        todo!();
+        // Perform the query.
+        let query = match __self.user_repository.get_by_email(email, context).await {
+            Ok(user_option) => user_option,
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // If the user was found, return the user, otherwise return not found.
+        return match query {
+            Some(user) => QueryResult::Ok(user),
+            None => QueryResult::NotFound,
+        };
     }
 
     async fn update(&self, user: &User) -> UpdateResult<User, ValidationErrors, Box<dyn Error>> {
