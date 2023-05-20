@@ -1,14 +1,17 @@
 use crate::{
-    common::enumeration::{
-        DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult,
+    common::{
+        enumeration::{DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult},
+        utility::create_value_validation_error,
     },
     database::DatabaseConnectionFactory,
     feature::user::{model::User, repository::UserRepository},
 };
 use async_trait::async_trait;
+use nameof::name_of;
 use shaku::{Component, Interface};
-use std::{error::Error, sync::Arc};
-use validator::ValidationErrors;
+use sqlx::Acquire;
+use std::{borrow::Cow, error::Error, io, sync::Arc};
+use validator::{Validate, ValidationError, ValidationErrors};
 
 /// A user service trait.
 #[async_trait(?Send)]
@@ -271,7 +274,34 @@ pub(crate) struct UserServiceImpl {
 #[async_trait(?Send)]
 impl UserService for UserServiceImpl {
     async fn insert(&self, user: &User) -> InsertionResult<User, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection.
+        let mut connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // Start a transaction and put it in a query context.
+        let mut context = match connection.begin().await {
+            Ok(transaction) => QueryContext::Transaction(transaction),
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // Perform the insertion.
+        let insertion_result = self.insert_with_context(user, &mut context).await;
+
+        // If the insertion was successful, commit the transaction, otherwise roll it back.
+        let transaction_completion_result = match insertion_result {
+            InsertionResult::Ok(_) => context.commit_if_transaction().await,
+            InsertionResult::Invalid(_) => context.rollback_if_transaction().await,
+            InsertionResult::Err(_) => context.rollback_if_transaction().await,
+        };
+
+        // If the transaction completion was successful, return the insertion result, otherwise return
+        // the transaction completion error.
+        return match transaction_completion_result {
+            Ok(()) => insertion_result,
+            Err(error) => InsertionResult::Err(Box::new(error)),
+        };
     }
 
     async fn insert_with_context(
@@ -279,7 +309,73 @@ impl UserService for UserServiceImpl {
         user: &User,
         context: &mut QueryContext,
     ) -> InsertionResult<User, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Validate the user.
+        let mut validation_errors = match user.validate() {
+            Ok(()) => ValidationErrors::new(),
+            Err(errors) => errors,
+        };
+
+        // Check if the username the user is trying to use is available.
+        match __self
+            .user_repository
+            .get_by_username(&user.username, context)
+            .await
+        {
+            Ok(result) => {
+                // If the username is already in use, add a validation error.
+                if result.is_some() {
+                    validation_errors.add(
+                        name_of!(username in User),
+                        create_value_validation_error("unique", &user.username),
+                    );
+                }
+            }
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        }
+
+        // Check if the email address the usr is trying to use is available.
+        match __self
+            .user_repository
+            .get_by_email(&user.email, context)
+            .await
+        {
+            Ok(result) => {
+                if result.is_some() {
+                    validation_errors.add(
+                        name_of!(email in User),
+                        create_value_validation_error("unique", &user.email),
+                    );
+                }
+            }
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // If any validation errors exist, return them.
+        if !validation_errors.is_empty() {
+            return InsertionResult::Invalid(validation_errors);
+        }
+
+        // Perform the insertion.
+        let user_id = match __self.user_repository.insert(user, context).await {
+            Ok(user_id) => user_id,
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // Query and return the user that was inserted.
+        let inserted_user_option: Option<User> =
+            match __self.user_repository.get_by_id(&user_id, context).await {
+                Ok(inserted_user_option) => inserted_user_option,
+                Err(error) => return InsertionResult::Err(Box::new(error)),
+            };
+
+        // If the user was found, return the user, otherwise return an error.
+        return match inserted_user_option {
+            Some(inserted_user) => InsertionResult::Ok(inserted_user),
+            None => InsertionResult::Err(Box::new(io::Error::new(
+                io::ErrorKind::NotFound,
+                "Internal error: user could not be found after insertion",
+            ))),
+        };
     }
 
     async fn get_by_id(&self, id: &u64) -> QueryResult<User, Box<dyn Error>> {
