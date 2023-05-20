@@ -1,12 +1,11 @@
-use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
-use rand::rngs::OsRng;
-use shaku::{Component, Interface};
-use time::OffsetDateTime;
-
 use crate::feature::{crypto::model::UserClaims, user::model::User};
+use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use jsonwebtoken::{
     decode, encode, Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation,
 };
+use rand::rngs::OsRng;
+use shaku::{Component, Interface};
+use time::OffsetDateTime;
 
 /// The algorithm that will be used to encode and decode json web tokens.
 const JWT_ALGORITHM: Algorithm = Algorithm::RS256;
@@ -105,9 +104,11 @@ pub(crate) struct CryptoServiceImpl {
 /// A CryptoService implementation for the CryptoServiceImpl struct.
 impl CryptoService for CryptoServiceImpl {
     fn create_token(&self, user: &User) -> Result<String, jsonwebtoken::errors::Error> {
-        // Create the token's headers.
-        let mut header: Header = Header::default();
-        header.alg = JWT_ALGORITHM;
+        // Create the token's header.
+        let header: Header = Header {
+            alg: JWT_ALGORITHM,
+            ..Default::default()
+        };
 
         // Create the token's claims.
         let claims: UserClaims = UserClaims {
@@ -135,9 +136,12 @@ impl CryptoService for CryptoServiceImpl {
     }
 
     fn hash_password(&self, password: &String) -> Result<String, argon2::password_hash::Error> {
+        // Generate a salt.
+        let salt: SaltString = SaltString::generate(&mut OsRng);
+
         // Hash the password.
         let hash: String = Argon2::default()
-            .hash_password(password.as_bytes(), &SaltString::generate(&mut OsRng))?
+            .hash_password(password.as_bytes(), &salt)?
             .to_string();
 
         // Return the password hash.
