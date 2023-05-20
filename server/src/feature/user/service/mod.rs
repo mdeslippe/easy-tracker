@@ -13,9 +13,8 @@ use async_trait::async_trait;
 use nameof::name_of;
 use shaku::{Component, Interface};
 use sqlx::Acquire;
-use std::{borrow::Cow, error::Error, io, sync::Arc};
-use time::{OffsetDateTime, UtcOffset};
-use validator::{Validate, ValidationError, ValidationErrors};
+use std::{error::Error, io, sync::Arc};
+use validator::{Validate, ValidationErrors};
 
 /// A user service trait.
 #[async_trait(?Send)]
@@ -343,7 +342,7 @@ impl UserService for UserServiceImpl {
             Err(error) => return InsertionResult::Err(Box::new(error)),
         }
 
-        // Check if the email address the usr is trying to use is available.
+        // Check if the email address the user is trying to use is available.
         match __self
             .user_repository
             .get_by_email(&user.email, context)
@@ -497,7 +496,35 @@ impl UserService for UserServiceImpl {
     }
 
     async fn update(&self, user: &User) -> UpdateResult<User, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection.
+        let mut connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Start a transaction and put it in a query context.
+        let mut context = match connection.begin().await {
+            Ok(transaction) => QueryContext::Transaction(transaction),
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Perform the update.
+        let update_result = self.update_with_context(user, &mut context).await;
+
+        // If the update was successful, commit the transaction, otherwise roll it back.
+        let transaction_completion_result = match update_result {
+            UpdateResult::Ok(_) => context.commit_if_transaction().await,
+            UpdateResult::NotFound => context.rollback_if_transaction().await,
+            UpdateResult::Invalid(_) => context.rollback_if_transaction().await,
+            UpdateResult::Err(_) => context.rollback_if_transaction().await,
+        };
+
+        // If the transaction completion was successful, return the update result, otherwise return
+        // the transaction completion error.
+        return match transaction_completion_result {
+            Ok(()) => update_result,
+            Err(error) => UpdateResult::Err(Box::new(error)),
+        };
     }
 
     async fn update_with_context(
@@ -505,7 +532,113 @@ impl UserService for UserServiceImpl {
         user: &User,
         context: &mut QueryContext,
     ) -> UpdateResult<User, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Query the existing user.
+        let existing_user_option = match __self.user_repository.get_by_id(&user.id, context).await {
+            Ok(existing_user_option) => existing_user_option,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Make sure the user exists.
+        let existing_user = match existing_user_option {
+            Some(existing_user) => existing_user,
+            None => return UpdateResult::NotFound,
+        };
+
+        // Validate the user.
+        let mut validation_errors = match user.validate() {
+            Ok(()) => ValidationErrors::new(),
+            Err(errors) => errors,
+        };
+
+        // If the user is changing their username, make sure the new username is available.
+        if &user.username != &existing_user.username {
+            match __self
+                .user_repository
+                .get_by_username(&user.username, context)
+                .await
+            {
+                Ok(result) => {
+                    // If the username is already in use, add a validation error.
+                    if result.is_some() {
+                        validation_errors.add(
+                            name_of!(username in User),
+                            create_value_validation_error("unique", &user.username),
+                        );
+                    }
+                }
+                Err(error) => return UpdateResult::Err(Box::new(error)),
+            }
+        }
+
+        // If the user is changing the email address, make sure the new email is available.
+        if &user.email != &existing_user.email {
+            match __self
+                .user_repository
+                .get_by_email(&user.email, context)
+                .await
+            {
+                Ok(result) => {
+                    if result.is_some() {
+                        validation_errors.add(
+                            name_of!(email in User),
+                            create_value_validation_error("unique", &user.email),
+                        );
+                    }
+                }
+                Err(error) => return UpdateResult::Err(Box::new(error)),
+            };
+        }
+
+        // If any validation errors exist, return them.
+        if !validation_errors.is_empty() {
+            return UpdateResult::Invalid(validation_errors);
+        }
+
+        // We may need to modify some of the user's fields without mutating the original user
+        // so we must make a copy of it.
+        let mut user = user.clone();
+
+        // If the user is updating their password, hash it.
+        if &user.password != &existing_user.password {
+            user.password = match __self.crypto_service.hash_password(&user.password) {
+                Ok(hash) => hash,
+                Err(error) => {
+                    return UpdateResult::Err(Box::new(io::Error::new(
+                        io::ErrorKind::InvalidData,
+                        error.to_string(),
+                    )))
+                }
+            };
+        }
+
+        // Perform the update.
+        let rows_updated = match __self.user_repository.update(&user, context).await {
+            Ok(rows_updated) => rows_updated,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // If no rows were updated.
+        if rows_updated == 0 {
+            return UpdateResult::Err(Box::new(io::Error::new(
+                io::ErrorKind::NotFound,
+                "No records were modified when updating a user that should exist",
+            )));
+        }
+
+        // Query the updated user.
+        let updated_user_option = match __self.user_repository.get_by_id(&user.id, context).await {
+            Ok(updated_user_option) => updated_user_option,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Make sure the user was found, and return the updated user.
+        return match updated_user_option {
+            Some(updated_user) => UpdateResult::Ok(updated_user),
+            None => UpdateResult::Err(Box::new(io::Error::new(
+                io::ErrorKind::NotFound,
+                "Internal error: user could not be found after update",
+            ))),
+        };
     }
 
     async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>> {
