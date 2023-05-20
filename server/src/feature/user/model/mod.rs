@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
+use validator::Validate;
 
 /// A user struct.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, Validate)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct User {
     /// The user's unique identifier.
@@ -17,15 +18,20 @@ pub(crate) struct User {
     pub(crate) password_reset_at: OffsetDateTime,
 
     /// A url to the user's profile picture.
+    #[validate(non_control_character, url, length(min = 5, max = 2048))]
     pub(crate) profile_picture_url: String,
 
     /// The user's username.
+    #[validate(non_control_character, length(min = 3, max = 32))]
     pub(crate) username: String,
 
     /// The user's password.
+    #[serde(skip_serializing)]
+    #[validate(non_control_character, length(min = 5, max = 256))]
     pub(crate) password: String,
 
     /// The user's email address.
+    #[validate(non_control_character, email, length(min = 5, max = 256))]
     pub(crate) email: String,
 
     /// If the user has verified their email address or not.
