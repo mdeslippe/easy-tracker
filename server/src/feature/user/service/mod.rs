@@ -1,14 +1,13 @@
-use std::error::Error;
-
+use crate::{
+    common::enumeration::{
+        DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult,
+    },
+    feature::user::model::User,
+};
 use async_trait::async_trait;
 use shaku::Interface;
+use std::error::Error;
 use validator::ValidationErrors;
-
-use crate::common::enumeration::{
-    DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult,
-};
-
-use super::model::User;
 
 /// A user service trait.
 #[async_trait]
