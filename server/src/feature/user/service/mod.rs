@@ -4,13 +4,17 @@ use crate::{
         utility::create_value_validation_error,
     },
     database::DatabaseConnectionFactory,
-    feature::user::{model::User, repository::UserRepository},
+    feature::{
+        crypto::service::CryptoService,
+        user::{model::User, repository::UserRepository},
+    },
 };
 use async_trait::async_trait;
 use nameof::name_of;
 use shaku::{Component, Interface};
 use sqlx::Acquire;
 use std::{borrow::Cow, error::Error, io, sync::Arc};
+use time::{OffsetDateTime, UtcOffset};
 use validator::{Validate, ValidationError, ValidationErrors};
 
 /// A user service trait.
@@ -263,11 +267,17 @@ pub(crate) trait UserService: Interface {
 #[derive(Component)]
 #[shaku(interface = UserService)]
 pub(crate) struct UserServiceImpl {
+    /// The crypto service that will be used to manage user passwords.
     #[shaku(inject)]
-    connection_factory: Arc<dyn DatabaseConnectionFactory>,
+    crypto_service: Arc<dyn CryptoService>,
 
+    /// The user repository that will be used to manage persistent user data.
     #[shaku(inject)]
     user_repository: Arc<dyn UserRepository>,
+
+    /// The database connection factory that will be used to acquire database connections.
+    #[shaku(inject)]
+    connection_factory: Arc<dyn DatabaseConnectionFactory>,
 }
 
 /// A UserService implementation for the UserServiceImpl struct.
@@ -355,8 +365,23 @@ impl UserService for UserServiceImpl {
             return InsertionResult::Invalid(validation_errors);
         }
 
+        // We need to modify some of the user's fields without mutating the original user,
+        // so we need to make a copy of it.
+        let mut user = user.clone();
+
+        // Hash the user's password.
+        user.password = match __self.crypto_service.hash_password(&user.password) {
+            Ok(hash) => hash,
+            Err(error) => {
+                return InsertionResult::Err(Box::new(io::Error::new(
+                    io::ErrorKind::InvalidData,
+                    error.to_string(),
+                )))
+            }
+        };
+
         // Perform the insertion.
-        let user_id = match __self.user_repository.insert(user, context).await {
+        let user_id = match __self.user_repository.insert(&user, context).await {
             Ok(user_id) => user_id,
             Err(error) => return InsertionResult::Err(Box::new(error)),
         };
