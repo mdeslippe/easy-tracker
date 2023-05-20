@@ -60,14 +60,14 @@ impl DatabaseConnectionFactoryImpl {
     ///
     /// # Arguments
     ///
-    /// `pool` - The connection pool instance that will be used to override the default.
+    /// `connection_pool` - The connection pool instance that will be used to override the default.
     ///
     /// # Returns
     ///
-    /// The database connection factory parameters created.
-    pub(crate) fn create_parameters(pool: Pool<MySql>) -> DatabaseConnectionFactoryImplParameters {
-        return DatabaseConnectionFactoryImplParameters {
-            connection_pool: pool,
-        };
+    /// The database connection factory parameters that were created.
+    pub(crate) fn create_parameters(
+        connection_pool: Pool<MySql>,
+    ) -> DatabaseConnectionFactoryImplParameters {
+        return DatabaseConnectionFactoryImplParameters { connection_pool };
     }
 }

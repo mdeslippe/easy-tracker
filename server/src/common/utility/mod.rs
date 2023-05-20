@@ -1,6 +1,5 @@
-use std::env;
-
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use std::env;
 
 /// # Description
 ///

@@ -1,15 +1,20 @@
 use crate::{
-    config::Config, database::DatabaseConnectionFactoryImpl,
-    feature::user::repository::UserRepositoryImpl,
+    config::Config,
+    database::DatabaseConnectionFactoryImpl,
+    feature::{crypto::service::CryptoServiceImpl, user::repository::UserRepositoryImpl},
 };
+use jsonwebtoken::{DecodingKey, EncodingKey};
 use shaku::module;
 use sqlx::{mysql::MySqlPoolOptions, MySql, Pool};
-use std::error::Error;
+use std::{error::Error, fs};
 
 // Create the dependency injector module.
 module! {
     pub(crate) DependencyInjector {
         components = [
+            // Crypto
+            CryptoServiceImpl,
+
             // Database
             DatabaseConnectionFactoryImpl,
 
@@ -44,11 +49,23 @@ impl DependencyInjector {
             .connect(&config.database.connection_string)
             .await?;
 
+        // Load the jwt private key.
+        let encoding_key: EncodingKey =
+            EncodingKey::from_rsa_pem(&fs::read(&config.jwt.private_key_path)?)?;
+
+        // Load the jwt public key.
+        let decoding_key: DecodingKey =
+            DecodingKey::from_rsa_pem(&fs::read(&config.jwt.public_key_path)?)?;
+
         // Create the injector.
         let injector: DependencyInjector = DependencyInjector::builder()
             .with_component_parameters::<DatabaseConnectionFactoryImpl>(
                 DatabaseConnectionFactoryImpl::create_parameters(database_connection_pool),
             )
+            .with_component_parameters::<CryptoServiceImpl>(CryptoServiceImpl::create_parameters(
+                encoding_key,
+                decoding_key,
+            ))
             .build();
 
         // Return the injector.
