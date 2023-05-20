@@ -1,7 +1,10 @@
 use crate::{
     config::Config,
     database::DatabaseConnectionFactoryImpl,
-    feature::{crypto::service::CryptoServiceImpl, user::repository::UserRepositoryImpl},
+    feature::{
+        crypto::service::CryptoServiceImpl,
+        user::{repository::UserRepositoryImpl, service::UserServiceImpl},
+    },
 };
 use jsonwebtoken::{DecodingKey, EncodingKey};
 use shaku::module;
@@ -19,7 +22,8 @@ module! {
             DatabaseConnectionFactoryImpl,
 
             // User
-            UserRepositoryImpl
+            UserRepositoryImpl,
+            UserServiceImpl
         ],
         providers = []
     }
