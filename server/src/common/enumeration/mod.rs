@@ -29,21 +29,21 @@ pub(crate) enum QueryContext<'a> {
 ///
 /// `I` - The datatype that will be returned if data validation errors occur.
 ///
-/// `E` - The datatype that will be returned if an unexpected error occurs.
+/// `E` - The datatype that will be returned if unexpected errors occurs.
 pub(crate) enum InsertionResult<T, I, E> {
     /// # Description
     ///
-    /// The Ok variant will be returned when the insertion was successful.
+    /// The Ok variant will be returned if the insertion is successful.
     Ok(T),
 
     /// # Description
     ///
-    /// The Invalid variant will be returned when invalidation errors occur.
+    /// The Invalid variant will be returned if validation errors occur.
     Invalid(I),
 
     /// # Description
     ///
-    /// The Err variant will be returned when unexpected error occur.
+    /// The Err variant will be returned if unexpected errors occur.
     Err(E),
 }
 
@@ -55,21 +55,21 @@ pub(crate) enum InsertionResult<T, I, E> {
 ///
 /// `T` - The datatype that will be returned if the query was successful.
 ///
-/// `E` - The datatype that will be returned if an unexpected error occurs.
+/// `E` - The datatype that will be returned if an unexpected errors occurs.
 pub(crate) enum QueryResult<T, E> {
     /// # Description
     ///
-    /// The Ok variant will be returned when the query was successful.
+    /// The Ok variant will be returned if the query was successful.
     Ok(T),
 
     /// # Description
     ///
-    /// The NotFound variant will be returned when the query did not return any results.
+    /// The NotFound variant will be returned if the query did not return any results.
     NotFound,
 
     /// # Description
     ///
-    /// The Err variant will be returned when unexpected error occur.
+    /// The Err variant will be returned if unexpected errors occur.
     Err(E),
 }
 
@@ -83,26 +83,26 @@ pub(crate) enum QueryResult<T, E> {
 ///
 /// `I` - The datatype that will be returned if data validation errors occur.
 ///
-/// `E` - The datatype that will be returned if an unexpected error occurs.
+/// `E` - The datatype that will be returned if an unexpected errors occurs.
 pub(crate) enum UpdateResult<T, I, E> {
     /// # Description
     ///
-    /// The Ok variant will be returned when the update was successful.
+    /// The Ok variant will be returned if the update was successful.
     Ok(T),
 
     /// # Description
     ///
-    /// The NotFound variant will be returned when the entity being updated could not be found.
+    /// The NotFound variant will be returned if the entity being updated could not be found.
     NotFound,
 
     /// # Description
     ///
-    /// The Invalid variant will be returned when invalidation errors occur.
+    /// The Invalid variant will be returned if validation errors occur.
     Invalid(I),
 
     /// # Description
     ///
-    /// The Err variant will be returned when unexpected error occur.
+    /// The Err variant will be returned if unexpected errors occur.
     Err(E),
 }
 
@@ -112,20 +112,20 @@ pub(crate) enum UpdateResult<T, I, E> {
 ///
 /// # Generic Parameters
 ///
-/// `E` - The datatype that will be returned if an unexpected error occurs.
+/// `E` - The datatype that will be returned if an unexpected errors occurs.
 pub(crate) enum DeletionResult<E> {
     /// # Description
     ///
-    /// The Ok variant will be returned when the deletion was successful.
+    /// The Ok variant will be returned if the deletion was successful.
     Ok,
 
     /// # Description
     ///
-    /// The NotFound variant will be returned when the entity being deleted could not be found.
+    /// The NotFound variant will be returned if the entity being deleted could not be found.
     NotFound,
 
     /// # Description
     ///
-    /// The Err variant will be returned when unexpected error occur.
+    /// The Err variant will be returned if unexpected errors occur.
     Err(E),
 }
