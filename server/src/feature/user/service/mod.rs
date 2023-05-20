@@ -627,13 +627,13 @@ impl UserService for UserServiceImpl {
         }
 
         // Perform the update.
-        let rows_updated = match __self.user_repository.update(&user, context).await {
-            Ok(rows_updated) => rows_updated,
+        let records_updated = match __self.user_repository.update(&user, context).await {
+            Ok(records_updated) => records_updated,
             Err(error) => return UpdateResult::Err(Box::new(error)),
         };
 
-        // If no rows were updated.
-        if rows_updated == 0 {
+        // If no records were updated.
+        if records_updated == 0 {
             return UpdateResult::Err(Box::new(io::Error::new(
                 io::ErrorKind::NotFound,
                 "No records were modified when updating a user that should exist",
@@ -676,13 +676,13 @@ impl UserService for UserServiceImpl {
         context: &mut QueryContext,
     ) -> DeletionResult<Box<dyn Error>> {
         // Perform the deletion.
-        let rows_deleted = match __self.user_repository.delete(id, context).await {
-            Ok(rows_deleted) => rows_deleted,
+        let records_deleted = match __self.user_repository.delete(id, context).await {
+            Ok(records_deleted) => records_deleted,
             Err(error) => return DeletionResult::Err(Box::new(error)),
         };
 
         // Return the result.
-        if rows_deleted > 0 {
+        if records_deleted > 0 {
             return DeletionResult::Ok;
         } else {
             return DeletionResult::NotFound;
