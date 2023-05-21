@@ -1,4 +1,6 @@
+use crate::feature::user::model::User;
 use sqlx::{pool::PoolConnection, MySql, Transaction};
+use std::error::Error;
 
 /// # Description
 ///
@@ -60,6 +62,26 @@ impl<'a> QueryContext<'a> {
             return Ok(());
         }
     }
+}
+
+/// # Description
+///
+/// An enumeration of all of the possible authentication results.
+pub(crate) enum AuthenticationResult {
+    /// # Description
+    ///
+    /// The Ok variant will be returned if authentication was successful.
+    Ok(User),
+
+    /// # Description
+    ///
+    /// The NotAuthenticated variant will be returned if authentication was not successful.
+    NotAuthenticated,
+
+    /// # Description
+    ///
+    /// The Err variant will be returned if an error occurs during the authentication process.
+    Err(Box<dyn Error>),
 }
 
 /// # Description

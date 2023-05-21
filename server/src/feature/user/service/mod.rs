@@ -32,7 +32,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns an insertion result:
+    /// This function returns an insertion result:
     /// - If the insertion is successful, the Ok variant will be returned with the user that was inserted.
     /// - If the user being inserted contains validation errors, the Invalid variant will be returned
     /// with the validation errors that were detected.
@@ -51,7 +51,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns an insertion result:
+    /// This function returns an insertion result:
     /// - If the insertion is successful, the Ok variant will be returned with the user that was inserted.
     /// - If the user being inserted contains validation errors, the Invalid variant will be returned
     /// with the validation errors that were detected.
@@ -72,7 +72,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a query result:
+    /// This function returns a query result:
     /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
@@ -91,7 +91,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a query result:
+    /// This function returns a query result:
     /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
@@ -112,7 +112,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a query result:
+    /// This function returns a query result:
     /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
@@ -131,7 +131,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a query result:
+    /// This function returns a query result:
     /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
@@ -152,7 +152,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a query result:
+    /// This function returns a query result:
     /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
@@ -171,7 +171,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a query result:
+    /// This function returns a query result:
     /// - If the query is successful and finds the user, the Ok variant will be returned with the user's
     /// information.
     /// - If the user could not be found, the NotFound variant will be returned.
@@ -192,7 +192,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns an update result:
+    /// This function returns an update result:
     /// - If the update is successful, the Ok variant will be returned with the user updated.
     /// - If the user that is being updated could not be found, the NotFound variant will be returned.
     /// - If the user being updated contains validation errors, the Invalid variant will be returned
@@ -212,7 +212,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns an update result:
+    /// This function returns an update result:
     /// - If the update is successful, the Ok variant will be returned with the user updated.
     /// - If the user that is being updated could not be found, the NotFound variant will be returned.
     /// - If the user being updated contains validation errors, the Invalid variant will be returned
@@ -234,7 +234,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a deletion result:
+    /// This function returns a deletion result:
     /// - If the deletion is successful and a user was successfully deleted, the Ok variant will be
     /// returned.
     /// - If the user being deleted could not be found, the NotFound variant will be returned.
@@ -253,7 +253,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Returns
     ///
-    /// This functions returns a deletion result:
+    /// This function returns a deletion result:
     /// - If the deletion is successful and a user was successfully deleted, the Ok variant will be
     /// returned.
     /// - If the user being deleted could not be found, the NotFound variant will be returned.
