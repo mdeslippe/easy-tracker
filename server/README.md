@@ -56,6 +56,8 @@ It is recommended that test cases are ran on a single thread, this can be achiev
 <br />
 **rand** - A utility to generate random numbers.
 <br />
+**regex** - An implementation of regular expressions for Rust.
+<br />
 **serde** - A framework for serializing and deserializing Rust data structures.
 <br />
 **serde_json** - A JSON extension for `serde`.
