@@ -156,6 +156,8 @@ impl AuthService for AuthServiceImpl {
         }
 
         // Now that we have the token, we can authenticate the user.
-        return __self.authenticate_token(&token).await;
+        return __self
+            .authenticate_token(&token.trim_start_matches(BEARER).to_owned())
+            .await;
     }
 }
