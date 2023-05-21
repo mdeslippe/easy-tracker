@@ -30,7 +30,7 @@ The server is configured to use the RS256 algorithm to sign and verify tokens. R
 
 The standard cargo testing utility is used for testing.
 
-All tests should be written in a new file called `tests.rs`. The new file must be declared in the module of the code it is testing, if it is not, the `cargo test` command will not detect it. Make sure to give test modules the `#[cfg(test)]` attribute; this will allow the module to be picked up by the `cargo test` command, and ensures the test cases will not be compiled into the binary when building the project.
+All tests should be written in a new file called `test.rs`. The new file must be declared in the module of the code it is testing, if it is not, the `cargo test` command will not detect it. Make sure to give test modules the `#[cfg(test)]` attribute; this will allow the module to be picked up by the `cargo test` command, and ensures the test cases will not be compiled into the binary when building the project.
 
 It is recommended that test cases are ran on a single thread, this can be achieved by using the following command: `cargo test -- --test-threads 1`. If multiple threads are used, deadlocks may occur in the database; deadlocks are a normal thing to occur and actual code should check for them, but tests do not need to.
 

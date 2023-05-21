@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod test;
+
 use crate::{common::enumeration::QueryContext, feature::user::model::User};
 use async_trait::async_trait;
 use shaku::{Component, Interface};
