@@ -1,3 +1,7 @@
+use actix_web::{
+    http::header::{HeaderValue, AUTHORIZATION},
+    HttpRequest,
+};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use serde::Serialize;
 use std::{borrow::Cow, env};
@@ -73,4 +77,48 @@ pub(crate) fn create_value_validation_error<T: Serialize>(
 
     // Return the error.
     return error;
+}
+
+/// # Description
+///
+/// Get the user's authentication token from an http request's headers.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// # Returns
+///
+/// An option that will contain the token if it was found.
+pub(crate) fn get_token_from_header(request: &HttpRequest) -> Option<String> {
+    // Get the authorization header.
+    let auth_header: &HeaderValue = match request.headers().get(AUTHORIZATION) {
+        Some(auth_header) => auth_header,
+        None => return None,
+    };
+
+    // Get the authorization header value.
+    return match auth_header.to_str() {
+        Ok(value) => Some(String::from(value)),
+        Err(_) => None,
+    };
+}
+
+/// # Description
+///
+/// Get the user's authentication token from an http request's cookies.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// # Returns
+///
+/// An option that will contain the token if it was found.
+pub(crate) fn get_token_from_cookie(request: &HttpRequest) -> Option<String> {
+    // Get the authorization cookie.
+    return match request.cookie("authorization") {
+        Some(cookie) => Some(String::from(cookie.value())),
+        None => None,
+    };
 }

@@ -2,6 +2,7 @@ use crate::{
     config::Config,
     database::DatabaseConnectionFactoryImpl,
     feature::{
+        auth::service::AuthServiceImpl,
         crypto::service::CryptoServiceImpl,
         user::{repository::UserRepositoryImpl, service::UserServiceImpl},
     },
@@ -23,7 +24,10 @@ module! {
 
             // User
             UserRepositoryImpl,
-            UserServiceImpl
+            UserServiceImpl,
+
+            // Authentication
+            AuthServiceImpl
         ],
         providers = []
     }
