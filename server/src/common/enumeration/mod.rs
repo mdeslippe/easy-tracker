@@ -19,6 +19,49 @@ pub(crate) enum QueryContext<'a> {
     Transaction(Transaction<'a, MySql>),
 }
 
+/// An implementation for the QueryContext enum.
+impl<'a> QueryContext<'a> {
+    /// # Description
+    ///
+    /// If the context is a transaction, commit the changes made in this context.
+    ///
+    /// ### Note: If the context is not a transaction, this will not do anything.
+    ///
+    /// # Returns
+    ///
+    /// This functions returns a result:
+    /// - If the context is a connection or is a transaction and was successfully committed, the Ok
+    /// variant will be returned.
+    /// - If the context is a transaction and failed to commit, the Err variant will be returned with
+    /// the error that occurred.
+    pub(crate) async fn commit_if_transaction(self) -> Result<(), sqlx::error::Error> {
+        if let QueryContext::Transaction(transaction) = self {
+            return transaction.commit().await;
+        } else {
+            return Ok(());
+        }
+    }
+
+    /// # Description
+    ///
+    /// If the context is a transaction, rollback the changes made in this context.
+    ///
+    /// ### Note: If the context is not a transaction, this will not do anything.
+    ///
+    /// This functions returns a result:
+    /// - If the context is a connection or is a transaction and was successfully rolled back, the Ok
+    /// variant will be returned.
+    /// - If the context is a transaction and failed to rollback, the Err variant will be returned with
+    /// the error that occurred.
+    pub(crate) async fn rollback_if_transaction(self) -> Result<(), sqlx::error::Error> {
+        if let QueryContext::Transaction(transaction) = self {
+            return transaction.rollback().await;
+        } else {
+            return Ok(());
+        }
+    }
+}
+
 /// # Description
 ///
 /// An enumeration of all of the possible results of an insertion.

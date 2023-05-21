@@ -1,5 +1,7 @@
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
-use std::env;
+use serde::Serialize;
+use std::{borrow::Cow, env};
+use validator::ValidationError;
 
 /// # Description
 ///
@@ -46,4 +48,29 @@ pub(crate) fn generate_random_string(size: usize) -> String {
         .take(size)
         .map(char::from)
         .collect();
+}
+
+/// # Description
+///
+/// Create a validation error.
+///
+/// # Arguments
+///
+/// `code` - A short text code that identifies the category of error (for example "unique").
+///
+/// `value` - The value that is invalid.
+///
+/// # Returns
+///
+/// The validation error that was created.
+pub(crate) fn create_value_validation_error<T: Serialize>(
+    code: &'static str,
+    value: &T,
+) -> ValidationError {
+    // Create the error.
+    let mut error = ValidationError::new(code);
+    error.add_param(Cow::from("value"), value);
+
+    // Return the error.
+    return error;
 }
