@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod test;
+
 use crate::feature::{crypto::model::UserClaims, user::model::User};
 use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use jsonwebtoken::{

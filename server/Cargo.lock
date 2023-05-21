@@ -1654,6 +1654,7 @@ dependencies = [
  "no-panic",
  "openssl",
  "rand",
+ "regex",
  "serde",
  "serde_json",
  "shaku",
