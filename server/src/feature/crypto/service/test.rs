@@ -1,10 +1,3 @@
-use std::sync::Arc;
-
-use jsonwebtoken::TokenData;
-use regex::Regex;
-use shaku::HasComponent;
-use time::OffsetDateTime;
-
 use crate::{
     common::utility::generate_random_string,
     config::Config,
@@ -14,6 +7,11 @@ use crate::{
     },
     injector::DependencyInjector,
 };
+use jsonwebtoken::TokenData;
+use regex::Regex;
+use shaku::HasComponent;
+use std::sync::Arc;
+use time::OffsetDateTime;
 
 /// # Description
 ///
