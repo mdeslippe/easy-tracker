@@ -17,6 +17,7 @@ use nameof::name_of;
 use shaku::{Component, Interface};
 use sqlx::Acquire;
 use std::{error::Error, io, sync::Arc};
+use time::OffsetDateTime;
 use validator::{Validate, ValidationErrors};
 
 /// A user service trait.
@@ -620,6 +621,7 @@ impl UserService for UserServiceImpl {
 
         // If the user is updating their password, hash it.
         if &user.password != &existing_user.password {
+            user.password_reset_at = OffsetDateTime::now_utc();
             user.password = match __self.crypto_service.hash_password(&user.password) {
                 Ok(hash) => hash,
                 Err(error) => {
