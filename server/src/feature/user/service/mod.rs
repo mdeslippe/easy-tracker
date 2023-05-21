@@ -352,6 +352,7 @@ impl UserService for UserServiceImpl {
             .await
         {
             Ok(result) => {
+                // If the email is already in use, add a validation error.
                 if result.is_some() {
                     validation_errors.add(
                         name_of!(email in User),
@@ -400,7 +401,7 @@ impl UserService for UserServiceImpl {
             Some(inserted_user) => InsertionResult::Ok(inserted_user),
             None => InsertionResult::Err(Box::new(io::Error::new(
                 io::ErrorKind::NotFound,
-                "Internal error: user could not be found after insertion",
+                "User could not be found after insertion",
             ))),
         };
     }
@@ -593,6 +594,7 @@ impl UserService for UserServiceImpl {
                 .await
             {
                 Ok(result) => {
+                    // If the email is already in use, add a validation error.
                     if result.is_some() {
                         validation_errors.add(
                             name_of!(email in User),
@@ -651,7 +653,7 @@ impl UserService for UserServiceImpl {
             Some(updated_user) => UpdateResult::Ok(updated_user),
             None => UpdateResult::Err(Box::new(io::Error::new(
                 io::ErrorKind::NotFound,
-                "Internal error: user could not be found after update",
+                "User could not be found after update",
             ))),
         };
     }
