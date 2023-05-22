@@ -85,14 +85,14 @@ async fn login(
 
 /// # Description
 ///
-/// An api endpoint to unauthenticate users.
+/// An api endpoint to unauthenticate a user.
 ///
 /// # Returns
 ///
 /// An http response.
 #[post("/logout")]
 async fn logout() -> HttpResponse {
-    // Clear the users authentication token.
+    // Clear the user's authentication token.
     let auth_cookie: Cookie = Cookie::build("authorization", "")
         .http_only(true)
         .secure(true)
@@ -107,7 +107,7 @@ async fn logout() -> HttpResponse {
 
 /// # Description
 ///
-/// An api endpoint to check if the client is authenticated.
+/// An api endpoint to check if a user is authenticated.
 ///
 /// # Arguments
 ///
