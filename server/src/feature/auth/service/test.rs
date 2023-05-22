@@ -54,8 +54,8 @@ fn create_test_user() -> User {
 ///
 /// # Panics
 ///
-/// This function will panic if an error occurs while attempting
-/// to load or parse the configuration file.
+/// This function will panic if an error occurs while attempting to load or parse the configuration
+/// file.
 ///
 /// # Returns
 ///
@@ -86,8 +86,8 @@ async fn create_dependency_injector() -> DependencyInjector {
 
 /// # Description
 ///
-/// Test authenticating a user via login credentials that does not exist, and ensure
-/// authentication is not successful.
+/// Test authenticating a user via login credentials that are invalid, and ensure authentication is
+/// not successful.
 #[actix_web::test]
 async fn authenticating_a_user_that_does_not_exist_via_credentials_fails() {
     // Create a dependency injector.
@@ -96,7 +96,7 @@ async fn authenticating_a_user_that_does_not_exist_via_credentials_fails() {
     // Get a user service instance.
     let user_service: Arc<dyn UserService> = injector.resolve();
 
-    // Get a auth service instance.
+    // Get an auth service instance.
     let auth_service: Arc<dyn AuthService> = injector.resolve();
 
     // Create a test user.
@@ -134,8 +134,8 @@ async fn authenticating_a_user_that_does_not_exist_via_credentials_fails() {
 
 /// # Description
 ///
-/// Test authenticating a user via login credentials that does exist, and ensure
-/// authentication is successful.
+/// Test authenticating a user via login credentials that are valid, and ensure authentication is
+/// successful.
 #[actix_web::test]
 async fn authenticating_a_user_that_exists_via_credentials_succeeds() {
     // Create a dependency injector.
@@ -144,7 +144,7 @@ async fn authenticating_a_user_that_exists_via_credentials_succeeds() {
     // Get a user service instance.
     let user_service: Arc<dyn UserService> = injector.resolve();
 
-    // Get a auth service instance.
+    // Get an auth service instance.
     let auth_service: Arc<dyn AuthService> = injector.resolve();
 
     // Create a test user.
@@ -202,8 +202,7 @@ async fn authenticating_a_user_that_exists_via_credentials_succeeds() {
 
 /// # Description
 ///
-/// Test authenticating a user via token that does not exist, and ensure authentication
-/// is not successful.
+/// Test authenticating a user via token that is invalid, and ensure authentication is not successful.
 #[actix_web::test]
 async fn authenticating_a_user_that_does_not_exit_via_token_fails() {
     // Create a dependency injector.
@@ -215,7 +214,7 @@ async fn authenticating_a_user_that_does_not_exit_via_token_fails() {
     // Get a crypto service instance.
     let crypto_service: Arc<dyn CryptoService> = injector.resolve();
 
-    // Get a auth service instance.
+    // Get an auth service instance.
     let auth_service: Arc<dyn AuthService> = injector.resolve();
 
     // Create a test user.
@@ -255,8 +254,7 @@ async fn authenticating_a_user_that_does_not_exit_via_token_fails() {
 
 /// # Description
 ///
-/// Test authenticating a user via token that does exist, and ensure authentication
-/// is successful.
+/// Test authenticating a user via token that is valid and ensure authentication is successful.
 #[actix_web::test]
 async fn authenticating_a_user_that_exists_via_token_succeeds() {
     // Create a dependency injector.
@@ -268,16 +266,11 @@ async fn authenticating_a_user_that_exists_via_token_succeeds() {
     // Get a crypto service instance.
     let crypto_service: Arc<dyn CryptoService> = injector.resolve();
 
-    // Get a auth service instance.
+    // Get an auth service instance.
     let auth_service: Arc<dyn AuthService> = injector.resolve();
 
     // Create a test user.
-    let mut user: User = create_test_user();
-
-    // Hash the user's password.
-    user.password = crypto_service
-        .hash_password(&user.password)
-        .expect("Failed to hash the user's password");
+    let user: User = create_test_user();
 
     // Insert the user.
     let user: User = match user_service.insert(&user).await {
@@ -342,16 +335,11 @@ async fn updating_a_users_password_expires_existing_tokens() {
     // Get a crypto service instance.
     let crypto_service: Arc<dyn CryptoService> = injector.resolve();
 
-    // Get a auth service instance.
+    // Get an auth service instance.
     let auth_service: Arc<dyn AuthService> = injector.resolve();
 
     // Create a test user.
-    let mut user: User = create_test_user();
-
-    // Hash the user's password.
-    user.password = crypto_service
-        .hash_password(&user.password)
-        .expect("Failed to hash the user's password");
+    let user: User = create_test_user();
 
     // Insert the user.
     let mut user: User = match user_service.insert(&user).await {
@@ -391,9 +379,7 @@ async fn updating_a_users_password_expires_existing_tokens() {
     };
 
     // Update the user's password.
-    user.password = crypto_service
-        .hash_password(&String::from("NewUpdatedPassword!"))
-        .expect("Failed to hash the user's password");
+    user.password = String::from("NewUpdatedPassword!");
 
     let user = match user_service.update(&user).await {
         UpdateResult::Ok(user) => user,
