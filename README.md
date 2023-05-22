@@ -14,12 +14,11 @@ The [migrations](https://github.com/mdeslippe/easy-tracker/tree/main/migrations)
 
 ### Server
 
-The [server](https://github.com/mdeslippe/easy-tracker/tree/main/server) directory contains the source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language.
+The [server](https://github.com/mdeslippe/easy-tracker/tree/main/server) directory contains the source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language with the [Actix Web](https://actix.rs/) framework.
 
 ### Website
 
-The [website](https://github.com/mdeslippe/easy-tracker/tree/main/website) directory contains the source code for the public-facing Easy Tracker website;
-a website written using [NextJS](https://nextjs.org/) with server-side rendering.
+The [website](https://github.com/mdeslippe/easy-tracker/tree/main/website) directory contains the source code for the public-facing Easy Tracker website; a website written in the [TypeScript](https://www.typescriptlang.org/) programming language with the [React](https://react.dev/) library.
 
 ## Contributions
 

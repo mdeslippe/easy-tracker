@@ -1,6 +1,6 @@
 # The Easy Tracker Server
 
-This directory contains the source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language.
+This directory contains the source code for the public-facing Easy Tracker server; a high-performance web server written in the [Rust](https://www.rust-lang.org/) programming language with the [Actix Web](https://actix.rs/) framework.
 
 ## Installation Guide
 
