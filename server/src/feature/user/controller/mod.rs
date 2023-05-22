@@ -1,25 +1,21 @@
 mod data;
 
+use self::data::CreateUserRequestBody;
+use crate::{
+    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult},
+    config::Config,
+    feature::{
+        auth::service::AuthService,
+        user::{controller::data::GetUserResponseBody, model::User, service::UserService},
+    },
+    injector::DependencyInjector,
+};
 use actix_web::{
     get, post,
     web::{self, ServiceConfig},
     HttpRequest, HttpResponse,
 };
 use shaku_actix::Inject;
-
-use crate::{
-    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult},
-    config::Config,
-    feature::{
-        auth::service::AuthService,
-        user::{controller::data::GetUserResponseBody, model::User},
-    },
-    injector::DependencyInjector,
-};
-
-use self::data::CreateUserRequestBody;
-
-use super::service::UserService;
 
 /// # Description
 ///
@@ -33,7 +29,8 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
         web::scope("/users")
             .service(create_user)
             .service(get_user_by_id)
-            .service(get_user_by_username),
+            .service(get_user_by_username)
+            .service(get_user_by_email),
     );
 }
 
@@ -147,6 +144,49 @@ async fn get_user_by_username(
 
     // Query the target user, and if found, convert the user into the response body format.
     let user: GetUserResponseBody = match user_service.get_by_username(&username).await {
+        QueryResult::Ok(user) => user.into(),
+        QueryResult::NotFound => return HttpResponse::NotFound().finish(),
+        QueryResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Return the user.
+    return HttpResponse::Ok().json(user);
+}
+
+/// # Description
+///
+/// An api endpoint to get users by their email address.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `email` - The email address of the user that is being queried.
+///
+/// `auth_service` - The authentication service that will be used to authenticate the user sending
+/// the request.
+///
+/// `user_service` - The user service that will be used to get the user's data.
+///
+/// # Returns
+///
+/// An http response.
+#[get("/email/{email}")]
+async fn get_user_by_email(
+    request: HttpRequest,
+    email: web::Path<String>,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+    user_service: Inject<DependencyInjector, dyn UserService>,
+) -> HttpResponse {
+    // Authenticate the user.
+    match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(_) => {}
+        AuthenticationResult::NotAuthenticated => return HttpResponse::Unauthorized().finish(),
+        AuthenticationResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Query the target user, and if found, convert the user into the response body format.
+    let user: GetUserResponseBody = match user_service.get_by_email(&email).await {
         QueryResult::Ok(user) => user.into(),
         QueryResult::NotFound => return HttpResponse::NotFound().finish(),
         QueryResult::Err(_) => return HttpResponse::InternalServerError().finish(),
