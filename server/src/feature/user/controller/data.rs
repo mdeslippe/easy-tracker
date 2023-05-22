@@ -1,7 +1,6 @@
+use crate::feature::user::model::User;
 use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
-
-use crate::feature::user::model::User;
 
 /// A create user request body struct.
 #[derive(Clone, Debug, Deserialize, Serialize)]

@@ -25,7 +25,7 @@ use shaku_actix::Inject;
 ///
 /// # Arguments
 ///
-/// `config` - The service config that the user controller configuration will be added
+/// `config` - The service config that the user controller configuration will be added to.
 pub(crate) fn configure(config: &mut ServiceConfig) {
     config.service(
         web::scope("/users")
@@ -40,7 +40,7 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
 
 /// # Description
 ///
-/// An api endpoint for creating user accounts.
+/// An api endpoint to create a user account.
 ///
 /// # Arguments
 ///
@@ -48,7 +48,7 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
 ///
 /// `config` - The server's configuration data.
 ///
-/// `user_service` - The user service that will be used to process the request.
+/// `user_service` - The user service that will be used to create the user.
 ///
 /// # Returns
 ///
@@ -61,6 +61,8 @@ async fn create_user(
 ) -> HttpResponse {
     // Convert the request body into a user.
     let mut user: User = body.into_inner().into();
+
+    // Give the user the default profile picture.
     user.profile_picture_url = config.default.user_profile_picture.clone();
 
     // Create the user.
@@ -73,7 +75,7 @@ async fn create_user(
 
 /// # Description
 ///
-/// An api endpoint to get users by their id.
+/// An api endpoint to get a user account by their id.
 ///
 /// # Arguments
 ///
@@ -84,7 +86,7 @@ async fn create_user(
 /// `auth_service` - The authentication service that will be used to authenticate the user sending
 /// the request.
 ///
-/// `user_service` - The user service that will be used to get the user's data.
+/// `user_service` - The user service that will be used to get the user.
 ///
 /// # Returns
 ///
@@ -116,7 +118,7 @@ async fn get_user_by_id(
 
 /// # Description
 ///
-/// An api endpoint to get users by their username.
+/// An api endpoint to get a user account by their username.
 ///
 /// # Arguments
 ///
@@ -127,7 +129,7 @@ async fn get_user_by_id(
 /// `auth_service` - The authentication service that will be used to authenticate the user sending
 /// the request.
 ///
-/// `user_service` - The user service that will be used to get the user's data.
+/// `user_service` - The user service that will be used to get the user.
 ///
 /// # Returns
 ///
@@ -159,7 +161,7 @@ async fn get_user_by_username(
 
 /// # Description
 ///
-/// An api endpoint to get users by their email address.
+/// An api endpoint to get a user account by their email address.
 ///
 /// # Arguments
 ///
@@ -170,7 +172,7 @@ async fn get_user_by_username(
 /// `auth_service` - The authentication service that will be used to authenticate the user sending
 /// the request.
 ///
-/// `user_service` - The user service that will be used to get the user's data.
+/// `user_service` - The user service that will be used to get the user.
 ///
 /// # Returns
 ///
@@ -202,7 +204,7 @@ async fn get_user_by_email(
 
 /// # Description
 ///
-/// An api endpoint to update user information.
+/// An api endpoint to update a user account.
 ///
 /// # Arguments
 ///
@@ -213,7 +215,7 @@ async fn get_user_by_email(
 /// `auth_service` - The authentication service that will be used to authenticate the user sending
 /// the request.
 ///
-/// `user_service` - The user service that will be used to update the users data.
+/// `user_service` - The user service that will be used to update the user.
 ///
 /// # Returns
 ///
@@ -246,7 +248,7 @@ async fn update_user(
 
 /// # Description
 ///
-/// An api endpoint to delete a user.
+/// An api endpoint to delete a user account.
 ///
 /// # Arguments
 ///
