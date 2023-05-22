@@ -571,7 +571,7 @@ impl UserService for UserServiceImpl {
         };
 
         // If the user is changing their username, make sure the new username is available.
-        if &user.username != &existing_user.username {
+        if &user.username.to_lowercase() != &existing_user.username.to_lowercase() {
             match __self
                 .user_repository
                 .get_by_username(&user.username, context)
@@ -591,7 +591,7 @@ impl UserService for UserServiceImpl {
         }
 
         // If the user is changing the email address, make sure the new email is available.
-        if &user.email != &existing_user.email {
+        if &user.email.to_lowercase() != &existing_user.email.to_lowercase() {
             match __self
                 .user_repository
                 .get_by_email(&user.email, context)

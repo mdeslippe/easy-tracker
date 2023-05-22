@@ -66,6 +66,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(Arc::clone(&dependency_injector))
             .wrap(Logger::default())
             .configure(crate::feature::user::controller::configure)
+            .configure(crate::feature::auth::controller::configure)
     };
 
     // Log the address the server will be bound to.
