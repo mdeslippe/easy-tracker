@@ -11,9 +11,9 @@ use crate::{
 };
 use actix_web::{
     cookie::{Cookie, SameSite},
-    post,
+    get, post,
     web::{self, ServiceConfig},
-    HttpResponse,
+    HttpRequest, HttpResponse,
 };
 use shaku_actix::Inject;
 
@@ -25,7 +25,12 @@ use shaku_actix::Inject;
 ///
 /// `config` - The service config that the auth controller configuration will be added to.
 pub(crate) fn configure(config: &mut ServiceConfig) {
-    config.service(web::scope("/auth").service(login).service(logout));
+    config.service(
+        web::scope("/auth")
+            .service(login)
+            .service(logout)
+            .service(status),
+    );
 }
 
 /// # Description
@@ -98,4 +103,30 @@ async fn logout() -> HttpResponse {
 
     // Send the response.
     return HttpResponse::Ok().cookie(auth_cookie).finish();
+}
+
+/// # Description
+///
+/// An api endpoint to check if the client is authenticated.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `auth_service` - The auth service that will be used to check if the client is authenticated.
+///
+/// # Returns
+///
+/// An http response.
+#[get("/status")]
+async fn status(
+    request: HttpRequest,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+) -> HttpResponse {
+    // Check if the user is authenticated.
+    return match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(_) => HttpResponse::Ok().json(true),
+        AuthenticationResult::NotAuthenticated => HttpResponse::Ok().json(false),
+        AuthenticationResult::Err(_) => HttpResponse::InternalServerError().finish(),
+    };
 }
