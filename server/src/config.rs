@@ -16,6 +16,9 @@ pub(crate) struct Config {
 
     /// The server's jwt configuration.
     pub(crate) jwt: JwtConfig,
+
+    /// The server's default value configuration.
+    pub(crate) default: DefaultValueConfig,
 }
 
 /// The logging configuration for the server.
@@ -66,6 +69,14 @@ pub(crate) struct JwtConfig {
 
     /// The public key that will be used to verify tokens.
     pub(crate) public_key_path: String,
+}
+
+/// The default value configuration for the server.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct DefaultValueConfig {
+    /// The default profile picture that will be assigned to users when their account is created.
+    pub(crate) user_profile_picture: String,
 }
 
 /// An implementation for the Config struct.

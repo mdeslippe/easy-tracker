@@ -8,7 +8,8 @@ use actix_web::{
 use shaku_actix::Inject;
 
 use crate::{
-    common::enumeration::InsertionResult, feature::user::model::User, injector::DependencyInjector,
+    common::enumeration::InsertionResult, config::Config, feature::user::model::User,
+    injector::DependencyInjector,
 };
 
 use self::data::CreateUserRequestBody;
@@ -34,6 +35,8 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
 ///
 /// `body` - The request body which contains information about the account that is being created.
 ///
+/// `config` - The server's configuration data.
+///
 /// `user_service` - The user service that will be used to process the request.
 ///
 /// # Returns
@@ -47,10 +50,12 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
 #[post("")]
 async fn create_user(
     body: web::Json<CreateUserRequestBody>,
+    config: web::Data<Config>,
     user_service: Inject<DependencyInjector, dyn UserService>,
 ) -> HttpResponse {
     // Convert the request body into a user.
-    let user: User = body.into_inner().into();
+    let mut user: User = body.into_inner().into();
+    user.profile_picture_url = config.default.user_profile_picture.clone();
 
     // Attempt to create the user, and return the result.
     return match user_service.insert(&user).await {
