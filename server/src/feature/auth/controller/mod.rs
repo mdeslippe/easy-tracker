@@ -25,7 +25,7 @@ use shaku_actix::Inject;
 ///
 /// `config` - The service config that the auth controller configuration will be added to.
 pub(crate) fn configure(config: &mut ServiceConfig) {
-    config.service(web::scope("/auth").service(login));
+    config.service(web::scope("/auth").service(login).service(logout));
 }
 
 /// # Description
@@ -70,9 +70,32 @@ async fn login(
         .http_only(true)
         .secure(true)
         .same_site(SameSite::Strict)
+        .path("/")
         .expires(None)
         .finish();
 
     // Send the response.
     return HttpResponse::Ok().cookie(auth_cookie).json(user);
+}
+
+/// # Description
+///
+/// An api endpoint to unauthenticate users.
+///
+/// # Returns
+///
+/// An http response.
+#[post("/logout")]
+async fn logout() -> HttpResponse {
+    // Clear the users authentication token.
+    let auth_cookie: Cookie = Cookie::build("authorization", "")
+        .http_only(true)
+        .secure(true)
+        .same_site(SameSite::Strict)
+        .path("/")
+        .expires(None)
+        .finish();
+
+    // Send the response.
+    return HttpResponse::Ok().cookie(auth_cookie).finish();
 }
