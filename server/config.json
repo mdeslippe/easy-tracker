@@ -16,5 +16,8 @@
   "jwt": {
     "privateKeyPath": "jwt_private.key",
     "publicKeyPath": "jwt_public.key"
+  },
+  "default": {
+    "userProfilePicture": "https://example.com/image.png"
   }
 }
