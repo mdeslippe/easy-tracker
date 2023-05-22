@@ -1,8 +1,8 @@
 mod data;
 
-use self::data::CreateUserRequestBody;
+use self::data::{CreateUserRequestBody, UpdateUserRequestBody};
 use crate::{
-    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult},
+    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult, UpdateResult},
     config::Config,
     feature::{
         auth::service::AuthService,
@@ -11,7 +11,7 @@ use crate::{
     injector::DependencyInjector,
 };
 use actix_web::{
-    get, post,
+    get, patch, post,
     web::{self, ServiceConfig},
     HttpRequest, HttpResponse,
 };
@@ -194,4 +194,48 @@ async fn get_user_by_email(
 
     // Return the user.
     return HttpResponse::Ok().json(user);
+}
+
+/// # Description
+///
+/// An api endpoint to update user information.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `update` - The update request data.
+///
+/// `auth_service` - The authentication service that will be used to authenticate the user sending
+/// the request.
+///
+/// `user_service` - The user service that will be used to update the users data.
+///
+/// # Returns
+///
+/// An http response.
+#[patch("")]
+async fn update(
+    request: HttpRequest,
+    update: web::Json<UpdateUserRequestBody>,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+    user_service: Inject<DependencyInjector, dyn UserService>,
+) -> HttpResponse {
+    // Authenticate the user.
+    let mut user: User = match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(user) => user,
+        AuthenticationResult::NotAuthenticated => return HttpResponse::Unauthorized().finish(),
+        AuthenticationResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Apply the update to the user.
+    update.apply(&mut user);
+
+    // Perform the update, and return the result.
+    return match user_service.update(&user).await {
+        UpdateResult::Ok(user) => HttpResponse::Ok().json(user),
+        UpdateResult::NotFound => HttpResponse::InternalServerError().finish(),
+        UpdateResult::Invalid(details) => HttpResponse::BadRequest().json(details),
+        UpdateResult::Err(_) => HttpResponse::InternalServerError().finish(),
+    };
 }
