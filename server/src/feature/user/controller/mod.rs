@@ -1,14 +1,19 @@
 mod data;
 
 use actix_web::{
-    post,
+    get, post,
     web::{self, ServiceConfig},
-    HttpResponse,
+    HttpRequest, HttpResponse,
 };
 use shaku_actix::Inject;
 
 use crate::{
-    common::enumeration::InsertionResult, config::Config, feature::user::model::User,
+    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult},
+    config::Config,
+    feature::{
+        auth::service::AuthService,
+        user::{controller::data::GetUserResponseBody, model::User},
+    },
     injector::DependencyInjector,
 };
 
@@ -24,7 +29,11 @@ use super::service::UserService;
 ///
 /// `config` - The service config that the user controller configuration will be added
 pub(crate) fn configure(config: &mut ServiceConfig) {
-    config.service(web::scope("/users").service(create_user));
+    config.service(
+        web::scope("/users")
+            .service(create_user)
+            .service(get_user_by_id),
+    );
 }
 
 /// # Description
@@ -41,12 +50,7 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
 ///
 /// # Returns
 ///
-/// This endpoint will return the following:
-/// - If the request is successful, an http CREATED response will be returned with the user data
-/// that was created.
-/// - If validation errors occur, an http BAD REQUEST response will be returned with the validation
-/// errors.
-/// - If an unexpected error occurs, an http INTERNAL SERVER ERROR response will be returned.
+/// An http response.
 #[post("")]
 async fn create_user(
     body: web::Json<CreateUserRequestBody>,
@@ -63,4 +67,47 @@ async fn create_user(
         InsertionResult::Invalid(details) => HttpResponse::BadRequest().json(details),
         InsertionResult::Err(_) => HttpResponse::InternalServerError().finish(),
     };
+}
+
+/// # Description
+///
+/// An api endpoint to get users by their id.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `id` - The id of the user that is being queried.
+///
+/// `auth_service` - The authentication service that will be used to authenticate the user sending
+/// the request.
+///
+/// `user_service` - The user service that will be used to get the user's data.
+///
+/// # Returns
+///
+/// An http response.
+#[get("/id/{id}")]
+async fn get_user_by_id(
+    request: HttpRequest,
+    id: web::Path<u64>,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+    user_service: Inject<DependencyInjector, dyn UserService>,
+) -> HttpResponse {
+    // Authenticate the user.
+    match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(_) => {}
+        AuthenticationResult::NotAuthenticated => return HttpResponse::Unauthorized().finish(),
+        AuthenticationResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Query the target user, and if found, convert the user into the response body format.
+    let user: GetUserResponseBody = match user_service.get_by_id(&id).await {
+        QueryResult::Ok(user) => user.into(),
+        QueryResult::NotFound => return HttpResponse::NotFound().finish(),
+        QueryResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Return the user.
+    return HttpResponse::Ok().json(user);
 }
