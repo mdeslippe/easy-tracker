@@ -12,4 +12,6 @@ Before installing, make sure you have the latest version of [npm](https://www.np
 
 ## Dependencies
 
-There are currently no dependencies.
+**react** - A JavaScript library for creating user interfaces.
+<br />
+**react-dom** - A React package for working with the DOM.
