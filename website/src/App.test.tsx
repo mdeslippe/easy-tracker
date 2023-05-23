@@ -4,7 +4,7 @@ import { describe, it } from 'vitest';
 // React testing library.
 import { render } from '@testing-library/react';
 
-// Custom components.
+// Custom.
 import App from '@website/App';
 
 // Test cases for rendering the main application component.
