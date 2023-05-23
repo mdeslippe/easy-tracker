@@ -33,6 +33,7 @@
 		"jsdom": "^22.0.0",
 		"typescript": "^5.0.2",
 		"vite": "^4.3.2",
+		"vite-plugin-pwa": "^0.15.0",
 		"vitest": "^0.31.1"
 	}
 }
