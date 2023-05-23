@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path';
 
 /**
- * The website's vite configuration.
+ * The vite configuration for the website.
  */
 export default defineConfig({
   plugins: [react()],
