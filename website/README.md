@@ -20,4 +20,4 @@ As the website is a single page application (SPA), client-side routing is needed
 <br />
 **react-dom** - A React package for working with the DOM.
 <br />
-**react-router-dom"** - A fully-featured routing library for the React JavaScript library.
+**react-router-dom** - A fully-featured routing library for the React JavaScript library.
