@@ -10,8 +10,14 @@ Before installing, make sure you have the latest version of [npm](https://www.np
 2. To start a local development server, run the command `npm run dev`.
 3. To create a production release, run the command `npm run build`.
 
+## Routing
+
+As the website is a single page application (SPA), client-side routing is needed to enable multiple "pages". To achieve this, we use a client-side routing library called [React Router](https://reactrouter.com/). React Router uses declarative routing and will conditionally render components based on the URL.
+
 ## Dependencies
 
 **react** - A JavaScript library for creating user interfaces.
 <br />
 **react-dom** - A React package for working with the DOM.
+<br />
+**react-router-dom** - A fully-featured routing library for the React JavaScript library.

@@ -1,5 +1,5 @@
-// React.
-import React from 'react';
+// React router.
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 /**
  * The main application component.
@@ -7,7 +7,13 @@ import React from 'react';
  * @returns The main application component.
  */
 function App(): JSX.Element {
-	return <React.Fragment></React.Fragment>;
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path='/' />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;
