@@ -14,8 +14,18 @@ Before installing, make sure you have the latest version of [npm](https://www.np
 
 As the website is a single page application (SPA), client-side routing is needed to enable multiple "pages". To achieve this, we use a client-side routing library called [React Router](https://reactrouter.com/). React Router uses declarative routing and will conditionally render components based on the URL.
 
+## State Management
+
+The website uses [React Query](https://tanstack.com/query/latest/docs/react/overview) to facilitate data fetching, caching, and synchronization.
+
+One of the best features of React Query is the development tools. The development tools allow you to view and manipulate the website's state with an interface on the website. When a production bundle is created, the development interface will be removed.
+
 ## Dependencies
 
+**@tanstack/react-query** - An asynchronous state management solution for JavaScript.
+<br />
+**@tanstack/react-query-devtools** - Development tools for React Query (_not included in the production bundle_).
+<br />
 **react** - A JavaScript library for creating user interfaces.
 <br />
 **react-dom** - A React package for working with the DOM.
