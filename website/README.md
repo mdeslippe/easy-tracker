@@ -20,6 +20,17 @@ The website uses [React Query](https://tanstack.com/query/latest/docs/react/over
 
 One of the best features of React Query is the development tools. The development tools allow you to view and manipulate the website's state with an interface on the website. When a production bundle is created, the development interface will be removed.
 
+## Testing
+
+The website uses [Vitest](https://vitest.dev/) for testing. Vitest is a [Vite-native](https://vitejs.dev/) unit testing framework. Along with Vitest, the [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) is used to test rendering components without a graphical environment and allows us to perform assertions on the rendered components.
+
+Test files should be placed in the same directory as the code they are testing. The test file should have the same name, with `.test` added as a prefix to the file extension. For example, if we are writing test cases for `App.tsx`, we would write them in `App.test.tsx`.
+
+There are two scripts that are related to testing:
+
+1. The command `npm run test` will run all of the test cases.
+2. The command `npm run coverage` will create a report about the website's testing coverage.
+
 ## Dependencies
 
 **@tanstack/react-query** - An asynchronous state management solution for JavaScript.
