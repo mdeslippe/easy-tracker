@@ -4,7 +4,11 @@ pub(crate) mod database;
 pub(crate) mod feature;
 pub(crate) mod injector;
 
-use crate::{common::utility::get_config_path, config::Config, injector::DependencyInjector};
+use crate::{
+    common::utility::{create_cors_configuration, get_config_path},
+    config::Config,
+    injector::DependencyInjector,
+};
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 use openssl::ssl::{SslAcceptor, SslAcceptorBuilder, SslFiletype, SslMethod};
 use std::sync::Arc;
@@ -64,6 +68,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(config_data.clone())
             .app_data(Arc::clone(&dependency_injector))
+            .wrap(create_cors_configuration(&config_data.clone()))
             .wrap(Logger::default())
             .configure(crate::feature::user::controller::configure)
             .configure(crate::feature::auth::controller::configure)
