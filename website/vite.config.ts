@@ -7,6 +7,9 @@ import { defineConfig } from 'vitest/config';
 // Vite PWA.
 import { VitePWA } from 'vite-plugin-pwa';
 
+// Vite basic ssl.
+import basicSsl from '@vitejs/plugin-basic-ssl';
+
 // Path.
 import path from 'path';
 
@@ -14,7 +17,10 @@ import path from 'path';
  * The vite configuration for the website.
  */
 export default defineConfig({
-	plugins: [react(), VitePWA({ registerType: 'autoUpdate' })],
+	plugins: [basicSsl(), react(), VitePWA({ registerType: 'autoUpdate' })],
+	server: {
+		https: true
+	},
 	test: {
 		globals: true,
 		environment: 'jsdom'
