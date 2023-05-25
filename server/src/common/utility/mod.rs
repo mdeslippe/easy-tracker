@@ -1,17 +1,11 @@
-use actix_cors::Cors;
 use actix_web::{
-    http::{
-        header::{HeaderValue, AUTHORIZATION},
-        Method,
-    },
+    http::header::{HeaderValue, AUTHORIZATION},
     HttpRequest,
 };
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use serde::Serialize;
 use std::{borrow::Cow, env};
 use validator::ValidationError;
-
-use crate::config::Config;
 
 /// # Description
 ///
@@ -144,43 +138,4 @@ pub(crate) fn get_token_from_cookie(request: &HttpRequest) -> Option<String> {
 /// A vector containing the mapped elements.
 pub(crate) fn map_to_owned<I, O>(vec: &Vec<I>, map_fn: fn(&I) -> O) -> Vec<O> {
     vec.into_iter().map(map_fn).collect::<Vec<O>>()
-}
-
-/// # Description
-///
-/// Create a cors configuration based on the server's configuration.
-///
-/// # Arguments
-///
-/// `config` - The server's configuration.
-///
-/// # Returns
-///
-/// The cors configuration.
-pub(crate) fn create_cors_configuration(config: &Config) -> Cors {
-    // Create a default cors configuration.
-    let mut cors: Cors = Cors::default();
-
-    // Add the allowed request origins.
-    for origin in (&config.http.origins).into_iter() {
-        cors = cors.allowed_origin(origin);
-    }
-
-    let cors: Cors = cors.allowed_methods(map_to_owned::<String, Method>(
-        &config.http.methods,
-        |method| {
-            Method::from_bytes(method.as_bytes())
-                .expect("Invalid request methods configured in the config")
-        },
-    ));
-
-    // Allow headers.
-    let cors: Cors = cors.allow_any_header();
-    let cors: Cors = cors.expose_any_header();
-
-    // Allow credentials.
-    let cors: Cors = cors.supports_credentials();
-
-    // Return the cors configuration.
-    return cors;
 }

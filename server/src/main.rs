@@ -4,12 +4,10 @@ pub(crate) mod database;
 pub(crate) mod feature;
 pub(crate) mod injector;
 
-use crate::{
-    common::utility::{create_cors_configuration, get_config_path},
-    config::Config,
-    injector::DependencyInjector,
-};
-use actix_web::{middleware::Logger, web::Data, App, HttpServer};
+use crate::{common::utility::get_config_path, config::Config, injector::DependencyInjector};
+use actix_cors::Cors;
+use actix_web::{http::Method, middleware::Logger, web::Data, App, HttpServer};
+use common::utility::map_to_owned;
 use openssl::ssl::{SslAcceptor, SslAcceptorBuilder, SslFiletype, SslMethod};
 use std::sync::Arc;
 
@@ -90,4 +88,48 @@ async fn main() -> std::io::Result<()> {
         .expect("Failed to bind the server to the host and port configured")
         .run()
         .await;
+}
+
+/// # Description
+///
+/// Create a cors configuration based on the server's configuration.
+///
+/// # Arguments
+///
+/// `config` - The server's configuration.
+///
+/// # Panics
+///
+/// This function will panic if the configuration contains an invalid cors configuration.
+///
+/// # Returns
+///
+/// The cors configuration.
+pub(crate) fn create_cors_configuration(config: &Config) -> Cors {
+    // Create a default cors configuration.
+    let mut cors: Cors = Cors::default();
+
+    // Add the allowed request origins.
+    for origin in (&config.http.origins).into_iter() {
+        cors = cors.allowed_origin(origin);
+    }
+
+    // Add the allowed methods.
+    let cors: Cors = cors.allowed_methods(map_to_owned::<String, Method>(
+        &config.http.methods,
+        |method| {
+            Method::from_bytes(method.as_bytes())
+                .expect("Invalid request methods configured in the config")
+        },
+    ));
+
+    // Allow headers.
+    let cors: Cors = cors.allow_any_header();
+    let cors: Cors = cors.expose_any_header();
+
+    // Allow credentials.
+    let cors: Cors = cors.supports_credentials();
+
+    // Return the cors configuration.
+    return cors;
 }
