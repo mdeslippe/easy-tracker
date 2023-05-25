@@ -19,7 +19,9 @@ import path from 'path';
 export default defineConfig({
 	plugins: [basicSsl(), react(), VitePWA({ registerType: 'autoUpdate' })],
 	server: {
-		https: true
+		https: true,
+		host: 'localhost',
+		port: 5000
 	},
 	test: {
 		globals: true,

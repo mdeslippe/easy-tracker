@@ -122,3 +122,20 @@ pub(crate) fn get_token_from_cookie(request: &HttpRequest) -> Option<String> {
         None => None,
     };
 }
+
+/// # Description
+///
+/// Map a borrowed vector of type I to an owned vector of type O.
+///
+/// # Arguments
+///
+/// `vec` - The vector to map.
+///
+/// `map_fn` - The map function to apply on each element in the vector.
+///
+/// # Returns
+///
+/// A vector containing the mapped elements.
+pub(crate) fn map_to_owned<I, O>(vec: &Vec<I>, map_fn: fn(&I) -> O) -> Vec<O> {
+    vec.into_iter().map(map_fn).collect::<Vec<O>>()
+}

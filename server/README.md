@@ -36,6 +36,8 @@ It is recommended that test cases are ran on a single thread, this can be achiev
 
 ## Dependencies
 
+**actix-cors** - Cross-Origin Resource Sharing (CORS) controls for `actix-web`.
+<br />
 **actix-web** - A powerful, pragmatic, and extremely fast web framework for Rust.
 <br />
 **argon2** - A pure Rust implementation of the Argon2 password hashing function with support for the Argon2d, Argon2i, and Argon2id algorithmic variants.

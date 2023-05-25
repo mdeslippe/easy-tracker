@@ -6,7 +6,14 @@
     "host": "127.0.0.1",
     "port": 443,
     "certificatePath": "tls_certificate.pem",
-    "certificateKeyPath": "tls_certificate_key.pem"
+    "certificateKeyPath": "tls_certificate_key.pem",
+    "methods": ["OPTIONS", "GET", "POST", "PATCH", "DELETE"],
+    "origins": [
+      "127.0.0.1:5000",
+      "localhost:5000",
+      "https://127.0.0.1:5000",
+      "https://localhost:5000"
+    ]
   },
   "database": {
     "connectionString": "mysql://root:password@localhost/easy_tracker",

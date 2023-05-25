@@ -45,4 +45,4 @@ There are two scripts that are related to testing:
 <br />
 **react-router-dom** - A fully-featured routing library for the React JavaScript library.
 <br />
-**zod** - A TypeScript-first schema validation with static type inference.
+**zod** - A TypeScript-first schema validation library with static type inference.
