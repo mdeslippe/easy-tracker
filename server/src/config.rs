@@ -44,6 +44,12 @@ pub(crate) struct HttpConfig {
 
     /// The path of the certificate key the http server will use.
     pub(crate) certificate_key_path: String,
+
+    /// The http methods that clients are permitted to use.
+    pub(crate) methods: Vec<String>,
+
+    /// The origins that are permitted to send http requests.
+    pub(crate) origins: Vec<String>,
 }
 
 /// The database configuration for the server.
