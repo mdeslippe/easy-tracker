@@ -37,8 +37,12 @@ There are two scripts that are related to testing:
 <br />
 **@tanstack/react-query-devtools** - Development tools for React Query (_not included in the production bundle_).
 <br />
+**axios** - A promise-based HTTP client.
+<br />
 **react** - A JavaScript library for creating user interfaces.
 <br />
 **react-dom** - A React package for working with the DOM.
 <br />
 **react-router-dom** - A fully-featured routing library for the React JavaScript library.
+<br />
+**zod** - A TypeScript-first schema validation with static type inference.
