@@ -21,9 +21,9 @@ export type ValidationErrorDetails = {
 };
 
 /**
- * The response body that will be returned from the server if validation errors occur.
+ * The response data that will be returned from the server if validation errors occur.
  */
-export type ValidationErrorResponse = {
+export type ValidationErrorResponseData = {
 	/**
 	 * Fields that contained validation errors.
 	 */

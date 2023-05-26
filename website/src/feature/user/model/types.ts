@@ -1,4 +1,4 @@
-import { ValidationErrorResponse } from '@website/common/model';
+import { ValidationErrorResponseData } from '@website/common/model';
 
 /**
  * A user type.
@@ -73,7 +73,7 @@ export type CreateUserRequestData = {
 /**
  * The response data for requests to create a user.
  */
-export type CreateUserResponseData = User | ValidationErrorResponse | undefined;
+export type CreateUserResponseData = User | ValidationErrorResponseData | undefined;
 
 /**
  * The request data for requests to get a user by id.
@@ -199,7 +199,7 @@ export type UpdateUserRequestData = {
 /**
  * The response data for requests to update a user.
  */
-export type UpdateUserResponseData = User | ValidationErrorResponse | undefined;
+export type UpdateUserResponseData = User | ValidationErrorResponseData | undefined;
 
 /**
  * The request data for requests to delete a user.

@@ -22,9 +22,9 @@ export const ValidationErrorDetailsSchema = z.object({
 });
 
 /**
- * A schema of the response body that will be returned from the server if validation errors occur.
+ * A schema of the response data that will be returned from the server if validation errors occur.
  */
-export const ValidationErrorResponseSchema = z.record(
+export const ValidationErrorResponseDataSchema = z.record(
 	/**
 	 * Fields that contained validation errors.
 	 */

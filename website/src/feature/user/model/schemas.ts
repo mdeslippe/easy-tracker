@@ -2,7 +2,7 @@
 import { z } from 'zod';
 
 // Schemas.
-import { ValidationErrorResponseSchema } from '@website/common/model';
+import { ValidationErrorResponseDataSchema } from '@website/common/model';
 
 // Constants.
 import {
@@ -86,7 +86,7 @@ export const CreateUserRequestDataSchema = z.object({
  */
 export const CreateUserResponseDataSchema = z.union([
 	UserSchema,
-	ValidationErrorResponseSchema,
+	ValidationErrorResponseDataSchema,
 	z.undefined()
 ]);
 
@@ -183,7 +183,7 @@ export const UpdateUserRequestDataSchema = z.object({
  */
 export const UpdateUserResponseDataSchema = z.union([
 	UserSchema,
-	ValidationErrorResponseSchema,
+	ValidationErrorResponseDataSchema,
 	z.undefined()
 ]);
 
