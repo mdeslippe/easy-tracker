@@ -22,53 +22,18 @@ import {
  * A user schema.
  */
 export const UserSchema = z.object({
-	/**
-	 * The user's unique identifier.
-	 */
 	id: z.number().int().min(USER_ID_MIN_VALUE).max(USER_ID_MAX_VALUE),
-
-	/**
-	 * The date and time the user's account was created at.
-	 */
 	accountCreatedAt: z.coerce.date(),
-
-	/**
-	 * A url to the user's profile picture.
-	 */
 	profilePictureUrl: z
 		.string()
 		.url()
 		.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
 		.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH),
-
-	/**
-	 * The user's username.
-	 */
 	username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH),
-
-	/**
-	 * The user's email address.
-	 */
 	email: z.string().email().min(USER_EMAIL_MIN_LENGTH).max(USER_EMAIL_MAX_LENGTH),
-
-	/**
-	 * If the user has verified their email address.
-	 */
 	emailIsVerified: z.boolean(),
-
-	/**
-	 * If the user is required to reset their password before they can login.
-	 */
 	passwordResetIsRequired: z.boolean(),
-
-	/**
-	 * If the user's account has been locked.
-	 */
 	accountIsLocked: z.boolean(),
-
-	/**
-	 * If the user's account has been banned.
-	 */
 	accountIsBanned: z.boolean()
 });
 
