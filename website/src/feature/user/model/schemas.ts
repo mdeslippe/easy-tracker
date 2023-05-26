@@ -12,8 +12,8 @@ import {
 	USER_ID_MIN_VALUE,
 	USER_PASSWORD_MAX_LENGTH,
 	USER_PASSWORD_MIN_LENGTH,
-	USER_PROFILE_URL_MAX_LENGTH,
-	USER_PROFILE_URL_MIN_LENGTH,
+	USER_PROFILE_PICTURE_URL_MAX_LENGTH,
+	USER_PROFILE_PICTURE_URL_MIN_LENGTH,
 	USER_USERNAME_MAX_LENGTH,
 	USER_USERNAME_MIN_LENGTH
 } from '@website/feature/user/constant';
@@ -38,8 +38,8 @@ export const UserSchema = z.object({
 	profilePictureUrl: z
 		.string()
 		.url()
-		.min(USER_PROFILE_URL_MIN_LENGTH)
-		.max(USER_PROFILE_URL_MAX_LENGTH),
+		.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
+		.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH),
 
 	/**
 	 * The user's username.
@@ -109,8 +109,8 @@ export const GetUserByIDResponseDataSchema = z.union([
 		profilePictureUrl: z
 			.string()
 			.url()
-			.min(USER_PROFILE_URL_MIN_LENGTH)
-			.max(USER_PROFILE_URL_MAX_LENGTH),
+			.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
+			.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH),
 		username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH)
 	}),
 	z.undefined()
@@ -134,8 +134,8 @@ export const GetUserByUsernameResponseDataSchema = z.union([
 		profilePictureUrl: z
 			.string()
 			.url()
-			.min(USER_PROFILE_URL_MIN_LENGTH)
-			.max(USER_PROFILE_URL_MAX_LENGTH),
+			.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
+			.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH),
 		username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH)
 	}),
 	z.undefined()
@@ -170,8 +170,8 @@ export const UpdateUserRequestDataSchema = z.object({
 	profilePictureUrl: z
 		.string()
 		.url()
-		.min(USER_PROFILE_URL_MIN_LENGTH)
-		.max(USER_PROFILE_URL_MAX_LENGTH)
+		.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
+		.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH)
 		.optional(),
 	username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH).optional(),
 	password: z.string().min(USER_PASSWORD_MIN_LENGTH).max(USER_PASSWORD_MAX_LENGTH).optional(),
