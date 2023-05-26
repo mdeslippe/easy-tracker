@@ -12,7 +12,7 @@ import {
 } from '@website/feature/auth/model';
 
 // Utils.
-import { sendPostRequest } from '@website/utility/http';
+import { sendGetRequest, sendPostRequest } from '@website/utility/http';
 
 /**
  * Send a request to the server to authenticate a user.
@@ -64,7 +64,7 @@ export async function isAuthenticated(
 	data: AuthStatusRequestData
 ): Promise<AuthStatusResponseData> {
 	// Send the request.
-	const response = await sendPostRequest('/auth/logout', data, undefined);
+	const response = await sendGetRequest('/auth/status', data, undefined);
 
 	// Parse the response body and return the result.
 	return await AuthStatusResponseDataSchema.parseAsync(response.data);
