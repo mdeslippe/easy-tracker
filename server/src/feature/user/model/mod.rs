@@ -14,6 +14,7 @@ pub(crate) struct User {
     pub(crate) account_created_at: OffsetDateTime,
 
     /// The date and time the user's password was last reset at.
+    #[serde(skip_serializing)]
     #[serde(with = "time::serde::rfc3339")]
     pub(crate) password_reset_at: OffsetDateTime,
 
@@ -34,7 +35,7 @@ pub(crate) struct User {
     #[validate(non_control_character, email, length(min = 5, max = 256))]
     pub(crate) email: String,
 
-    /// If the user has verified their email address or not.
+    /// If the user has verified their email address.
     pub(crate) email_is_verified: bool,
 
     /// If the user is required to reset their password before they can login.
