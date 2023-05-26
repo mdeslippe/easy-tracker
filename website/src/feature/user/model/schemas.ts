@@ -38,7 +38,7 @@ export const UserSchema = z.object({
 });
 
 /**
- * A schema for request data for requests to create a user.
+ * A schema of the request data for requests to create a user.
  */
 export const CreateUserRequestDataSchema = z.object({
 	username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH),
@@ -47,7 +47,7 @@ export const CreateUserRequestDataSchema = z.object({
 });
 
 /**
- * A schema for response data for requests to create a user.
+ * A schema of the response data for requests to create a user.
  */
 export const CreateUserResponseDataSchema = z.union([
 	UserSchema,
@@ -56,7 +56,7 @@ export const CreateUserResponseDataSchema = z.union([
 ]);
 
 /**
- * A schema for request data for requests to get a user by id.
+ * A schema of the request data for requests to get a user by id.
  */
 export const GetUserByIDRequestDataSchema = z
 	.number()
@@ -65,7 +65,7 @@ export const GetUserByIDRequestDataSchema = z
 	.max(USER_ID_MAX_VALUE);
 
 /**
- * A schema for response data for requests to get a user by id.
+ * A schema of the response data for requests to get a user by id.
  */
 export const GetUserByIDResponseDataSchema = z.union([
 	z.object({
@@ -82,7 +82,7 @@ export const GetUserByIDResponseDataSchema = z.union([
 ]);
 
 /**
- * A schema for request data for requests to get a user by username.
+ * A schema of the request data for requests to get a user by username.
  */
 export const GetUserByUsernameRequestDataSchema = z
 	.string()
@@ -90,7 +90,7 @@ export const GetUserByUsernameRequestDataSchema = z
 	.max(USER_USERNAME_MAX_LENGTH);
 
 /**
- * A schema for response data for requests to get a user by username.
+ * A schema of the response data for requests to get a user by username.
  */
 export const GetUserByUsernameResponseDataSchema = z.union([
 	z.object({
@@ -107,7 +107,7 @@ export const GetUserByUsernameResponseDataSchema = z.union([
 ]);
 
 /**
- * A schema for request data for requests to get a user by email address.
+ * A schema of the request data for requests to get a user by email address.
  */
 export const GetUserByEmailRequestDataSchema = z
 	.string()
@@ -116,7 +116,7 @@ export const GetUserByEmailRequestDataSchema = z
 	.max(USER_EMAIL_MAX_LENGTH);
 
 /**
- * A schema for response data for requests to get a user by email address.
+ * A schema of the response data for requests to get a user by email address.
  */
 export const GetUserByEmailResponseDataSchema = z.union([
 	z.object({
@@ -129,7 +129,7 @@ export const GetUserByEmailResponseDataSchema = z.union([
 ]);
 
 /**
- * A schema for request data for requests to update a user.
+ * A schema of the request data for requests to update a user.
  */
 export const UpdateUserRequestDataSchema = z.object({
 	profilePictureUrl: z
@@ -144,7 +144,7 @@ export const UpdateUserRequestDataSchema = z.object({
 });
 
 /**
- * A schema for response data for requests to update a user.
+ * A schema of the response data for requests to update a user.
  */
 export const UpdateUserResponseDataSchema = z.union([
 	UserSchema,
@@ -153,11 +153,11 @@ export const UpdateUserResponseDataSchema = z.union([
 ]);
 
 /**
- * A schema for request data for requests to delete a user.
+ * A schema of the request data for requests to delete a user.
  */
 export const DeleteUserRequestDataSchema = z.undefined();
 
 /**
- * A schema for response data for requests to delete a user.
+ * A schema of the response data for requests to delete a user.
  */
 export const DeleteUserResponseDataSchema = z.undefined();
