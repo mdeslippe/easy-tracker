@@ -1,0 +1,24 @@
+/* Element Styling */
+:root {
+	/* Colors */
+	--primary-color: #1d212e;
+	--secondary-color: #ffffff;
+	--primary-accent: #f2994a;
+	--secondary-accent: #eac543;
+
+	/* Numbers */
+	--max-content-width: 1920px;
+	--nav-size: 64px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	min-height: 100vh;
+}
+
+body {
+	min-height: 100vh;
+}
