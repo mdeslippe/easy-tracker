@@ -33,6 +33,10 @@ import {
  *
  * @param data The request data.
  * @returns A promise to the create user response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
  */
 export async function createUser(data: CreateUserRequestData): Promise<CreateUserResponseData> {
 	// Send the request.
@@ -48,6 +52,10 @@ export async function createUser(data: CreateUserRequestData): Promise<CreateUse
  * @param data The request data.
  * @param signal A signal that can be used to abort the request.
  * @returns A promise to the get user by id response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
  */
 export async function getUserByID(
 	data: GetUserByIDRequestData,
@@ -66,6 +74,10 @@ export async function getUserByID(
  * @param data The request data.
  * @param signal A signal that can be used to abort the request.
  * @returns A promise to the get user by username response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
  */
 export async function getUserByUsername(
 	data: GetUserByUsernameRequestData,
@@ -84,6 +96,10 @@ export async function getUserByUsername(
  * @param data The request data.
  * @param signal A signal that can be used to abort the request.
  * @returns A promise to the get user by email response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
  */
 export async function getUserByEmail(
 	data: GetUserByEmailRequestData,
@@ -101,6 +117,10 @@ export async function getUserByEmail(
  *
  * @param data The request data.
  * @returns A promise to the update user response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
  */
 export async function updateUser(data: UpdateUserRequestData): Promise<UpdateUserResponseData> {
 	// Send the request.
@@ -115,6 +135,10 @@ export async function updateUser(data: UpdateUserRequestData): Promise<UpdateUse
  *
  * @param data The request data.
  * @returns A promise to the delete user response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
  */
 export async function deleteUser(data: DeleteUserRequestData): Promise<DeleteUserResponseData> {
 	// Send the request.
