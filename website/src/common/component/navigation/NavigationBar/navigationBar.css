@@ -1,0 +1,6 @@
+/* Class Styling */
+.top-nav {
+	background-color: var(--primary-color);
+	min-height: var(--nav-size);
+	width: 100%;
+}

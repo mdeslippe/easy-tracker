@@ -10,6 +10,7 @@ import App from '@website/App';
 // Test cases for rendering the main application component.
 describe('Main application component rendering', () => {
 	it('Renders the main application component without crashing', () => {
+		// Render the component.
 		render(<App />);
 	});
 });

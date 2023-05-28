@@ -5,6 +5,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+// Pages.
+import { LandingPage } from '@website/page';
+
 // Create a react query client.
 const queryClient = new QueryClient();
 
@@ -18,7 +21,10 @@ function App(): JSX.Element {
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
 				<Routes>
-					<Route path='/' />
+					<Route
+						path='/'
+						element={<LandingPage />}
+					/>
 				</Routes>
 			</BrowserRouter>
 			<ReactQueryDevtools initialIsOpen={false} />
