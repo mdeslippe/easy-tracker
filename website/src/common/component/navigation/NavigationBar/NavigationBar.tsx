@@ -1,6 +1,9 @@
 // React.
 import { ComponentProps } from 'react';
 
+// Custom.
+import { MaxWidthContainer } from '../../layout';
+
 // CSS.
 import '@website/common/component/navigation/NavigationBar/navigationBar.css';
 
@@ -17,11 +20,13 @@ export interface NavigationBarProps extends ComponentProps<'nav'> {}
  */
 export function NavigationBar({ className, children, ...props }: NavigationBarProps): JSX.Element {
 	return (
-		<nav
-			{...props}
-			className={className ? `top-nav ${className}` : 'top-nav'}
-		>
-			{children}
-		</nav>
+		<MaxWidthContainer className='top-nav-container'>
+			<nav
+				{...props}
+				className={className ? `top-nav ${className}` : 'top-nav'}
+			>
+				{children}
+			</nav>
+		</MaxWidthContainer>
 	);
 }
