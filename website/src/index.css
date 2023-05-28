@@ -1,6 +1,13 @@
+/* Fonts */
+@font-face {
+	font-family: Roboto-Regular;
+	src: url('fonts/Roboto-Regular.ttf');
+}
+
 /* Element Styling */
 * {
 	box-sizing: border-box;
+	font-family: 'Roboto-Regular', Arial, Helvetica, sans-serif !important;
 }
 
 :root {
