@@ -1,0 +1,5 @@
+/* Class Styling */
+.nav-group {
+	display: flex;
+	min-height: var(--nav-size);
+}

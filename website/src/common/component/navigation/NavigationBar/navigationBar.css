@@ -1,6 +1,10 @@
 /* Class Styling */
 .top-nav {
+	align-items: center;
 	background-color: var(--primary-color);
+	display: flex;
+	justify-content: space-between;
 	min-height: var(--nav-size);
+	padding: 0px 8px;
 	width: 100%;
 }
