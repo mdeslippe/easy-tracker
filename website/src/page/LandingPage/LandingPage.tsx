@@ -53,30 +53,28 @@ function Header(): JSX.Element {
 function Main(): JSX.Element {
 	return (
 		<main>
-			<MaxWidthContainer id='hero-container'>
-				<section id='hero'>
-					<h1>Take Back Control</h1>
-					<p>
-						In an ever-increasingly digital world, detecting and mitigating service
-						disruptions has become more important than ever before. With Easy Tracker,
-						you can be confident that your digital services are fully operational.
-					</p>
-					<div>
-						<a
-							href='signup'
-							className='large-button primary-button'
-						>
-							Get Started
-						</a>
-						<a
-							href='#about'
-							className='large-button secondary-button'
-						>
-							Learn More
-						</a>
-					</div>
-				</section>
-			</MaxWidthContainer>
+			<section id='hero'>
+				<h1>Take Back Control</h1>
+				<p>
+					In an ever-increasingly digital world, detecting and mitigating service
+					disruptions has become more important than ever before. With Easy Tracker, you
+					can be confident that your digital services are fully operational.
+				</p>
+				<div>
+					<a
+						href='signup'
+						className='large-button primary-button'
+					>
+						Get Started
+					</a>
+					<a
+						href='#about'
+						className='large-button secondary-button'
+					>
+						Learn More
+					</a>
+				</div>
+			</section>
 		</main>
 	);
 }
