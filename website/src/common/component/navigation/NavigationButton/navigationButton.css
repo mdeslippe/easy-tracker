@@ -1,0 +1,18 @@
+/* Class Styling */
+.nav-button {
+	background: var(--primary-color);
+}
+
+.nav-button:hover {
+	filter: brightness(175%);
+}
+
+.nav-button a {
+	align-items: center;
+	color: var(--secondary-color);
+	display: flex;
+	justify-content: center;
+	min-height: 100%;
+	padding: 8px;
+	text-decoration: none;
+}

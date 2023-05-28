@@ -22,7 +22,7 @@ describe('Navigation Bar component rendering', () => {
 			</NavigationBar>
 		);
 
-		// Make sure the children were rendered.
+		// Make sure the child was rendered.
 		expect(result.getByText('Page 1')).toBeDefined();
 	});
 
