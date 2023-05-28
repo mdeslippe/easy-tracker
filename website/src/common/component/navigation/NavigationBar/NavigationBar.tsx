@@ -2,7 +2,7 @@
 import { ComponentProps } from 'react';
 
 // Custom.
-import { MaxWidthContainer } from '../../layout';
+import { MaxWidthContainer } from '@website/common/component/layout';
 
 // CSS.
 import '@website/common/component/navigation/NavigationBar/navigationBar.css';
