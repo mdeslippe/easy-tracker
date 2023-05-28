@@ -2,7 +2,6 @@
 import { Fragment } from 'react';
 
 // Custom.
-import { MaxWidthContainer } from '@website/common/component/layout';
 import {
 	NavigationBar,
 	NavigationButton,
