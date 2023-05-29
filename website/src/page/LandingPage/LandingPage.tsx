@@ -61,7 +61,7 @@ function Main(): JSX.Element {
 				</p>
 				<div>
 					<a
-						href='signup'
+						href='/signup'
 						className='large-button primary-button'
 					>
 						Get Started

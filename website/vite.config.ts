@@ -28,8 +28,6 @@ export default defineConfig({
 		environment: 'jsdom'
 	},
 	resolve: {
-		alias: [
-			{ find: '@website', replacement: path.resolve(__dirname, 'src') }
-		]
+		alias: [{ find: '@website', replacement: path.resolve(__dirname, 'src') }]
 	}
 });
