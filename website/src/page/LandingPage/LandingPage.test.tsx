@@ -5,7 +5,7 @@ import { describe, it } from 'vitest';
 import { render } from '@testing-library/react';
 
 // Custom.
-import { LandingPage } from '@website/page';
+import { LandingPage } from '@website/page/LandingPage/LandingPage';
 
 // Test cases for rendering the landing page component.
 describe('Landing Page component rendering', () => {
