@@ -2,9 +2,9 @@
 import { Fragment } from 'react';
 
 /**
- * A signup page component.
+ * A sign up page component.
  *
- * @returns The signup page.
+ * @returns The sign up page.
  */
 export function SignUpPage(): JSX.Element {
 	return <Fragment></Fragment>;
