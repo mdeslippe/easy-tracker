@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Pages.
-import { LandingPage, SignUpPage } from '@website/page';
+import { LandingPage, LoginPage, SignUpPage } from '@website/page';
 
 // Create a react query client.
 const queryClient = new QueryClient();
@@ -28,6 +28,10 @@ function App(): JSX.Element {
 					<Route
 						path='/signup'
 						element={<SignUpPage />}
+					/>
+					<Route
+						path='/login'
+						element={<LoginPage />}
 					/>
 				</Routes>
 			</BrowserRouter>
