@@ -4,7 +4,7 @@ import { describe, it } from 'vitest';
 // React testing library.
 import { render } from '@testing-library/react';
 
-// Custom.
+// Pages.
 import { LandingPage } from '@website/page/LandingPage/LandingPage';
 
 // Test cases for rendering the landing page component.

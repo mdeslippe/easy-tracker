@@ -4,7 +4,7 @@ import { describe, it } from 'vitest';
 // React testing library.
 import { render } from '@testing-library/react';
 
-// Custom.
+// Pages.
 import { SignUpPage } from '@website/page/SignUpPage/SignUpPage';
 
 // Test cases for rendering the sign up page.
