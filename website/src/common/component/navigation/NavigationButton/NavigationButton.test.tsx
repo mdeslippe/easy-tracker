@@ -1,6 +1,9 @@
 // Vitest.
 import { describe, expect, it } from 'vitest';
 
+// React router.
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 // React testing library.
 import { render } from '@testing-library/react';
 
@@ -11,12 +14,30 @@ import { NavigationButton } from '@website/common/component/navigation/Navigatio
 describe('Navigation Button component rendering', () => {
 	it('Renders an empty navigation button component without crashing', () => {
 		// Render the component.
-		render(<NavigationButton href='/' />);
+		render(
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path='/'
+						element={<NavigationButton to='/' />}
+					/>
+				</Routes>
+			</BrowserRouter>
+		);
 	});
 
 	it('Renders a single child inside of the navigation button', () => {
 		// Render the component.
-		const result = render(<NavigationButton href='/'>Home</NavigationButton>);
+		const result = render(
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path='/'
+						element={<NavigationButton to='/'>Home</NavigationButton>}
+					/>
+				</Routes>
+			</BrowserRouter>
+		);
 
 		// Make sure the child was rendered.
 		expect(result.getByText('Home')).toBeDefined();
@@ -25,13 +46,22 @@ describe('Navigation Button component rendering', () => {
 	it('Renders multiple children inside of the navigation button', () => {
 		// Render the component.
 		const result = render(
-			<NavigationButton href='/'>
-				<img
-					src='image.png'
-					alt='Home Icon'
-				/>
-				<span>Home</span>
-			</NavigationButton>
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path='/'
+						element={
+							<NavigationButton to='/'>
+								<img
+									src='image.png'
+									alt='Home Icon'
+								/>
+								<span>Home</span>
+							</NavigationButton>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
 		);
 
 		// Make sure the children were rendered.
