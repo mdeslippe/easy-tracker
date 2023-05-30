@@ -33,6 +33,8 @@ There are two scripts that are related to testing:
 
 ## Dependencies
 
+**@hookform/resolvers** - External validation library support for React Hook Form.
+<br />
 **@tanstack/react-query** - An asynchronous state management solution for JavaScript.
 <br />
 **@tanstack/react-query-devtools** - Development tools for React Query (_not included in the production bundle_).
@@ -42,6 +44,8 @@ There are two scripts that are related to testing:
 **react** - A JavaScript library for creating user interfaces.
 <br />
 **react-dom** - A React package for working with the DOM.
+<br />
+**react-hook-form** - A performant, flexible and extensible form library with easy-to-use validation.
 <br />
 **react-router-dom** - A fully-featured routing library for the React JavaScript library.
 <br />
