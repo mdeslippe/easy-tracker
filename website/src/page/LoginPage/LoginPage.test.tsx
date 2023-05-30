@@ -18,7 +18,7 @@ describe('Login Page component rendering', () => {
 			<BrowserRouter>
 				<Routes>
 					<Route
-						path='/login'
+						path='/'
 						element={<LoginPage />}
 					/>
 				</Routes>
