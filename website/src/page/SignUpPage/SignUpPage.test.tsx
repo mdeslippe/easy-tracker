@@ -1,6 +1,9 @@
 // Vitest.
 import { describe, it } from 'vitest';
 
+// React router.
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 // React testing library.
 import { render } from '@testing-library/react';
 
@@ -11,6 +14,15 @@ import { SignUpPage } from '@website/page/SignUpPage/SignUpPage';
 describe('Sign Up Page component rendering', () => {
 	it('Renders the sign up page component without crashing', () => {
 		// Render the component.
-		render(<SignUpPage />);
+		render(
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path='/signup'
+						element={<SignUpPage />}
+					/>
+				</Routes>
+			</BrowserRouter>
+		);
 	});
 });

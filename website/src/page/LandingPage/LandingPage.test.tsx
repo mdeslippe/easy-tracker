@@ -1,6 +1,9 @@
 // Vitest.
 import { describe, it } from 'vitest';
 
+// React router.
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 // React testing library.
 import { render } from '@testing-library/react';
 
@@ -11,6 +14,15 @@ import { LandingPage } from '@website/page/LandingPage/LandingPage';
 describe('Landing Page component rendering', () => {
 	it('Renders the landing page component without crashing', () => {
 		// Render the component.
-		render(<LandingPage />);
+		render(
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path='/'
+						element={<LandingPage />}
+					/>
+				</Routes>
+			</BrowserRouter>
+		);
 	});
 });

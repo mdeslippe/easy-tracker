@@ -1,5 +1,5 @@
-// React.
-import { ComponentProps } from 'react';
+// React router.
+import { NavLink, NavLinkProps } from 'react-router-dom';
 
 // CSS.
 import '@website/common/component/navigation/NavigationButton/navigationButton.css';
@@ -7,7 +7,7 @@ import '@website/common/component/navigation/NavigationButton/navigationButton.c
 /**
  * Properties for the {@link NavigationButton} component.
  */
-export interface NavigationButtonProps extends ComponentProps<'a'> {}
+export interface NavigationButtonProps extends NavLinkProps {}
 
 /**
  * A navigation button component.
@@ -18,7 +18,7 @@ export interface NavigationButtonProps extends ComponentProps<'a'> {}
 export function NavigationButton({ children, ...props }: NavigationButtonProps): JSX.Element {
 	return (
 		<li className='nav-button'>
-			<a {...props}>{children}</a>
+			<NavLink {...props}>{children}</NavLink>
 		</li>
 	);
 }

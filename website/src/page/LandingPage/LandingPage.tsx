@@ -1,6 +1,9 @@
 // React.
 import { Fragment } from 'react';
 
+// React router.
+import { Link } from 'react-router-dom';
+
 // Custom.
 import {
 	NavigationBar,
@@ -34,11 +37,11 @@ function Header(): JSX.Element {
 	return (
 		<NavigationBar>
 			<NavigationGroup>
-				<NavigationButton href='/'>Easy Tracker</NavigationButton>
+				<NavigationButton to='/'>Easy Tracker</NavigationButton>
 			</NavigationGroup>
 			<NavigationGroup>
-				<NavigationButton href='/login'>Login</NavigationButton>
-				<NavigationButton href='/signup'>Sign Up</NavigationButton>
+				<NavigationButton to='/login'>Login</NavigationButton>
+				<NavigationButton to='/signup'>Sign Up</NavigationButton>
 			</NavigationGroup>
 		</NavigationBar>
 	);
@@ -60,18 +63,18 @@ function Main(): JSX.Element {
 					can be confident that your digital services are fully operational.
 				</p>
 				<div>
-					<a
-						href='/signup'
+					<Link
+						to='/signup'
 						className='large-button primary-button'
 					>
 						Get Started
-					</a>
-					<a
-						href='#about'
+					</Link>
+					<Link
+						to='#about'
 						className='large-button secondary-button'
 					>
 						Learn More
-					</a>
+					</Link>
 				</div>
 			</section>
 		</main>
