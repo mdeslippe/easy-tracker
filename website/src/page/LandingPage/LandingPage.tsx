@@ -37,11 +37,11 @@ function Header(): JSX.Element {
 	return (
 		<NavigationBar>
 			<NavigationGroup>
-				<NavigationButton href='/'>Easy Tracker</NavigationButton>
+				<NavigationButton to='/'>Easy Tracker</NavigationButton>
 			</NavigationGroup>
 			<NavigationGroup>
-				<NavigationButton href='/login'>Login</NavigationButton>
-				<NavigationButton href='/signup'>Sign Up</NavigationButton>
+				<NavigationButton to='/login'>Login</NavigationButton>
+				<NavigationButton to='/signup'>Sign Up</NavigationButton>
 			</NavigationGroup>
 		</NavigationBar>
 	);
