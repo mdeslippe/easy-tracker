@@ -18,7 +18,7 @@ describe('Sign Up Page component rendering', () => {
 			<BrowserRouter>
 				<Routes>
 					<Route
-						path='/signup'
+						path='/'
 						element={<SignUpPage />}
 					/>
 				</Routes>

@@ -5,11 +5,7 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 // Custom.
-import {
-	NavigationBar,
-	NavigationButton,
-	NavigationGroup
-} from '@website/common/component/navigation';
+import { TopNavigationBar } from '@website/common/component/shared';
 
 // CSS.
 import '@website/page/LandingPage/landingPage.css';
@@ -22,28 +18,9 @@ import '@website/page/LandingPage/landingPage.css';
 export function LandingPage(): JSX.Element {
 	return (
 		<Fragment>
-			<Header />
+			<TopNavigationBar />
 			<Main />
 		</Fragment>
-	);
-}
-
-/**
- * The header for the landing page.
- *
- * @returns The header for the landing page.
- */
-function Header(): JSX.Element {
-	return (
-		<NavigationBar>
-			<NavigationGroup>
-				<NavigationButton to='/'>Easy Tracker</NavigationButton>
-			</NavigationGroup>
-			<NavigationGroup>
-				<NavigationButton to='/login'>Login</NavigationButton>
-				<NavigationButton to='/signup'>Sign Up</NavigationButton>
-			</NavigationGroup>
-		</NavigationBar>
 	);
 }
 
@@ -70,7 +47,7 @@ function Main(): JSX.Element {
 						Get Started
 					</Link>
 					<Link
-						to='#about'
+						to='#information'
 						className='large-button secondary-button'
 					>
 						Learn More
