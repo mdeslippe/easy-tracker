@@ -25,6 +25,7 @@
 	--secondary-accent: #eac543;
 	--tertiary-accent: #cccccc;
 	--error-color: #ff0000;
+	--required-color: #ff0000;
 
 	/* Numbers */
 	--max-content-width: 1920px;
@@ -64,4 +65,9 @@ body {
 
 .secondary-button {
 	background: var(--primary-color);
+}
+
+.required::after {
+	content: '*';
+	color: var(--required-color);
 }
