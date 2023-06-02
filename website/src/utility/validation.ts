@@ -194,9 +194,9 @@ export function convertValidationErrorToMessage(
 			return createInvalidEmailErrorMessage();
 		case ValidationErrorType.INVALID_URL:
 			return createInvalidUrlErrorMessage();
-		case ValidationErrorType.CONTROL_CHARACTER:
+		case ValidationErrorType.UNEXPECTED_CONTROL_CHARACTER:
 			return createInvalidControlCharacterErrorMessage();
-		case ValidationErrorType.LENGTH:
+		case ValidationErrorType.INVALID_LENGTH:
 			if (error.params.min !== undefined && error.params.max !== undefined)
 				return createInvalidLengthRangeErrorMessage(
 					field,
