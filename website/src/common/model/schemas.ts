@@ -13,7 +13,7 @@ export const ValidationErrorDetailsSchema = z.object({
 	/**
 	 * An optional error message that can provide additional context.
 	 */
-	message: z.string().optional(),
+	message: z.string().nullable().optional(),
 
 	/**
 	 * Validation parameters that must be satisfied.

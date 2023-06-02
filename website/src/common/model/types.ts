@@ -10,7 +10,7 @@ export type ValidationErrorDetails = {
 	/**
 	 * An optional error message that can provide additional context.
 	 */
-	message?: string;
+	message?: string | null;
 
 	/**
 	 * Validation parameters that must be satisfied.
