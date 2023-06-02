@@ -18,6 +18,15 @@ import {
 	USER_USERNAME_MIN_LENGTH
 } from '@website/feature/user/constant';
 
+// Utils.
+import {
+	createInvalidEmailErrorMessage,
+	createInvalidMaximumLengthErrorMessage,
+	createInvalidMaximumNumberErrorMessage,
+	createInvalidMinimumLengthErrorMessage,
+	createInvalidMinimumNumberErrorMessage
+} from '@website/utility/validation';
+
 /**
  * A user schema.
  */
@@ -41,9 +50,31 @@ export const UserSchema = z.object({
  * A schema of the request data for requests to create a user.
  */
 export const CreateUserRequestDataSchema = z.object({
-	username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH),
-	password: z.string().min(USER_PASSWORD_MIN_LENGTH).max(USER_PASSWORD_MAX_LENGTH),
-	email: z.string().email().min(USER_EMAIL_MIN_LENGTH).max(USER_EMAIL_MAX_LENGTH)
+	username: z
+		.string()
+		.min(USER_USERNAME_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('username', USER_USERNAME_MIN_LENGTH)
+		})
+		.max(USER_USERNAME_MAX_LENGTH, {
+			message: createInvalidMaximumLengthErrorMessage('username', USER_USERNAME_MAX_LENGTH)
+		}),
+	password: z
+		.string()
+		.min(USER_PASSWORD_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MIN_LENGTH)
+		})
+		.max(USER_PASSWORD_MAX_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MAX_LENGTH)
+		}),
+	email: z
+		.string()
+		.email({ message: createInvalidEmailErrorMessage() })
+		.min(USER_EMAIL_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MIN_LENGTH)
+		})
+		.max(USER_EMAIL_MAX_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
+		})
 });
 
 /**
@@ -61,8 +92,12 @@ export const CreateUserResponseDataSchema = z.union([
 export const GetUserByIDRequestDataSchema = z
 	.number()
 	.int()
-	.min(USER_ID_MIN_VALUE)
-	.max(USER_ID_MAX_VALUE);
+	.min(USER_ID_MIN_VALUE, {
+		message: createInvalidMinimumNumberErrorMessage('id', USER_ID_MIN_VALUE)
+	})
+	.max(USER_ID_MAX_VALUE, {
+		message: createInvalidMaximumNumberErrorMessage('id', USER_ID_MAX_VALUE)
+	});
 
 /**
  * A schema of the response data for requests to get a user by id.
@@ -86,8 +121,12 @@ export const GetUserByIDResponseDataSchema = z.union([
  */
 export const GetUserByUsernameRequestDataSchema = z
 	.string()
-	.min(USER_USERNAME_MIN_LENGTH)
-	.max(USER_USERNAME_MAX_LENGTH);
+	.min(USER_USERNAME_MIN_LENGTH, {
+		message: createInvalidMinimumLengthErrorMessage('username', USER_USERNAME_MIN_LENGTH)
+	})
+	.max(USER_USERNAME_MAX_LENGTH, {
+		message: createInvalidMaximumLengthErrorMessage('username', USER_USERNAME_MAX_LENGTH)
+	});
 
 /**
  * A schema of the response data for requests to get a user by username.
@@ -111,9 +150,13 @@ export const GetUserByUsernameResponseDataSchema = z.union([
  */
 export const GetUserByEmailRequestDataSchema = z
 	.string()
-	.email()
-	.min(USER_EMAIL_MIN_LENGTH)
-	.max(USER_EMAIL_MAX_LENGTH);
+	.email({ message: createInvalidEmailErrorMessage() })
+	.min(USER_EMAIL_MIN_LENGTH, {
+		message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MIN_LENGTH)
+	})
+	.max(USER_EMAIL_MAX_LENGTH, {
+		message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
+	});
 
 /**
  * A schema of the response data for requests to get a user by email address.
@@ -138,9 +181,34 @@ export const UpdateUserRequestDataSchema = z.object({
 		.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
 		.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH)
 		.optional(),
-	username: z.string().min(USER_USERNAME_MIN_LENGTH).max(USER_USERNAME_MAX_LENGTH).optional(),
-	password: z.string().min(USER_PASSWORD_MIN_LENGTH).max(USER_PASSWORD_MAX_LENGTH).optional(),
-	email: z.string().email().min(USER_EMAIL_MIN_LENGTH).max(USER_EMAIL_MAX_LENGTH).optional()
+	username: z
+		.string()
+		.min(USER_USERNAME_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('username', USER_USERNAME_MIN_LENGTH)
+		})
+		.max(USER_USERNAME_MAX_LENGTH, {
+			message: createInvalidMaximumLengthErrorMessage('username', USER_USERNAME_MAX_LENGTH)
+		})
+		.optional(),
+	password: z
+		.string()
+		.min(USER_PASSWORD_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MIN_LENGTH)
+		})
+		.max(USER_PASSWORD_MAX_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MAX_LENGTH)
+		})
+		.optional(),
+	email: z
+		.string()
+		.email({ message: createInvalidEmailErrorMessage() })
+		.min(USER_EMAIL_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MIN_LENGTH)
+		})
+		.max(USER_EMAIL_MAX_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
+		})
+		.optional()
 });
 
 /**
