@@ -1,5 +1,20 @@
 // Axios.
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
+
+/**
+ * A simple http response type.
+ */
+export type HttpResponse<T> = {
+	/**
+	 * The http response data.
+	 */
+	data: T;
+
+	/**
+	 * The http response status.
+	 */
+	status: number;
+};
 
 /**
  * An axios instance that can be used to send requests to the API.
@@ -20,7 +35,7 @@ export async function sendGetRequest(
 	path: string,
 	params: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
+): Promise<HttpResponse<unknown>> {
 	// Send the request.
 	const response = await API.get(path, {
 		params,
@@ -46,7 +61,7 @@ export async function sendPostRequest(
 	path: string,
 	body: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
+): Promise<HttpResponse<unknown>> {
 	// Send the request.
 	const response = await API.post(path, body, {
 		signal,
@@ -74,7 +89,7 @@ export async function sendPatchRequest(
 	path: string,
 	body: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
+): Promise<HttpResponse<unknown>> {
 	// Send the request.
 	const response = await API.patch(path, body, {
 		signal,
@@ -102,7 +117,7 @@ export async function sendDeleteRequest(
 	path: string,
 	params: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
+): Promise<HttpResponse<unknown>> {
 	// Send the request.
 	const response = await API.delete(path, {
 		params,
