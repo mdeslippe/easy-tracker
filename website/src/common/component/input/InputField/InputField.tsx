@@ -40,8 +40,6 @@ function InputFieldWithRef(
 	{ label, name, error, required, ...props }: InputFieldProps,
 	ref: React.ForwardedRef<HTMLInputElement>
 ): JSX.Element {
-	const hasError: boolean = typeof error === 'string';
-
 	return (
 		<div className='form-input-container'>
 			<label
@@ -57,17 +55,9 @@ function InputFieldWithRef(
 					name={name}
 					{...props}
 				/>
-				<span
-					aria-hidden={true}
-					className='input-underline'
-				/>
+				<span className='input-underline' />
 			</div>
-			<span
-				aria-hidden={!hasError}
-				className='form-error-message'
-			>
-				{error}
-			</span>
+			<span className='form-error-message'>{error}</span>
 		</div>
 	);
 }
