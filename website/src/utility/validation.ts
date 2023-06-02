@@ -1,6 +1,9 @@
 // Models.
 import { ValidationErrorDetails } from '@website/common/model';
 
+// Enumerations.
+import { ValidationErrorType } from '@website/common/enumeration';
+
 // Utils.
 import { capitalizeFirstLetter } from '@website/utility/string';
 
@@ -183,17 +186,17 @@ export function convertValidationErrorToMessage(
 	error: ValidationErrorDetails
 ): string {
 	switch (error.code) {
-		case 'required':
+		case ValidationErrorType.REQUIRED:
 			return createRequiredErrorMessage(field);
-		case 'unique':
+		case ValidationErrorType.UNIQUE:
 			return createMustBeUniqueErrorMessage(field);
-		case 'email':
+		case ValidationErrorType.INVALID_EMAIL:
 			return createInvalidEmailErrorMessage();
-		case 'url':
+		case ValidationErrorType.INVALID_URL:
 			return createInvalidUrlErrorMessage();
-		case 'non_control_character':
+		case ValidationErrorType.CONTROL_CHARACTER:
 			return createInvalidControlCharacterErrorMessage();
-		case 'length':
+		case ValidationErrorType.LENGTH:
 			if (error.params.min !== undefined && error.params.max !== undefined)
 				return createInvalidLengthRangeErrorMessage(
 					field,
