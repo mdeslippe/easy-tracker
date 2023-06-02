@@ -64,7 +64,7 @@ export const CreateUserRequestDataSchema = z.object({
 			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MIN_LENGTH)
 		})
 		.max(USER_PASSWORD_MAX_LENGTH, {
-			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MAX_LENGTH)
+			message: createInvalidMaximumLengthErrorMessage('password', USER_PASSWORD_MAX_LENGTH)
 		}),
 	email: z
 		.string()
@@ -73,7 +73,7 @@ export const CreateUserRequestDataSchema = z.object({
 			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MIN_LENGTH)
 		})
 		.max(USER_EMAIL_MAX_LENGTH, {
-			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
+			message: createInvalidMaximumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
 		})
 });
 
@@ -155,7 +155,7 @@ export const GetUserByEmailRequestDataSchema = z
 		message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MIN_LENGTH)
 	})
 	.max(USER_EMAIL_MAX_LENGTH, {
-		message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
+		message: createInvalidMaximumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
 	});
 
 /**
@@ -196,7 +196,7 @@ export const UpdateUserRequestDataSchema = z.object({
 			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MIN_LENGTH)
 		})
 		.max(USER_PASSWORD_MAX_LENGTH, {
-			message: createInvalidMinimumLengthErrorMessage('password', USER_PASSWORD_MAX_LENGTH)
+			message: createInvalidMaximumLengthErrorMessage('password', USER_PASSWORD_MAX_LENGTH)
 		})
 		.optional(),
 	email: z
@@ -206,7 +206,7 @@ export const UpdateUserRequestDataSchema = z.object({
 			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MIN_LENGTH)
 		})
 		.max(USER_EMAIL_MAX_LENGTH, {
-			message: createInvalidMinimumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
+			message: createInvalidMaximumLengthErrorMessage('email', USER_EMAIL_MAX_LENGTH)
 		})
 		.optional()
 });
