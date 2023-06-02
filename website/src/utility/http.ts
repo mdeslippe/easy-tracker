@@ -1,5 +1,5 @@
 // Axios.
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 /**
  * A simple http response type.
@@ -36,12 +36,22 @@ export async function sendGetRequest(
 	params: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
 ): Promise<HttpResponse<unknown>> {
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
 	// Send the request.
-	const response = await API.get(path, {
-		params,
-		signal,
-		withCredentials: true
-	});
+	try {
+		response = await API.get(path, {
+			params,
+			signal,
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
@@ -62,14 +72,24 @@ export async function sendPostRequest(
 	body: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
 ): Promise<HttpResponse<unknown>> {
-	// Send the request.
-	const response = await API.post(path, body, {
-		signal,
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		withCredentials: true
-	});
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.post(path, body, {
+			signal,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
@@ -90,14 +110,24 @@ export async function sendPatchRequest(
 	body: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
 ): Promise<HttpResponse<unknown>> {
-	// Send the request.
-	const response = await API.patch(path, body, {
-		signal,
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		withCredentials: true
-	});
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.patch(path, body, {
+			signal,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
@@ -118,12 +148,22 @@ export async function sendDeleteRequest(
 	params: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
 ): Promise<HttpResponse<unknown>> {
-	// Send the request.
-	const response = await API.delete(path, {
-		params,
-		signal,
-		withCredentials: true
-	});
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.delete(path, {
+			params,
+			signal,
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
