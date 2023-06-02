@@ -1,20 +1,20 @@
 /* Class Styles */
-.form-input-container {
+.input-container {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	gap: 4px;
 }
 
-.form-input-container > * {
+.input-container > * {
 	width: 100%;
 }
 
-.form-input-container .input-box {
+.input-container .input-box {
 	position: relative;
 }
 
-.form-input-container input {
+.input-container input {
 	color: var(--primary-color);
 	font-size: 0.9rem;
 	background-color: transparent;
@@ -23,7 +23,7 @@
 	border-bottom: 3px solid var(--tertiary-accent);
 }
 
-.form-input-container .input-underline {
+.input-container .input-underline {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -33,15 +33,15 @@
 	transition: 0.25s linear;
 }
 
-.form-input-container input:focus {
+.input-container input:focus {
 	outline: none;
 }
 
-.form-input-container input:focus ~ .input-underline {
+.input-container input:focus ~ .input-underline {
 	width: 100%;
 }
 
-.form-error-message {
+.input-error-message {
 	color: var(--error-color);
 	font-size: 0.8rem;
 	min-height: 0.8rem;

@@ -41,7 +41,7 @@ function InputFieldWithRef(
 	ref: React.ForwardedRef<HTMLInputElement>
 ): JSX.Element {
 	return (
-		<div className='form-input-container'>
+		<div className='input-container'>
 			<label
 				className={required ? 'required' : undefined}
 				htmlFor={name}
@@ -50,14 +50,14 @@ function InputFieldWithRef(
 			</label>
 			<div className='input-box'>
 				<input
-					id={name}
 					ref={ref}
+					id={name}
 					name={name}
 					{...props}
 				/>
 				<span className='input-underline' />
 			</div>
-			<span className='form-error-message'>{error}</span>
+			<span className='input-error-message'>{error}</span>
 		</div>
 	);
 }
