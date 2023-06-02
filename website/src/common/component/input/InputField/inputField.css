@@ -1,0 +1,48 @@
+/* Class Styles */
+.input-container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 4px;
+}
+
+.input-container > * {
+	width: 100%;
+}
+
+.input-container .input-box {
+	position: relative;
+}
+
+.input-container input {
+	color: var(--primary-color);
+	font-size: 0.9rem;
+	background-color: transparent;
+	width: 100%;
+	border: none;
+	border-bottom: 3px solid var(--tertiary-accent);
+}
+
+.input-container .input-underline {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: var(--primary-accent);
+	width: 0%;
+	height: 3px;
+	transition: 0.25s linear;
+}
+
+.input-container input:focus {
+	outline: none;
+}
+
+.input-container input:focus ~ .input-underline {
+	width: 100%;
+}
+
+.input-error-message {
+	color: var(--error-color);
+	font-size: 0.8rem;
+	min-height: 0.8rem;
+}
