@@ -3,6 +3,9 @@ import {
 	AuthStatusRequestData,
 	AuthStatusResponseData,
 	AuthStatusResponseDataSchema,
+	GetUserThatIsCurrentlyAuthenticatedRequestData,
+	GetUserThatIsCurrentlyAuthenticatedResponseData,
+	GetUserThatIsCurrentlyAuthenticatedResponseDataSchema,
 	LoginRequestData,
 	LoginResponseData,
 	LoginResponseDataSchema,
@@ -76,5 +79,30 @@ export async function isAuthenticated(
 	return {
 		status: response.status,
 		data: await AuthStatusResponseDataSchema.parseAsync(response.data)
+	};
+}
+
+/**
+ * Send a request to the server to get information about the user that is currently authenticated.
+ *
+ * @param data The request data.
+ * @param signal A signal that can be used to abort the request.
+ * @returns A promise to the user that is currently authenticated response.
+ * @throws This function will throw an exception if:
+ * - The server could not be reached.
+ * - The servers sends an unsuccessful response.
+ * - The response data could not be parsed.
+ */
+export async function getUserThatIsCurrentlyAuthenticated(
+	data: GetUserThatIsCurrentlyAuthenticatedRequestData,
+	signal: AbortSignal | undefined = undefined
+): Promise<HttpResponse<GetUserThatIsCurrentlyAuthenticatedResponseData>> {
+	// Send the request.
+	const response: HttpResponse<unknown> = await sendGetRequest('/auth/user', data, signal);
+
+	// Parse the response body and return the result.
+	return {
+		status: response.status,
+		data: await GetUserThatIsCurrentlyAuthenticatedResponseDataSchema.parseAsync(response.data)
 	};
 }
