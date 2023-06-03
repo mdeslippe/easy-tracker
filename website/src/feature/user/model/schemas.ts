@@ -24,7 +24,8 @@ import {
 	createInvalidMaximumLengthErrorMessage,
 	createInvalidMaximumNumberErrorMessage,
 	createInvalidMinimumLengthErrorMessage,
-	createInvalidMinimumNumberErrorMessage
+	createInvalidMinimumNumberErrorMessage,
+	createInvalidUrlErrorMessage
 } from '@website/utility/validation';
 
 /**
@@ -177,9 +178,21 @@ export const GetUserByEmailResponseDataSchema = z.union([
 export const UpdateUserRequestDataSchema = z.object({
 	profilePictureUrl: z
 		.string()
-		.url()
-		.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH)
-		.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH)
+		.url({
+			message: createInvalidUrlErrorMessage()
+		})
+		.min(USER_PROFILE_PICTURE_URL_MIN_LENGTH, {
+			message: createInvalidMinimumLengthErrorMessage(
+				'profilePictureUrl',
+				USER_PROFILE_PICTURE_URL_MIN_LENGTH
+			)
+		})
+		.max(USER_PROFILE_PICTURE_URL_MAX_LENGTH, {
+			message: createInvalidMaximumLengthErrorMessage(
+				'profilePictureUrl',
+				USER_PROFILE_PICTURE_URL_MAX_LENGTH
+			)
+		})
 		.optional(),
 	username: z
 		.string()

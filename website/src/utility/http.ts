@@ -39,8 +39,8 @@ export async function sendGetRequest(
 	// Create a response variable.
 	let response: AxiosResponse<unknown, unknown>;
 
-	// Send the request.
 	try {
+		// Send the request.
 		response = await API.get(path, {
 			params,
 			signal,

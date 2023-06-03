@@ -25,7 +25,7 @@ export enum ValidationErrorType {
 	/**
 	 * A validation error type that indicates that the value must not contain control characters.
 	 */
-	UNEXPECTED_CONTROL_CHARACTER = 'non_control_character',
+	INVALID_CHARACTER = 'non_control_character',
 
 	/**
 	 * A validation error type that indicates that the value must meet length constraints.

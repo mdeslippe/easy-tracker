@@ -28,12 +28,12 @@ export function createRequiredErrorMessage(field: string) {
 }
 
 /**
- * Create a must be unique error message.
+ * Create a unique error message.
  *
  * @param field The field that must be unique.
- * @returns The must be unique error message that was created.
+ * @returns The unique error message that was created.
  */
-export function createMustBeUniqueErrorMessage(field: string) {
+export function createUniqueErrorMessage(field: string) {
 	return `${capitalizeFirstLetter(field)} is already in use.`;
 }
 
@@ -56,11 +56,11 @@ export function createInvalidUrlErrorMessage() {
 }
 
 /**
- * Create a control character error message.
+ * Create an invalid character error message.
  *
- * @returns The control character error message that was created.
+ * @returns The invalid character error message that was created.
  */
-export function createInvalidControlCharacterErrorMessage() {
+export function createInvalidCharacterErrorMessage() {
 	return 'Control characters are not allowed.';
 }
 
@@ -70,7 +70,7 @@ export function createInvalidControlCharacterErrorMessage() {
  * @param field The field that has an invalid length.
  * @returns The generic invalid length error message that was created.
  */
-export function createInvalidGenericLengthErrorMessage(field: string) {
+export function createGenericInvalidLengthErrorMessage(field: string) {
 	return `${capitalizeFirstLetter(field)} has an invalid length.`;
 }
 
@@ -166,15 +166,6 @@ export function createInvalidNumberRangeErrorMessage(
 
 /**
  * A function that can be used to convert validation error details into an error message.
- *
- * This function currently has support for the following validation errors:
- * 1) required
- * 2) unique
- * 3) email
- * 4) url
- * 5) non_control_character
- * 6) length
- *
  * In the case that an unsupported error is detected, a generic error message will be returned.
  *
  * @param field The field that has the validation error.
@@ -189,13 +180,13 @@ export function convertValidationErrorToMessage(
 		case ValidationErrorType.REQUIRED:
 			return createRequiredErrorMessage(field);
 		case ValidationErrorType.UNIQUE:
-			return createMustBeUniqueErrorMessage(field);
+			return createUniqueErrorMessage(field);
 		case ValidationErrorType.INVALID_EMAIL:
 			return createInvalidEmailErrorMessage();
 		case ValidationErrorType.INVALID_URL:
 			return createInvalidUrlErrorMessage();
-		case ValidationErrorType.UNEXPECTED_CONTROL_CHARACTER:
-			return createInvalidControlCharacterErrorMessage();
+		case ValidationErrorType.INVALID_CHARACTER:
+			return createInvalidCharacterErrorMessage();
 		case ValidationErrorType.INVALID_LENGTH:
 			if (error.params.min !== undefined && error.params.max !== undefined)
 				return createInvalidLengthRangeErrorMessage(
@@ -207,7 +198,7 @@ export function convertValidationErrorToMessage(
 				return createInvalidMinimumLengthErrorMessage(field, Number(error.params.min));
 			else if (error.params.max !== undefined)
 				return createInvalidMaximumLengthErrorMessage(field, Number(error.params.max));
-			else return createInvalidGenericLengthErrorMessage(field);
+			else return createGenericInvalidLengthErrorMessage(field);
 		default:
 			return createGenericErrorMessage(field);
 	}
