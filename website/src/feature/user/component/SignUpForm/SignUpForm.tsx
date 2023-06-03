@@ -56,7 +56,7 @@ async function handleSignUp(
 
 	// Handle the response.
 	switch (response.status) {
-		case 201:
+		case 200:
 			// TODO: Log the user in after they signup.
 			// TODO: Fetch user data and store it with react query.
 			// TODO: Redirect the user to the dashboard.
