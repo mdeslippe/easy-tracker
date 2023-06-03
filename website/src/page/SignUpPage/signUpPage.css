@@ -62,12 +62,10 @@
 
 	#signup > div > div {
 		min-width: fit-content;
-		padding: 4%;
 		width: 100%;
 	}
 
 	#signup .signup-welcome-container > h1 {
 		font-size: 2rem;
-		font-family: 'Impact-Bold', Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
 	}
 }
