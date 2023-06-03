@@ -29,7 +29,8 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
         web::scope("/auth")
             .service(login)
             .service(logout)
-            .service(status),
+            .service(status)
+            .service(current_user),
     );
 }
 
@@ -127,6 +128,33 @@ async fn status(
     return match auth_service.authenticate_request(&request).await {
         AuthenticationResult::Ok(_) => HttpResponse::Ok().json(true),
         AuthenticationResult::NotAuthenticated => HttpResponse::Ok().json(false),
+        AuthenticationResult::Err(_) => HttpResponse::InternalServerError().finish(),
+    };
+}
+
+/// # Description
+///
+/// An api endpoint to get information about the user that sent the request.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `auth_service` - The auth service that will be used to get information about the user that sent
+/// the request.
+///
+/// # Returns
+///
+/// An http response.
+#[get("/user")]
+async fn current_user(
+    request: HttpRequest,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+) -> HttpResponse {
+    // Attempt to get the user that sent the request.
+    return match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(user) => HttpResponse::Ok().json(user),
+        AuthenticationResult::NotAuthenticated => HttpResponse::Unauthorized().finish(),
         AuthenticationResult::Err(_) => HttpResponse::InternalServerError().finish(),
     };
 }
