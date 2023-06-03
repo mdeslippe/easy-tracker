@@ -93,7 +93,7 @@ async fn create_user(
         .finish();
 
     // Send the response.
-    return HttpResponse::Ok().cookie(auth_cookie).json(user);
+    return HttpResponse::Ok().cookie(auth_cookie).json(created_user);
 }
 
 /// # Description
