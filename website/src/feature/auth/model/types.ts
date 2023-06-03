@@ -40,3 +40,13 @@ export type AuthStatusRequestData = undefined;
  * The response data for requests to get the client's authentication status.
  */
 export type AuthStatusResponseData = boolean | undefined;
+
+/**
+ * The request data for requests to get information about the user that is currently authenticated.
+ */
+export type GetUserThatIsCurrentlyAuthenticatedRequestData = undefined;
+
+/**
+ * The response data for requests to get information about the user that is currently authenticated.
+ */
+export type GetUserThatIsCurrentlyAuthenticatedResponseData = User | undefined;

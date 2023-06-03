@@ -36,3 +36,18 @@ export const AuthStatusRequestDataSchema = z.undefined();
  * A schema of the response data for requests to check the client's authentication status.
  */
 export const AuthStatusResponseDataSchema = z.union([z.boolean(), z.undefined()]);
+
+/**
+ * A schema of the request data for requests to get information about the user that is currently
+ * authenticated.
+ */
+export const GetUserThatIsCurrentlyAuthenticatedRequestDataSchema = z.undefined();
+
+/**
+ * A schema of the response data for requests to get information about the user that is currently
+ * authenticated.
+ */
+export const GetUserThatIsCurrentlyAuthenticatedResponseDataSchema = z.union([
+	UserSchema,
+	z.undefined()
+]);
