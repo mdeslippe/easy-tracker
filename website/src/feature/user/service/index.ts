@@ -25,7 +25,8 @@ import {
 	sendGetRequest,
 	sendPostRequest,
 	sendPatchRequest,
-	sendDeleteRequest
+	sendDeleteRequest,
+	HttpResponse
 } from '@website/utility/http';
 
 /**
@@ -38,12 +39,17 @@ import {
  * - The servers sends an unsuccessful response.
  * - The response data could not be parsed.
  */
-export async function createUser(data: CreateUserRequestData): Promise<CreateUserResponseData> {
+export async function createUser(
+	data: CreateUserRequestData
+): Promise<HttpResponse<CreateUserResponseData>> {
 	// Send the request.
-	const response = await sendPostRequest('/users', data, undefined);
+	const response: HttpResponse<unknown> = await sendPostRequest('/users', data, undefined);
 
 	// Parse the response body and return the result.
-	return await CreateUserResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await CreateUserResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -60,12 +66,19 @@ export async function createUser(data: CreateUserRequestData): Promise<CreateUse
 export async function getUserByID(
 	data: GetUserByIDRequestData,
 	signal: AbortSignal | undefined = undefined
-): Promise<GetUserByIDResponseData> {
+): Promise<HttpResponse<GetUserByIDResponseData>> {
 	// Send the request.
-	const response = await sendGetRequest(`/users/id/${data}`, undefined, signal);
+	const response: HttpResponse<unknown> = await sendGetRequest(
+		`/users/id/${data}`,
+		undefined,
+		signal
+	);
 
 	// Parse the response body and return the result.
-	return await GetUserByIDResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await GetUserByIDResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -82,12 +95,19 @@ export async function getUserByID(
 export async function getUserByUsername(
 	data: GetUserByUsernameRequestData,
 	signal: AbortSignal | undefined = undefined
-): Promise<GetUserByUsernameResponseData> {
+): Promise<HttpResponse<GetUserByUsernameResponseData>> {
 	// Send the request.
-	const response = await sendGetRequest(`/users/username/${data}`, undefined, signal);
+	const response: HttpResponse<unknown> = await sendGetRequest(
+		`/users/username/${data}`,
+		undefined,
+		signal
+	);
 
 	// Parse the response body and return the result.
-	return await GetUserByUsernameResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await GetUserByUsernameResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -104,12 +124,19 @@ export async function getUserByUsername(
 export async function getUserByEmail(
 	data: GetUserByEmailRequestData,
 	signal: AbortSignal | undefined = undefined
-): Promise<GetUserByEmailResponseData> {
+): Promise<HttpResponse<GetUserByEmailResponseData>> {
 	// Send the request.
-	const response = await sendGetRequest(`/users/email/${data}`, undefined, signal);
+	const response: HttpResponse<unknown> = await sendGetRequest(
+		`/users/email/${data}`,
+		undefined,
+		signal
+	);
 
 	// Parse the response body and return the result.
-	return await GetUserByEmailResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await GetUserByEmailResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -122,12 +149,17 @@ export async function getUserByEmail(
  * - The servers sends an unsuccessful response.
  * - The response data could not be parsed.
  */
-export async function updateUser(data: UpdateUserRequestData): Promise<UpdateUserResponseData> {
+export async function updateUser(
+	data: UpdateUserRequestData
+): Promise<HttpResponse<UpdateUserResponseData>> {
 	// Send the request.
-	const response = await sendPatchRequest('/users', data, undefined);
+	const response: HttpResponse<unknown> = await sendPatchRequest('/users', data, undefined);
 
 	// Parse the response body and return the result.
-	return await UpdateUserResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await UpdateUserResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -140,10 +172,15 @@ export async function updateUser(data: UpdateUserRequestData): Promise<UpdateUse
  * - The servers sends an unsuccessful response.
  * - The response data could not be parsed.
  */
-export async function deleteUser(data: DeleteUserRequestData): Promise<DeleteUserResponseData> {
+export async function deleteUser(
+	data: DeleteUserRequestData
+): Promise<HttpResponse<DeleteUserResponseData>> {
 	// Send the request.
-	const response = await sendDeleteRequest('/users', data, undefined);
+	const response: HttpResponse<unknown> = await sendDeleteRequest('/users', data, undefined);
 
 	// Parse the response body and return the result.
-	return await DeleteUserResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await DeleteUserResponseDataSchema.parseAsync(response.data)
+	};
 }

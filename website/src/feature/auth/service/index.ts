@@ -12,7 +12,7 @@ import {
 } from '@website/feature/auth/model';
 
 // Utils.
-import { sendGetRequest, sendPostRequest } from '@website/utility/http';
+import { HttpResponse, sendGetRequest, sendPostRequest } from '@website/utility/http';
 
 /**
  * Send a request to the server to authenticate a user.
@@ -24,12 +24,15 @@ import { sendGetRequest, sendPostRequest } from '@website/utility/http';
  * - The servers sends an unsuccessful response.
  * - The response data could not be parsed.
  */
-export async function login(data: LoginRequestData): Promise<LoginResponseData> {
+export async function login(data: LoginRequestData): Promise<HttpResponse<LoginResponseData>> {
 	// Send the request.
-	const response = await sendPostRequest('/auth/login', data, undefined);
+	const response: HttpResponse<unknown> = await sendPostRequest('/auth/login', data, undefined);
 
 	// Parse the response body and return the result.
-	return await LoginResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await LoginResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -42,12 +45,15 @@ export async function login(data: LoginRequestData): Promise<LoginResponseData> 
  * - The servers sends an unsuccessful response.
  * - The response data could not be parsed.
  */
-export async function logout(data: LogoutRequestData): Promise<LogoutResponseData> {
+export async function logout(data: LogoutRequestData): Promise<HttpResponse<LogoutResponseData>> {
 	// Send the request.
-	const response = await sendPostRequest('/auth/logout', data, undefined);
+	const response: HttpResponse<unknown> = await sendPostRequest('/auth/logout', data, undefined);
 
 	// Parse the response body and return the result.
-	return await LogoutResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await LogoutResponseDataSchema.parseAsync(response.data)
+	};
 }
 
 /**
@@ -62,10 +68,13 @@ export async function logout(data: LogoutRequestData): Promise<LogoutResponseDat
  */
 export async function isAuthenticated(
 	data: AuthStatusRequestData
-): Promise<AuthStatusResponseData> {
+): Promise<HttpResponse<AuthStatusResponseData>> {
 	// Send the request.
-	const response = await sendGetRequest('/auth/status', data, undefined);
+	const response: HttpResponse<unknown> = await sendGetRequest('/auth/status', data, undefined);
 
 	// Parse the response body and return the result.
-	return await AuthStatusResponseDataSchema.parseAsync(response.data);
+	return {
+		status: response.status,
+		data: await AuthStatusResponseDataSchema.parseAsync(response.data)
+	};
 }

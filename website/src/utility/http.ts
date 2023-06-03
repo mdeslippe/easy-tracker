@@ -1,5 +1,20 @@
 // Axios.
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+
+/**
+ * A simple http response type.
+ */
+export type HttpResponse<T> = {
+	/**
+	 * The http response data.
+	 */
+	data: T;
+
+	/**
+	 * The http response status.
+	 */
+	status: number;
+};
 
 /**
  * An axios instance that can be used to send requests to the API.
@@ -20,13 +35,23 @@ export async function sendGetRequest(
 	path: string,
 	params: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
-	// Send the request.
-	const response = await API.get(path, {
-		params,
-		signal,
-		withCredentials: true
-	});
+): Promise<HttpResponse<unknown>> {
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.get(path, {
+			params,
+			signal,
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
@@ -46,15 +71,25 @@ export async function sendPostRequest(
 	path: string,
 	body: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
-	// Send the request.
-	const response = await API.post(path, body, {
-		signal,
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		withCredentials: true
-	});
+): Promise<HttpResponse<unknown>> {
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.post(path, body, {
+			signal,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
@@ -74,15 +109,25 @@ export async function sendPatchRequest(
 	path: string,
 	body: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
-	// Send the request.
-	const response = await API.patch(path, body, {
-		signal,
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		withCredentials: true
-	});
+): Promise<HttpResponse<unknown>> {
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.patch(path, body, {
+			signal,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
@@ -102,13 +147,23 @@ export async function sendDeleteRequest(
 	path: string,
 	params: object | undefined = undefined,
 	signal: AbortSignal | undefined = undefined
-): Promise<AxiosResponse<unknown, unknown>> {
-	// Send the request.
-	const response = await API.delete(path, {
-		params,
-		signal,
-		withCredentials: true
-	});
+): Promise<HttpResponse<unknown>> {
+	// Create a response variable.
+	let response: AxiosResponse<unknown, unknown>;
+
+	try {
+		// Send the request.
+		response = await API.delete(path, {
+			params,
+			signal,
+			withCredentials: true
+		});
+	} catch (exception) {
+		// If the error was an error response from the server.
+		if (exception instanceof AxiosError && exception.response?.data !== undefined)
+			response = exception.response;
+		else throw exception;
+	}
 
 	// Convert an empty string response to undefined.
 	if (response.data === '') response.data = undefined;
