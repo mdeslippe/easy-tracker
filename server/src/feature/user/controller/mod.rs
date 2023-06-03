@@ -8,11 +8,13 @@ use crate::{
     config::Config,
     feature::{
         auth::service::AuthService,
+        crypto::service::CryptoService,
         user::{controller::data::GetUserResponseBody, model::User, service::UserService},
     },
     injector::DependencyInjector,
 };
 use actix_web::{
+    cookie::{Cookie, SameSite},
     delete, get, patch, post,
     web::{self, ServiceConfig},
     HttpRequest, HttpResponse,
@@ -50,6 +52,8 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
 ///
 /// `user_service` - The user service that will be used to create the user.
 ///
+/// `crypto_service` The crypto service that will be used to create a token for the user.
+///
 /// # Returns
 ///
 /// An http response.
@@ -58,6 +62,7 @@ async fn create_user(
     body: web::Json<CreateUserRequestBody>,
     config: web::Data<Config>,
     user_service: Inject<DependencyInjector, dyn UserService>,
+    crypto_service: Inject<DependencyInjector, dyn CryptoService>,
 ) -> HttpResponse {
     // Convert the request body into a user.
     let mut user: User = body.into_inner().into();
@@ -66,11 +71,29 @@ async fn create_user(
     user.profile_picture_url = config.default.user_profile_picture.clone();
 
     // Create the user.
-    return match user_service.insert(&user).await {
-        InsertionResult::Ok(user) => HttpResponse::Created().json(user),
-        InsertionResult::Invalid(details) => HttpResponse::BadRequest().json(details),
-        InsertionResult::Err(_) => HttpResponse::InternalServerError().finish(),
+    let created_user: User = match user_service.insert(&user).await {
+        InsertionResult::Ok(user) => user,
+        InsertionResult::Invalid(details) => return HttpResponse::BadRequest().json(details),
+        InsertionResult::Err(_) => return HttpResponse::InternalServerError().finish(),
     };
+
+    // Create an authentication token for the user.
+    let token: String = match crypto_service.create_token(&created_user) {
+        Ok(token) => token,
+        Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Create an authentication cookie for the user.
+    let auth_cookie: Cookie = Cookie::build("authorization", format!("Bearer {}", token))
+        .http_only(true)
+        .secure(true)
+        .same_site(SameSite::Strict)
+        .path("/")
+        .expires(None)
+        .finish();
+
+    // Send the response.
+    return HttpResponse::Ok().cookie(auth_cookie).json(created_user);
 }
 
 /// # Description
