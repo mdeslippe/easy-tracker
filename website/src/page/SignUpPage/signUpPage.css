@@ -1,0 +1,71 @@
+/* ID Styling */
+#signup {
+	align-items: center;
+	background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+		url('/images/backgrounds/data-center.webp') center no-repeat;
+	background-size: cover;
+	box-shadow: inset 0px 1px var(--secondary-color);
+	display: flex;
+	justify-content: center;
+	min-height: calc(100vh - var(--nav-size));
+	padding: 4%;
+}
+
+#signup > div {
+	align-items: stretch;
+	border-radius: var(--normal-border-radius);
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	max-width: 1000px;
+	overflow: hidden;
+	width: 100%;
+}
+
+#signup > div > div {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	padding: 4%;
+	width: 50%;
+}
+
+#signup .signup-welcome-container {
+	background: var(--primary-color);
+	color: var(--secondary-color);
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: center;
+}
+
+#signup .signup-welcome-container > h1 {
+	font-size: 3rem;
+	font-family: 'Impact-Bold', Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
+#signup .signup-welcome-container > img {
+	width: 75%;
+}
+
+#signup .signup-form-wrapper {
+	background: var(--secondary-color);
+	color: var(--primary-color);
+}
+
+/* Medium Screens */
+@media (max-width: 750px) {
+	/* ID Styling */
+	#signup > div {
+		flex-direction: column;
+		min-width: max-content;
+	}
+
+	#signup > div > div {
+		min-width: fit-content;
+		width: 100%;
+	}
+
+	#signup .signup-welcome-container > h1 {
+		font-size: 2rem;
+	}
+}
