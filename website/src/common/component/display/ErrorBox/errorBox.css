@@ -16,10 +16,16 @@
 	border: none;
 	display: flex;
 	justify-content: center;
+	padding: 0px;
 }
 
 .error-box > button:hover {
 	cursor: pointer;
+}
+
+.error-box > button > img {
+	display: block;
+	width: 1rem;
 }
 
 .error-box > button > img:hover {
