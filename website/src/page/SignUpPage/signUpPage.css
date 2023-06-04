@@ -57,7 +57,6 @@
 	/* ID Styling */
 	#signup > div {
 		flex-direction: column;
-		min-width: max-content;
 	}
 
 	#signup > div > div {
