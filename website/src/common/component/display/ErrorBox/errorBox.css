@@ -1,0 +1,32 @@
+/* Class Styling */
+.error-box {
+	align-items: center;
+	background-color: var(--error-accent);
+	border: solid 2px var(--error-color);
+	border-radius: var(--normal-border-radius);
+	display: flex;
+	justify-content: center;
+	padding: 0.5rem;
+	width: 100%;
+}
+
+.error-box > button {
+	align-items: center;
+	background: none;
+	border: none;
+	display: flex;
+	justify-content: center;
+}
+
+.error-box > button:hover {
+	cursor: pointer;
+}
+
+.error-box > button > img:hover {
+	transform: scale(125%);
+}
+
+.error-box > span {
+	flex: 1;
+	text-align: center;
+}
