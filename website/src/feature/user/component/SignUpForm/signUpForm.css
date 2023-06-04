@@ -9,6 +9,10 @@
 	width: 100%;
 }
 
+#sign-up-form .form-error-message {
+	margin-bottom: 4%;
+}
+
 #sign-up-form .form-button-container {
 	align-items: center;
 	display: flex;

@@ -1,3 +1,6 @@
+// React.
+import { useState } from 'react';
+
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, UseFormSetError, useForm } from 'react-hook-form';
@@ -17,6 +20,7 @@ import { createUser } from '@website/feature/user/service';
 
 // Custom.
 import { InputField } from '@website/common/component/input';
+import { ErrorBox } from '@website/common/component/display';
 
 // Utils.
 import { capitalizeFirstLetter } from '@website/utility/string';
@@ -57,7 +61,6 @@ async function handleSignUp(
 	// Handle the response.
 	switch (response.status) {
 		case 200:
-			// TODO: Log the user in after they signup.
 			// TODO: Fetch user data and store it with react query.
 			// TODO: Redirect the user to the dashboard.
 
@@ -89,6 +92,7 @@ async function handleSignUp(
  * @returns The sign up form.
  */
 export function SignUpForm(): JSX.Element {
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const {
 		register,
 		handleSubmit,
@@ -103,11 +107,18 @@ export function SignUpForm(): JSX.Element {
 		<form
 			id='sign-up-form'
 			onSubmit={handleSubmit((values) =>
-				handleSignUp(values, setError).catch(() => {
-					// TODO: Display unexpected errors in a snackbar.
-				})
+				handleSignUp(values, setError).catch(() =>
+					setErrorMessage('An unexpected error has occurred.')
+				)
 			)}
 		>
+			{errorMessage !== null && (
+				<ErrorBox
+					className='form-error-message'
+					message={errorMessage}
+					onClose={() => setErrorMessage(null)}
+				/>
+			)}
 			<InputField
 				required
 				label='Username'
@@ -146,7 +157,10 @@ export function SignUpForm(): JSX.Element {
 					className='medium-button secondary-button'
 					type='reset'
 					value='Reset'
-					onClick={reset}
+					onClick={() => {
+						reset();
+						setErrorMessage(null);
+					}}
 				/>
 			</div>
 		</form>
