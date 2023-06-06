@@ -4,12 +4,15 @@ import { z } from 'zod';
 // Schemas.
 import { UserSchema } from '@website/feature/user/model';
 
+// Utils.
+import { createRequiredErrorMessage } from '@website/utility/validation';
+
 /**
  * A schema of the request data for requests to login.
  */
 export const LoginRequestDataSchema = z.object({
-	username: z.string(),
-	password: z.string()
+	username: z.string().nonempty(createRequiredErrorMessage('username')),
+	password: z.string().nonempty(createRequiredErrorMessage('password'))
 });
 
 /**

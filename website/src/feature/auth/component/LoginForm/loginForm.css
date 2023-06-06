@@ -1,0 +1,23 @@
+/* ID Styling */
+#login-form {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	justify-content: center;
+	padding: 4px;
+	width: 100%;
+}
+
+#login-form .form-error-message {
+	margin-bottom: 4%;
+}
+
+#login-form .form-button-container {
+	align-items: center;
+	display: flex;
+	gap: 4px;
+	justify-content: center;
+	margin-top: 4%;
+	width: 100%;
+}
