@@ -53,7 +53,10 @@ function App(): JSX.Element {
  * @returns The router.
  */
 function Router(): JSX.Element {
-	const { isAuthenticated } = useAuthenticatedUser();
+	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticatedUser();
+
+	// If the authenticated user's data is being loaded for the first time, show the loading overlay.
+	if (isLoading && isInitialLoading) return <LoadingOverlay />;
 
 	return (
 		<BrowserRouter>
