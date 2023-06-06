@@ -1,0 +1,12 @@
+/* Class Styling */
+.full-page-loading-overlay {
+	align-items: center;
+	background: var(--primary-color);
+	display: flex;
+	height: 100vh;
+	justify-content: center;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100vw;
+}
