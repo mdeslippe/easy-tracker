@@ -1,6 +1,8 @@
+// React.
+import { ComponentProps } from 'react';
+
 // CSS.
 import '@website/common/component/display/Spinner/spinner.css';
-import { ComponentProps } from 'react';
 
 /**
  * Properties for the {@link Spinner} component.
