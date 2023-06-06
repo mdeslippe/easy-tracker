@@ -50,7 +50,7 @@ export type UseAuthenticatedUserResult = {
 /**
  * A query provider for the authenticated user query.
  */
-export const AuthenticateUserQueryProvider: QueryProvider<
+export const AuthenticatedUserQueryProvider: QueryProvider<
 	() => string[],
 	HttpResponse<GetUserThatIsCurrentlyAuthenticatedResponseData>
 > = {
@@ -66,8 +66,8 @@ export const AuthenticateUserQueryProvider: QueryProvider<
  */
 export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 	const query = useQuery(
-		AuthenticateUserQueryProvider.getKey(),
-		AuthenticateUserQueryProvider.getData
+		AuthenticatedUserQueryProvider.getKey(),
+		AuthenticatedUserQueryProvider.getData
 	);
 
 	return {
