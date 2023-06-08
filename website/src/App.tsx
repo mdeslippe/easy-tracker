@@ -9,7 +9,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Hooks.
-import { useAuthenticatedUser } from '@website/feature/auth/hook';
+import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
 import { LoadingOverlay } from '@website/common/component/display';
@@ -53,7 +53,7 @@ function App(): JSX.Element {
  * @returns The router.
  */
 function Router(): JSX.Element {
-	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticatedUser();
+	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticationStatus();
 
 	// If the authenticated user's data is being loaded for the first time, show the loading overlay.
 	if (isLoading && isInitialLoading) return <LoadingOverlay />;
