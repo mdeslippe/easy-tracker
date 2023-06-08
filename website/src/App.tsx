@@ -55,7 +55,7 @@ function App(): JSX.Element {
 function Router(): JSX.Element {
 	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticationStatus();
 
-	// If the authenticated user's data is being loaded for the first time, show the loading overlay.
+	// If the users authentication status is being loaded for the first time, show the loading overlay.
 	if (isLoading && isInitialLoading) return <LoadingOverlay />;
 
 	return (
