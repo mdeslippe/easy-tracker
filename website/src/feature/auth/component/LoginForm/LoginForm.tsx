@@ -1,15 +1,24 @@
 // React.
 import { useState, Dispatch, SetStateAction } from 'react';
 
+// React router.
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, useForm } from 'react-hook-form';
 
-// Models.
+// Model.
 import { LoginRequestDataSchema } from '@website/feature/auth/model';
 
 // Service.
 import { login } from '@website/feature/auth/service';
+
+// Hook.
+import {
+	UseAuthenticationStatusInvalidatorResult,
+	useAuthenticationStatusInvalidator
+} from '@website/feature/auth/hook';
 
 // Custom.
 import { ErrorBox } from '@website/common/component/display';
@@ -28,18 +37,25 @@ const LoginFormSchema = LoginRequestDataSchema;
  *
  * @param values The values the user entered in the input fields.
  * @param setError A function that can be used to set an error message.
+ * @param invalidateAuthenticationStatus A function that can be used to invalidate the current
+ * authentication status.
+ * @param navigate A function that can be used to navigate the user to a different route.
  * @returns A promise.
  */
-async function handleLogin(values: FieldValues, setError: Dispatch<SetStateAction<string | null>>) {
+async function handleLogin(
+	values: FieldValues,
+	setError: Dispatch<SetStateAction<string | null>>,
+	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult,
+	navigate: NavigateFunction
+) {
 	// Send a request to authenticate the user.
 	const response = await login(await LoginRequestDataSchema.parseAsync(values));
 
 	// Handle the response.
 	switch (response.status) {
 		case 200:
-			// TODO: Fetch user data and store it with react query.
-			// TODO: Redirect the user to the dashboard.
-
+			invalidateAuthenticationStatus();
+			navigate('/');
 			return;
 		case 401:
 			setError('Invalid username or password.');
@@ -57,7 +73,9 @@ async function handleLogin(values: FieldValues, setError: Dispatch<SetStateActio
  * @returns The login form.
  */
 export function LoginForm(): JSX.Element {
+	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const {
 		register,
 		handleSubmit,
@@ -71,9 +89,12 @@ export function LoginForm(): JSX.Element {
 		<form
 			id='login-form'
 			onSubmit={handleSubmit((values) =>
-				handleLogin(values, setErrorMessage).catch(() =>
-					setErrorMessage('An unexpected error has occurred.')
-				)
+				handleLogin(
+					values,
+					setErrorMessage,
+					invalidateAuthenticationStatus,
+					navigate
+				).catch(() => setErrorMessage('An unexpected error has occurred.'))
 			)}
 		>
 			{errorMessage !== null && (
