@@ -71,7 +71,7 @@ export type UseAuthenticationStatusInvalidatorResult = () => void;
 /**
  * A hook that can be used to invalidate the useAuthenticationStatus result.
  *
- * @returns A function that can b e used to invalidate the useAuthenticationStatus result.
+ * @returns The useAuthenticationStatusInvalidator result.
  */
 export function useAuthenticationStatusInvalidator(): UseAuthenticationStatusInvalidatorResult {
 	const queryClient = useQueryClient();

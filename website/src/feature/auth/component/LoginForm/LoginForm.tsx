@@ -8,7 +8,7 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, useForm } from 'react-hook-form';
 
-// Model.
+// Models.
 import { LoginRequestDataSchema } from '@website/feature/auth/model';
 
 // Service.
