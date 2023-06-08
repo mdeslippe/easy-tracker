@@ -1,5 +1,5 @@
 // React.
-import { Suspense, lazy } from 'react';
+import { LazyExoticComponent, Suspense, lazy } from 'react';
 
 // React router.
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -15,16 +15,16 @@ import { useAuthenticatedUser } from '@website/feature/auth/hook';
 import { LoadingOverlay } from '@website/common/component/display';
 
 // Pages.
-const LandingPage = lazy(() =>
+const LandingPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page').then((module) => ({ default: module.LandingPage }))
 );
-const HomePage = lazy(() =>
+const HomePage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page').then((module) => ({ default: module.HomePage }))
 );
-const LoginPage = lazy(() =>
+const LoginPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page').then((module) => ({ default: module.LoginPage }))
 );
-const SignUpPage = lazy(() =>
+const SignUpPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page').then((module) => ({ default: module.SignUpPage }))
 );
 

@@ -3,14 +3,9 @@ import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
 
 // Models.
 import { User } from '@website/feature/user/model';
-import { GetUserThatIsCurrentlyAuthenticatedResponseData } from '@website/feature/auth/model';
 
 // Services.
 import { getUserThatIsCurrentlyAuthenticated } from '@website/feature/auth/service';
-
-// Utils.
-import { HttpResponse } from '@website/utility/http';
-import { QueryProvider } from '@website/utility/query';
 
 /**
  * The data that will be returned from the useAuthenticatedUser hook.
@@ -32,11 +27,6 @@ export type UseAuthenticatedUserResult = {
 	isError: boolean;
 
 	/**
-	 * If the data was successfully fetched.
-	 */
-	isSuccess: boolean;
-
-	/**
 	 * If the user is authenticated or not.
 	 */
 	isAuthenticated: boolean;
@@ -44,24 +34,12 @@ export type UseAuthenticatedUserResult = {
 	/**
 	 * The user's data.
 	 */
-	data: User | null;
+	user: User | null;
 
 	/**
 	 * A function that can be used to refetch the data.
 	 */
 	refetch: () => void;
-};
-
-/**
- * A query provider for the authenticated user query.
- */
-export const AuthenticatedUserQueryProvider: QueryProvider<
-	() => string[],
-	HttpResponse<GetUserThatIsCurrentlyAuthenticatedResponseData>
-> = {
-	getKey: () => ['current_user'],
-	getData: (context: QueryFunctionContext<string[], unknown>) =>
-		getUserThatIsCurrentlyAuthenticated(undefined, context.signal)
 };
 
 /**
@@ -71,17 +49,25 @@ export const AuthenticatedUserQueryProvider: QueryProvider<
  */
 export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 	const query = useQuery(
-		AuthenticatedUserQueryProvider.getKey(),
-		AuthenticatedUserQueryProvider.getData
+		['authenticated_user'],
+		async (context: QueryFunctionContext<string[], unknown>) => {
+			// Send the request.
+			const result = await getUserThatIsCurrentlyAuthenticated(undefined, context.signal);
+
+			// If an error occurred.
+			if (result.status >= 500) throw Error();
+
+			// Return the result.
+			return result;
+		}
 	);
 
 	return {
 		isLoading: query.isLoading,
 		isInitialLoading: query.isInitialLoading,
 		isError: query.isError,
-		isSuccess: query.isSuccess,
 		isAuthenticated: query.data?.status === 200 ?? false,
-		data: query.data?.data ?? null,
+		user: query.data?.data ?? null,
 		refetch: async () => await query.refetch()
 	};
 }
