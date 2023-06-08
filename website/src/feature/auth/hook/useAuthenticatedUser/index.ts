@@ -1,5 +1,5 @@
 // React query.
-import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
+import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Models.
 import { User } from '@website/feature/user/model';
@@ -27,7 +27,7 @@ export type UseAuthenticatedUserResult = {
 	isError: boolean;
 
 	/**
-	 * If the user is authenticated or not.
+	 * If the user is authenticated.
 	 */
 	isAuthenticated: boolean;
 
@@ -70,4 +70,19 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 		user: query.data?.data ?? null,
 		refetch: async () => await query.refetch()
 	};
+}
+
+/**
+ * The data that will be returned from the useAuthenticatedUserInvalidator hook.
+ */
+export type UseAuthenticatedUserInvalidatorResult = () => void;
+
+/**
+ * A hook that can be used to invalidate the useAuthenticatedUser result.
+ *
+ * @returns A function that can be used to invalidate the useAuthenticatedUser result.
+ */
+export function useAuthenticatedUserInvalidator(): UseAuthenticatedUserInvalidatorResult {
+	const queryClient = useQueryClient();
+	return () => queryClient.invalidateQueries({ queryKey: ['authentication_current_user'] });
 }
