@@ -63,6 +63,7 @@ export async function logout(data: LogoutRequestData): Promise<HttpResponse<Logo
  * Send a request to the server to check if the client is authenticated.
  *
  * @param data The request data.
+ * @param signal A signal that can be used to abort the request.
  * @returns A promise to the authentication status response.
  * @throws This function will throw an exception if:
  * - The server could not be reached.
@@ -70,10 +71,11 @@ export async function logout(data: LogoutRequestData): Promise<HttpResponse<Logo
  * - The response data could not be parsed.
  */
 export async function isAuthenticated(
-	data: AuthStatusRequestData
+	data: AuthStatusRequestData,
+	signal: AbortSignal | undefined = undefined
 ): Promise<HttpResponse<AuthStatusResponseData>> {
 	// Send the request.
-	const response: HttpResponse<unknown> = await sendGetRequest('/auth/status', data, undefined);
+	const response: HttpResponse<unknown> = await sendGetRequest('/auth/status', data, signal);
 
 	// Parse the response body and return the result.
 	return {
