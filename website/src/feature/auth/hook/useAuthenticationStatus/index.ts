@@ -1,16 +1,13 @@
 // React query.
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
 
-// Models.
-import { User } from '@website/feature/user/model';
-
 // Services.
-import { getUserThatIsCurrentlyAuthenticated } from '@website/feature/auth/service';
+import { isAuthenticated } from '@website/feature/auth/service';
 
 /**
- * The data that will be returned from the useAuthenticatedUser hook.
+ * The data that will be returned from the useAuthenticationStatus hook.
  */
-export type UseAuthenticatedUserResult = {
+export type UseAuthenticationStatusResult = {
 	/**
 	 * If data is currently being fetched.
 	 */
@@ -32,27 +29,22 @@ export type UseAuthenticatedUserResult = {
 	isAuthenticated: boolean;
 
 	/**
-	 * The user's data.
-	 */
-	user: User | null;
-
-	/**
 	 * A function that can be used to refetch the data.
 	 */
 	refetch: () => void;
 };
 
 /**
- * A hook to get the user that is currently authenticated.
+ * A hook to check if the the user is currently authenticated.
  *
- * @returns The authenticated user hook result.
+ * @returns The authentication status hook result.
  */
-export function useAuthenticatedUser(): UseAuthenticatedUserResult {
+export function useAuthenticationStatus(): UseAuthenticationStatusResult {
 	const query = useQuery(
-		['authentication_current_user'],
+		['authentication_status'],
 		async (context: QueryFunctionContext<string[], unknown>) => {
 			// Send the request.
-			const result = await getUserThatIsCurrentlyAuthenticated(undefined, context.signal);
+			const result = await isAuthenticated(undefined, context.signal);
 
 			// If an error occurred.
 			if (result.status >= 500) throw Error();
@@ -66,8 +58,7 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 		isLoading: query.isLoading,
 		isInitialLoading: query.isInitialLoading,
 		isError: query.isError,
-		isAuthenticated: query.data?.status === 200 ?? false,
-		user: query.data?.data ?? null,
+		isAuthenticated: query.data?.data ?? false,
 		refetch: async () => await query.refetch()
 	};
 }
