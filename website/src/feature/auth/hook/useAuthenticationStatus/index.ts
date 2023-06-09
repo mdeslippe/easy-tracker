@@ -5,6 +5,15 @@ import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-
 import { isAuthenticated } from '@website/feature/auth/service';
 
 /**
+ * A function that can be used to get the underlying query key for the useAuthenticationStatus hook.
+ *
+ * @returns The query key for the use authentication status hook.
+ */
+export function getAuthenticationStatusQueryKey(): Array<string> {
+	return ['authentication_status'];
+}
+
+/**
  * The data that will be returned from the useAuthenticationStatus hook.
  */
 export type UseAuthenticationStatusResult = {
@@ -41,7 +50,7 @@ export type UseAuthenticationStatusResult = {
  */
 export function useAuthenticationStatus(): UseAuthenticationStatusResult {
 	const query = useQuery(
-		['authentication_status'],
+		getAuthenticationStatusQueryKey(),
 		async (context: QueryFunctionContext<string[], unknown>) => {
 			// Send the request.
 			const result = await isAuthenticated(undefined, context.signal);
@@ -75,5 +84,5 @@ export type UseAuthenticationStatusInvalidatorResult = () => void;
  */
 export function useAuthenticationStatusInvalidator(): UseAuthenticationStatusInvalidatorResult {
 	const queryClient = useQueryClient();
-	return () => queryClient.invalidateQueries({ queryKey: ['authentication_status'] });
+	return () => queryClient.invalidateQueries({ queryKey: getAuthenticationStatusQueryKey() });
 }
