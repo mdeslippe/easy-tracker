@@ -5,7 +5,7 @@ import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-
 import { isAuthenticated } from '@website/feature/auth/service';
 
 /**
- * A function that can be used to get the underlying query key for the useAuthenticationStatus hook.
+ * A function that can be used to get the underlying query key for the use authentication status hook.
  *
  * @returns The query key for the use authentication status hook.
  */

@@ -8,7 +8,7 @@ import { User } from '@website/feature/user/model';
 import { getUserThatIsCurrentlyAuthenticated } from '@website/feature/auth/service';
 
 /**
- * A function that can be used to get the underlying query key for the useAuthenticatedUser hook.
+ * A function that can be used to get the underlying query key for the use authenticated user hook.
  *
  * @returns The query key for the user authenticated user hook.
  */

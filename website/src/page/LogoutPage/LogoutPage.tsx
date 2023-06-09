@@ -24,8 +24,8 @@ import { LoadingOverlay } from '@website/common/component/display';
 export function LogoutPage(): JSX.Element {
 	const [error, setError] = useState<boolean>(false);
 	const [completed, setCompleted] = useState<boolean>(false);
-	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
+	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 
 	useEffect(() => {
 		logout(undefined)
@@ -33,8 +33,8 @@ export function LogoutPage(): JSX.Element {
 				// If the logout was successful.
 				if (response.status === 200) {
 					setCompleted(true);
-					invalidateAuthenticationStatus();
 					invalidateAuthenticatedUser();
+					invalidateAuthenticationStatus();
 				} else {
 					setError(true);
 				}
