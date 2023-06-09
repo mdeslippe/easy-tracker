@@ -13,6 +13,7 @@ import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
 import { LoadingOverlay } from '@website/common/component/display';
+import { UnauthenticatedRoute } from './common/component/navigation';
 
 // Pages.
 const LandingPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
@@ -53,6 +54,7 @@ function App(): JSX.Element {
  * @returns The router.
  */
 function Router(): JSX.Element {
+	// TODO: Handle an error occurring.
 	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticationStatus();
 
 	// If the user's authentication status is being loaded for the first time, show the loading overlay.
@@ -67,11 +69,19 @@ function Router(): JSX.Element {
 				/>
 				<Route
 					path='/signup'
-					Component={SignUpPage}
+					Component={() => (
+						<UnauthenticatedRoute redirectTo='/'>
+							<SignUpPage />
+						</UnauthenticatedRoute>
+					)}
 				/>
 				<Route
 					path='/login'
-					Component={LoginPage}
+					Component={() => (
+						<UnauthenticatedRoute redirectTo='/'>
+							<LoginPage />
+						</UnauthenticatedRoute>
+					)}
 				/>
 			</Routes>
 		</BrowserRouter>
