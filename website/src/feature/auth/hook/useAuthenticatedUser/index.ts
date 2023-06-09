@@ -87,7 +87,7 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 /**
  * The data that will be returned from the useAuthenticatedUserInvalidator hook.
  */
-export type UseAuthenticatedUserInvalidatorResult = () => void;
+export type UseAuthenticatedUserInvalidatorResult = () => Promise<void>;
 
 /**
  * A hook to invalidate the useAuthenticatedUser result.
@@ -97,4 +97,19 @@ export type UseAuthenticatedUserInvalidatorResult = () => void;
 export function useAuthenticatedUserInvalidator(): UseAuthenticatedUserInvalidatorResult {
 	const queryClient = useQueryClient();
 	return () => queryClient.invalidateQueries({ queryKey: getAuthenticatedUserQueryKey() });
+}
+
+/**
+ * The data that will be returned from the useAuthenticatedUserResetter hook.
+ */
+export type UseAuthenticatedUserResetterResult = () => Promise<void>;
+
+/**
+ * A hook to reset the useAuthenticatedUser result.
+ *
+ * @returns The authenticated user resetter hook result.
+ */
+export function useAuthenticatedUserResetter(): UseAuthenticatedUserResetterResult {
+	const queryClient = useQueryClient();
+	return () => queryClient.resetQueries({ queryKey: getAuthenticatedUserQueryKey() });
 }

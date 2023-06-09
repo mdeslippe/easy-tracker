@@ -9,8 +9,8 @@ import { logout } from '@website/feature/auth/service';
 
 // Hooks.
 import {
-	useAuthenticatedUserInvalidator,
-	useAuthenticationStatusInvalidator
+	useAuthenticatedUserResetter,
+	useAuthenticationStatusResetter
 } from '@website/feature/auth/hook';
 
 // Custom.
@@ -24,8 +24,8 @@ import { LoadingOverlay } from '@website/common/component/display';
 export function LogoutPage(): JSX.Element {
 	const [error, setError] = useState<boolean>(false);
 	const [completed, setCompleted] = useState<boolean>(false);
-	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
-	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
+	const resetAuthenticatedUser = useAuthenticatedUserResetter();
+	const resetAuthenticationStatus = useAuthenticationStatusResetter();
 
 	useEffect(() => {
 		logout(undefined)
@@ -33,8 +33,8 @@ export function LogoutPage(): JSX.Element {
 				// If the logout was successful.
 				if (response.status === 200) {
 					setCompleted(true);
-					invalidateAuthenticatedUser();
-					invalidateAuthenticationStatus();
+					resetAuthenticatedUser();
+					resetAuthenticationStatus();
 				} else {
 					setError(true);
 				}

@@ -16,8 +16,10 @@ import { login } from '@website/feature/auth/service';
 
 // Hook.
 import {
-	UseAuthenticationStatusInvalidatorResult,
-	useAuthenticationStatusInvalidator
+	UseAuthenticatedUserResetterResult,
+	UseAuthenticationStatusResetterResult,
+	useAuthenticatedUserResetter,
+	useAuthenticationStatusResetter
 } from '@website/feature/auth/hook';
 
 // Custom.
@@ -37,16 +39,17 @@ const LoginFormSchema = LoginRequestDataSchema;
  *
  * @param values The values the user entered in the input fields.
  * @param setError A function that can be used to set an error message.
- * @param invalidateAuthenticationStatus A function that can be used to invalidate the current
- * authentication status.
  * @param navigate A function that can be used to navigate the user to a different route.
+ * @param resetAuthenticatedUser A function that can be used to reset the authenticated user data.
+ * @param resetAuthenticationStatus A function that can be used to reset the authentication status data.
  * @returns A promise.
  */
 async function handleLogin(
 	values: FieldValues,
 	setError: Dispatch<SetStateAction<string | null>>,
-	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult,
-	navigate: NavigateFunction
+	navigate: NavigateFunction,
+	resetAuthenticatedUser: UseAuthenticatedUserResetterResult,
+	resetAuthenticationStatus: UseAuthenticationStatusResetterResult
 ) {
 	// Send a request to authenticate the user.
 	const response = await login(await LoginRequestDataSchema.parseAsync(values));
@@ -54,7 +57,8 @@ async function handleLogin(
 	// Handle the response.
 	switch (response.status) {
 		case 200:
-			invalidateAuthenticationStatus();
+			resetAuthenticatedUser();
+			resetAuthenticationStatus();
 			navigate('/');
 			return;
 		case 401:
@@ -74,8 +78,9 @@ async function handleLogin(
  */
 export function LoginForm(): JSX.Element {
 	const navigate = useNavigate();
+	const resetAuthenticatedUser = useAuthenticatedUserResetter();
+	const resetAuthenticationStatus = useAuthenticationStatusResetter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const {
 		register,
 		handleSubmit,
@@ -92,8 +97,9 @@ export function LoginForm(): JSX.Element {
 				handleLogin(
 					values,
 					setErrorMessage,
-					invalidateAuthenticationStatus,
-					navigate
+					navigate,
+					resetAuthenticatedUser,
+					resetAuthenticationStatus
 				).catch(() => setErrorMessage('An unexpected error has occurred.'))
 			)}
 		>

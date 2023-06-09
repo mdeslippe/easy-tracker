@@ -23,8 +23,10 @@ import { createUser } from '@website/feature/user/service';
 
 // Hook.
 import {
-	UseAuthenticationStatusInvalidatorResult,
-	useAuthenticationStatusInvalidator
+	UseAuthenticatedUserResetterResult,
+	UseAuthenticationStatusResetterResult,
+	useAuthenticatedUserResetter,
+	useAuthenticationStatusResetter
 } from '@website/feature/auth/hook';
 
 // Custom.
@@ -58,16 +60,17 @@ const SignUpFormSchema = z
  *
  * @param values The values the user entered in the input fields.
  * @param setFieldError A function that can be used to set field errors.
- * @param invalidateAuthenticationStatus A function that can be used to invalidate the current
- * authentication status.
  * @param navigate A function that can be used to navigate the user to a different route.
+ * @param resetAuthenticatedUser A function that can be used to reset the authenticated user data.
+ * @param resetAuthenticationStatus A function that can be used to reset the authentication status data.
  * @returns A promise.
  */
 async function handleSignUp(
 	values: FieldValues,
 	setFieldError: UseFormSetError<FieldValues>,
-	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult,
-	navigate: NavigateFunction
+	navigate: NavigateFunction,
+	resetAuthenticatedUser: UseAuthenticatedUserResetterResult,
+	resetAuthenticationStatus: UseAuthenticationStatusResetterResult
 ): Promise<void> {
 	// Send a request to sign the user up.
 	const response = await createUser(await CreateUserRequestDataSchema.parseAsync(values));
@@ -75,7 +78,8 @@ async function handleSignUp(
 	// Handle the response.
 	switch (response.status) {
 		case 200:
-			invalidateAuthenticationStatus();
+			resetAuthenticatedUser();
+			resetAuthenticationStatus();
 			navigate('/');
 			return;
 		case 400:
@@ -106,8 +110,9 @@ async function handleSignUp(
  */
 export function SignUpForm(): JSX.Element {
 	const navigate = useNavigate();
+	const resetAuthenticatedUser = useAuthenticatedUserResetter();
+	const resetAuthenticationStatus = useAuthenticationStatusResetter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const {
 		register,
 		handleSubmit,
@@ -122,9 +127,13 @@ export function SignUpForm(): JSX.Element {
 		<form
 			id='sign-up-form'
 			onSubmit={handleSubmit((values) =>
-				handleSignUp(values, setError, invalidateAuthenticationStatus, navigate).catch(() =>
-					setErrorMessage('An unexpected error has occurred.')
-				)
+				handleSignUp(
+					values,
+					setError,
+					navigate,
+					resetAuthenticatedUser,
+					resetAuthenticationStatus
+				).catch(() => setErrorMessage('An unexpected error has occurred.'))
 			)}
 		>
 			{errorMessage !== null && (
