@@ -8,6 +8,15 @@ import { User } from '@website/feature/user/model';
 import { getUserThatIsCurrentlyAuthenticated } from '@website/feature/auth/service';
 
 /**
+ * A function that can be used to get the underlying query key for the use authenticated user hook.
+ *
+ * @returns The query key for the user authenticated user hook.
+ */
+export function getAuthenticatedUserQueryKey(): Array<string> {
+	return ['authentication_current_user'];
+}
+
+/**
  * The data that will be returned from the useAuthenticatedUser hook.
  */
 export type UseAuthenticatedUserResult = {
@@ -49,7 +58,7 @@ export type UseAuthenticatedUserResult = {
  */
 export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 	const query = useQuery(
-		['authentication_current_user'],
+		getAuthenticatedUserQueryKey(),
 		async (context: QueryFunctionContext<string[], unknown>) => {
 			// Send the request.
 			const result = await getUserThatIsCurrentlyAuthenticated(undefined, context.signal);
@@ -59,6 +68,9 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 
 			// Return the result.
 			return result;
+		},
+		{
+			cacheTime: Infinity
 		}
 	);
 
@@ -84,5 +96,5 @@ export type UseAuthenticatedUserInvalidatorResult = () => void;
  */
 export function useAuthenticatedUserInvalidator(): UseAuthenticatedUserInvalidatorResult {
 	const queryClient = useQueryClient();
-	return () => queryClient.invalidateQueries({ queryKey: ['authentication_current_user'] });
+	return () => queryClient.invalidateQueries({ queryKey: getAuthenticatedUserQueryKey() });
 }

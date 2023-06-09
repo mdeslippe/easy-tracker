@@ -11,11 +11,11 @@ import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Pages.
-import { LandingPage } from '@website/page/LandingPage/LandingPage';
+import { LogoutPage } from '@website/page/LogoutPage/LogoutPage';
 
-// Test cases for rendering the landing page component.
-describe('Landing Page component rendering', () => {
-	it('Renders the landing page component without crashing', () => {
+// Test cases for rendering the logout page component.
+describe('Logout Page component rendering', () => {
+	it('Renders the logout page component without crashing', () => {
 		// Create a react query client.
 		const queryClient = new QueryClient();
 
@@ -26,7 +26,7 @@ describe('Landing Page component rendering', () => {
 					<Routes>
 						<Route
 							path='/'
-							element={<LandingPage />}
+							element={<LogoutPage />}
 						/>
 					</Routes>
 				</BrowserRouter>

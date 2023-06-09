@@ -13,7 +13,7 @@ import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
 import { LoadingOverlay } from '@website/common/component/display';
-import { UnauthenticatedRoute } from '@website/common/component/navigation';
+import { AuthenticatedRoute, UnauthenticatedRoute } from '@website/common/component/navigation';
 
 // Pages.
 const LandingPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
@@ -27,6 +27,9 @@ const LoginPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 );
 const SignUpPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page').then((module) => ({ default: module.SignUpPage }))
+);
+const LogoutPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
+	import('@website/page').then((module) => ({ default: module.LogoutPage }))
 );
 
 // Create a react query client.
@@ -57,7 +60,8 @@ function Router(): JSX.Element {
 	// TODO: Handle an error occurring.
 	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticationStatus();
 
-	// If the user's authentication status is being loaded for the first time, show the loading overlay.
+	// If the user's authentication status is being loaded for the first time,
+	// show the loading overlay.
 	if (isLoading && isInitialLoading) return <LoadingOverlay />;
 
 	return (
@@ -81,6 +85,14 @@ function Router(): JSX.Element {
 						<UnauthenticatedRoute redirectTo='/'>
 							<LoginPage />
 						</UnauthenticatedRoute>
+					)}
+				/>
+				<Route
+					path='/logout'
+					Component={() => (
+						<AuthenticatedRoute redirectTo='/'>
+							<LogoutPage />
+						</AuthenticatedRoute>
 					)}
 				/>
 			</Routes>
