@@ -78,9 +78,9 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 export type UseAuthenticatedUserInvalidatorResult = () => void;
 
 /**
- * A hook that can be used to invalidate the useAuthenticatedUser result.
+ * A hook to invalidate the useAuthenticatedUser result.
  *
- * @returns The useAuthenticatedUserInvalidator result.
+ * @returns The authenticated user invalidator hook result.
  */
 export function useAuthenticatedUserInvalidator(): UseAuthenticatedUserInvalidatorResult {
 	const queryClient = useQueryClient();
