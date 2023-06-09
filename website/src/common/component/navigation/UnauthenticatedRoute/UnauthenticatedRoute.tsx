@@ -8,7 +8,7 @@ import { useAuthenticationStatus } from '@website/feature/auth/hook';
 import { RestrictedRoute } from '@website/common/component/navigation';
 
 /**
- * Properties for the {@link AuthenticatedRoute} component.
+ * Properties for the {@link UnauthenticatedRoute} component.
  */
 export interface UnauthenticatedRouteProps {
 	/**

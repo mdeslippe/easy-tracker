@@ -12,7 +12,7 @@ import { RestrictedRoute } from '@website/common/component/navigation/Restricted
 
 // Test cases for rendering the restricted route component.
 describe('Restricted Route component rendering', () => {
-	it('Renders the restricted route component where the route is permitted without crashing', () => {
+	it('Renders the restricted route component without crashing when the route is permitted', () => {
 		// Render the component.
 		render(
 			<BrowserRouter>
@@ -32,7 +32,7 @@ describe('Restricted Route component rendering', () => {
 		);
 	});
 
-	it('Renders the restricted route component where the route is not permitted without crashing', () => {
+	it('Renders the restricted route component without crashing when the route is not permitted', () => {
 		// Render the component.
 		render(
 			<BrowserRouter>

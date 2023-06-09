@@ -13,7 +13,7 @@ import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
 import { LoadingOverlay } from '@website/common/component/display';
-import { UnauthenticatedRoute } from './common/component/navigation';
+import { UnauthenticatedRoute } from '@website/common/component/navigation';
 
 // Pages.
 const LandingPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
