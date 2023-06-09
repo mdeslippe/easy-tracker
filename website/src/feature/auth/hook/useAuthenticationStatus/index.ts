@@ -78,7 +78,7 @@ export function useAuthenticationStatus(): UseAuthenticationStatusResult {
 /**
  * The data that will be returned from the useAuthenticationStatusInvalidator hook.
  */
-export type UseAuthenticationStatusInvalidatorResult = () => void;
+export type UseAuthenticationStatusInvalidatorResult = () => Promise<void>;
 
 /**
  * A hook to invalidate the useAuthenticationStatus result.
@@ -88,4 +88,19 @@ export type UseAuthenticationStatusInvalidatorResult = () => void;
 export function useAuthenticationStatusInvalidator(): UseAuthenticationStatusInvalidatorResult {
 	const queryClient = useQueryClient();
 	return () => queryClient.invalidateQueries({ queryKey: getAuthenticationStatusQueryKey() });
+}
+
+/**
+ * The data that will be returned from the useAuthenticationStatusResetter hook.
+ */
+export type UseAuthenticationStatusResetterResult = () => Promise<void>;
+
+/**
+ * A hook to reset the useAuthenticationStatus result.
+ *
+ * @returns The authentication status resetter hook result.
+ */
+export function useAuthenticationStatusResetter(): UseAuthenticationStatusResetterResult {
+	const queryClient = useQueryClient();
+	return () => queryClient.resetQueries({ queryKey: getAuthenticationStatusQueryKey() });
 }
