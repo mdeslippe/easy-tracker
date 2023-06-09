@@ -1,6 +1,9 @@
 // React.
 import { useState } from 'react';
 
+// React router.
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, UseFormSetError, useForm } from 'react-hook-form';
@@ -17,6 +20,12 @@ import {
 
 // Services.
 import { createUser } from '@website/feature/user/service';
+
+// Hook.
+import {
+	UseAuthenticationStatusInvalidatorResult,
+	useAuthenticationStatusInvalidator
+} from '@website/feature/auth/hook';
 
 // Custom.
 import { InputField } from '@website/common/component/input';
@@ -49,11 +58,16 @@ const SignUpFormSchema = z
  *
  * @param values The values the user entered in the input fields.
  * @param setFieldError A function that can be used to set field errors.
+ * @param invalidateAuthenticationStatus A function that can be used to invalidate the current
+ * authentication status.
+ * @param navigate A function that can be used to navigate the user to a different route.
  * @returns A promise.
  */
 async function handleSignUp(
 	values: FieldValues,
-	setFieldError: UseFormSetError<FieldValues>
+	setFieldError: UseFormSetError<FieldValues>,
+	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult,
+	navigate: NavigateFunction
 ): Promise<void> {
 	// Send a request to sign the user up.
 	const response = await createUser(await CreateUserRequestDataSchema.parseAsync(values));
@@ -61,9 +75,8 @@ async function handleSignUp(
 	// Handle the response.
 	switch (response.status) {
 		case 200:
-			// TODO: Fetch user data and store it with react query.
-			// TODO: Redirect the user to the dashboard.
-
+			invalidateAuthenticationStatus();
+			navigate('/');
 			return;
 		case 400:
 			// Parse the validation error response.
@@ -92,7 +105,9 @@ async function handleSignUp(
  * @returns The sign up form.
  */
 export function SignUpForm(): JSX.Element {
+	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const {
 		register,
 		handleSubmit,
@@ -107,7 +122,7 @@ export function SignUpForm(): JSX.Element {
 		<form
 			id='sign-up-form'
 			onSubmit={handleSubmit((values) =>
-				handleSignUp(values, setError).catch(() =>
+				handleSignUp(values, setError, invalidateAuthenticationStatus, navigate).catch(() =>
 					setErrorMessage('An unexpected error has occurred.')
 				)
 			)}
