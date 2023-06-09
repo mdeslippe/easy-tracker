@@ -68,6 +68,9 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 
 			// Return the result.
 			return result;
+		},
+		{
+			cacheTime: Infinity
 		}
 	);
 

@@ -10,9 +10,11 @@ import { render } from '@testing-library/react';
 // React query.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+// Hooks.
+import { getAuthenticationStatusQueryKey } from '@website/feature/auth/hook';
+
 // Custom.
 import { TopNavigationBar } from '@website/common/component/shared/TopNavigationBar/TopNavigationBar';
-import { getAuthenticationStatusQueryKey } from '@website/feature/auth/hook';
 
 // Test cases for rendering the top navigation bar.
 describe('Top Navigation Bar component rendering', () => {

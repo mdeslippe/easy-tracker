@@ -60,6 +60,9 @@ export function useAuthenticationStatus(): UseAuthenticationStatusResult {
 
 			// Return the result.
 			return result;
+		},
+		{
+			cacheTime: Infinity
 		}
 	);
 
