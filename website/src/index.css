@@ -27,6 +27,8 @@
 	--error-color: #ff0000;
 	--error-accent: #ffa0a0;
 	--required-color: #ff0000;
+	--skeleton-color: #aaaaaa;
+	--skeleton-background-color: #cccccc;
 
 	/* Numbers */
 	--max-content-width: 1920px;

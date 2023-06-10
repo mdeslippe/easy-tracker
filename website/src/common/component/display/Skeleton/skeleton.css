@@ -1,0 +1,14 @@
+/* Class Styles */
+.skeleton {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	background: var(--skeleton-color);
+	border-radius: var(--normal-border-radius);
+	height: 1rem;
+}
+
+/* Animations */
+@keyframes pulse {
+	50% {
+		opacity: 0.5;
+	}
+}
