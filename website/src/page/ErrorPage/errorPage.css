@@ -23,7 +23,7 @@
 #error .error-message-container > h1 {
 	font-size: 2rem;
 	font-family: 'Impact-Bold', Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-	margin-bottom: 1rem;
+	margin-bottom: 0.5rem;
 }
 
 #error .error-picture-container > img {
