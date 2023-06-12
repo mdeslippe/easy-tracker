@@ -109,7 +109,7 @@ body {
 }
 
 /* Large Screens */
-@media (max-width: 1000px) {
+@media (min-width: 751) {
 	/* Class Styling */
 	.hide-large {
 		display: none;

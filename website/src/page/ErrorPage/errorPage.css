@@ -1,0 +1,43 @@
+/* ID Styling */
+#error {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+}
+
+#error > div {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	max-width: 1000px;
+	width: 100%;
+}
+
+#error > div > div {
+	padding: 4%;
+	text-align: center;
+	width: 50%;
+}
+
+#error .error-message-container > h1 {
+	font-size: 2rem;
+	font-family: 'Impact-Bold', Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+	margin-bottom: 0.5rem;
+}
+
+#error .error-picture-container > img {
+	width: 100%;
+}
+
+/* Small Screens */
+@media (max-width: 500px) {
+	/* ID Styling */
+	#error > div {
+		flex-direction: column;
+	}
+
+	#error > div > div {
+		width: 100%;
+	}
+}

@@ -31,6 +31,9 @@ const SignUpPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 const LogoutPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page').then((module) => ({ default: module.LogoutPage }))
 );
+const ErrorPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
+	import('@website/page').then((module) => ({ default: module.ErrorPage }))
+);
 
 // Create a react query client.
 const queryClient = new QueryClient();
@@ -94,6 +97,10 @@ function Router(): JSX.Element {
 							<LogoutPage />
 						</AuthenticatedRoute>
 					)}
+				/>
+				<Route
+					path='/error'
+					Component={ErrorPage}
 				/>
 			</Routes>
 		</BrowserRouter>
