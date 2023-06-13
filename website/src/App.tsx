@@ -18,22 +18,22 @@ import {
 
 // Pages.
 const LandingPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
-	import('@website/page').then((module) => ({ default: module.LandingPage }))
+	import('@website/page/LandingPage').then((module) => ({ default: module.LandingPage }))
 );
 const HomePage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
-	import('@website/page').then((module) => ({ default: module.HomePage }))
+	import('@website/page/HomePage').then((module) => ({ default: module.HomePage }))
 );
 const LoginPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
-	import('@website/page').then((module) => ({ default: module.LoginPage }))
+	import('@website/page/LoginPage').then((module) => ({ default: module.LoginPage }))
 );
 const SignUpPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
-	import('@website/page').then((module) => ({ default: module.SignUpPage }))
+	import('@website/page/SignUpPage').then((module) => ({ default: module.SignUpPage }))
 );
 const LogoutPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
-	import('@website/page').then((module) => ({ default: module.LogoutPage }))
+	import('@website/page/LogoutPage').then((module) => ({ default: module.LogoutPage }))
 );
 const ErrorPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
-	import('@website/page').then((module) => ({ default: module.ErrorPage }))
+	import('@website/page/ErrorPage').then((module) => ({ default: module.ErrorPage }))
 );
 
 // Create a react query client.
