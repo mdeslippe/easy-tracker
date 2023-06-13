@@ -9,33 +9,32 @@ import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
 import { LoadingOverlay } from '@website/common/component/display';
-import { RestrictedRoute } from '@website/common/component/navigation';
 
 /**
- * Properties for the {@link UnauthenticatedRoute} component.
+ * Properties for the {@link ConditionalAuthenticationRoute} component.
  */
-export interface UnauthenticatedRouteProps {
+export interface ConditionalAuthenticationRouteProps {
 	/**
-	 * The route users will be redirected to if they are not permitted to access the route.
+	 * The component that will be rendered if the user is authenticated.
 	 */
-	redirectTo: string;
+	AuthenticatedComponent: ComponentType;
 
 	/**
-	 * The component that will be rendered if the user is permitted to access the route.
+	 * The component that will be rendered if the user is not authenticated.
 	 */
-	Component: ComponentType;
+	UnauthenticatedComponent: ComponentType;
 }
 
 /**
- * An unauthenticated route component.
+ * A conditional authentication route component.
  *
  * @param props The component's properties.
- * @returns The unauthenticated route.
+ * @returns The conditional authentication route.
  */
-export function UnauthenticatedRoute({
-	redirectTo,
-	Component
-}: UnauthenticatedRouteProps): JSX.Element {
+export function ConditionalAuthenticationRoute({
+	AuthenticatedComponent,
+	UnauthenticatedComponent
+}: ConditionalAuthenticationRouteProps): JSX.Element {
 	const { isLoading, isInitialLoading, isError, isAuthenticated } = useAuthenticationStatus();
 
 	// If an error occurred while loading the user's authentication status.
@@ -48,11 +47,5 @@ export function UnauthenticatedRoute({
 		return <LoadingOverlay />;
 	}
 
-	return (
-		<RestrictedRoute
-			permitted={isLoading || !isAuthenticated}
-			redirectTo={redirectTo}
-			Component={Component}
-		/>
-	);
+	return isAuthenticated ? <AuthenticatedComponent /> : <UnauthenticatedComponent />;
 }

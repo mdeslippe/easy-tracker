@@ -1,10 +1,14 @@
 // React.
-import { ReactNode } from 'react';
+import { ComponentType } from 'react';
+
+// React router.
+import { Navigate } from 'react-router';
 
 // Hooks.
 import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
+import { LoadingOverlay } from '@website/common/component/display';
 import { RestrictedRoute } from '@website/common/component/navigation';
 
 /**
@@ -17,9 +21,9 @@ export interface AuthenticatedRouteProps {
 	redirectTo: string;
 
 	/**
-	 * The content that will be rendered if the user is permitted to access the route.
+	 * The component that will be rendered if the user is permitted to access the route.
 	 */
-	children: ReactNode;
+	Component: ComponentType;
 }
 
 /**
@@ -28,16 +32,27 @@ export interface AuthenticatedRouteProps {
  * @param props The component's properties.
  * @returns The authenticated route.
  */
-export function AuthenticatedRoute({ redirectTo, children }: AuthenticatedRouteProps): JSX.Element {
-	// TODO: Handle an error occurring.
-	const { isLoading, isAuthenticated } = useAuthenticationStatus();
+export function AuthenticatedRoute({
+	redirectTo,
+	Component
+}: AuthenticatedRouteProps): JSX.Element {
+	const { isLoading, isInitialLoading, isError, isAuthenticated } = useAuthenticationStatus();
+
+	// If an error occurred while loading the user's authentication status.
+	if (isError) {
+		return <Navigate to='/error' />;
+	}
+
+	// If the user's authentication status is loading for the first time.
+	if (isLoading && isInitialLoading) {
+		return <LoadingOverlay />;
+	}
 
 	return (
 		<RestrictedRoute
 			permitted={isLoading || isAuthenticated}
 			redirectTo={redirectTo}
-		>
-			{children}
-		</RestrictedRoute>
+			Component={Component}
+		/>
 	);
 }

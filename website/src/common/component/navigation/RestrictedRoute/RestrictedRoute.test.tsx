@@ -1,6 +1,9 @@
 // Vitest.
 import { describe, expect, it } from 'vitest';
 
+// React.
+import { Fragment } from 'react';
+
 // React router.
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -23,7 +26,7 @@ describe('Restricted Route component rendering', () => {
 							<RestrictedRoute
 								permitted={true}
 								redirectTo='/'
-								children={null}
+								Component={Fragment}
 							/>
 						}
 					/>
@@ -43,7 +46,7 @@ describe('Restricted Route component rendering', () => {
 							<RestrictedRoute
 								permitted={false}
 								redirectTo='/'
-								children={null}
+								Component={Fragment}
 							/>
 						}
 					/>
@@ -63,9 +66,8 @@ describe('Restricted Route component rendering', () => {
 							<RestrictedRoute
 								permitted={true}
 								redirectTo='/'
-							>
-								<p>Test Content</p>
-							</RestrictedRoute>
+								Component={() => <p>Test Content</p>}
+							/>
 						}
 					/>
 				</Routes>
@@ -87,9 +89,8 @@ describe('Restricted Route component rendering', () => {
 							<RestrictedRoute
 								permitted={false}
 								redirectTo='/'
-							>
-								<p>Test Content</p>
-							</RestrictedRoute>
+								Component={() => <p>Test Content</p>}
+							/>
 						}
 					/>
 				</Routes>

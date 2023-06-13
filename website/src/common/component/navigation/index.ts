@@ -4,3 +4,4 @@ export * from '@website/common/component/navigation/NavigationGroup';
 export * from '@website/common/component/navigation/NavigationButton';
 export * from '@website/common/component/navigation/AuthenticatedRoute';
 export * from '@website/common/component/navigation/UnauthenticatedRoute';
+export * from '@website/common/component/navigation/ConditionalAuthenticationRoute';
