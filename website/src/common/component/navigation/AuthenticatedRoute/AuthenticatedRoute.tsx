@@ -1,5 +1,5 @@
 // React.
-import { ReactNode } from 'react';
+import { ComponentType } from 'react';
 
 // React router.
 import { Navigate } from 'react-router';
@@ -21,9 +21,9 @@ export interface AuthenticatedRouteProps {
 	redirectTo: string;
 
 	/**
-	 * The content that will be rendered if the user is permitted to access the route.
+	 * The component that will be rendered if the user is permitted to access the route.
 	 */
-	children: ReactNode;
+	Component: ComponentType;
 }
 
 /**
@@ -32,7 +32,10 @@ export interface AuthenticatedRouteProps {
  * @param props The component's properties.
  * @returns The authenticated route.
  */
-export function AuthenticatedRoute({ redirectTo, children }: AuthenticatedRouteProps): JSX.Element {
+export function AuthenticatedRoute({
+	redirectTo,
+	Component
+}: AuthenticatedRouteProps): JSX.Element {
 	const { isLoading, isInitialLoading, isError, isAuthenticated } = useAuthenticationStatus();
 
 	// If an error occurred while loading the user's authentication status.
@@ -49,8 +52,7 @@ export function AuthenticatedRoute({ redirectTo, children }: AuthenticatedRouteP
 		<RestrictedRoute
 			permitted={isLoading || isAuthenticated}
 			redirectTo={redirectTo}
-		>
-			{children}
-		</RestrictedRoute>
+			Component={Component}
+		/>
 	);
 }

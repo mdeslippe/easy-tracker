@@ -8,12 +8,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// Hooks.
-import { useAuthenticationStatus } from '@website/feature/auth/hook';
-
 // Custom.
 import { LoadingOverlay } from '@website/common/component/display';
-import { AuthenticatedRoute, UnauthenticatedRoute } from '@website/common/component/navigation';
+import {
+	AuthenticatedRoute,
+	ConditionalAuthenticationRoute,
+	UnauthenticatedRoute
+} from '@website/common/component/navigation';
 
 // Pages.
 const LandingPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
@@ -60,42 +61,43 @@ function App(): JSX.Element {
  * @returns The router.
  */
 function Router(): JSX.Element {
-	// TODO: Handle an error occurring.
-	const { isLoading, isInitialLoading, isAuthenticated } = useAuthenticationStatus();
-
-	// If the user's authentication status is being loaded for the first time,
-	// show the loading overlay.
-	if (isLoading && isInitialLoading) return <LoadingOverlay />;
-
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route
 					path='/'
-					Component={isAuthenticated ? HomePage : LandingPage}
+					Component={() => (
+						<ConditionalAuthenticationRoute
+							AuthenticatedComponent={HomePage}
+							UnauthenticatedComponent={LandingPage}
+						/>
+					)}
 				/>
 				<Route
 					path='/signup'
 					Component={() => (
-						<UnauthenticatedRoute redirectTo='/'>
-							<SignUpPage />
-						</UnauthenticatedRoute>
+						<UnauthenticatedRoute
+							redirectTo='/'
+							Component={SignUpPage}
+						/>
 					)}
 				/>
 				<Route
 					path='/login'
 					Component={() => (
-						<UnauthenticatedRoute redirectTo='/'>
-							<LoginPage />
-						</UnauthenticatedRoute>
+						<UnauthenticatedRoute
+							redirectTo='/'
+							Component={LoginPage}
+						/>
 					)}
 				/>
 				<Route
 					path='/logout'
 					Component={() => (
-						<AuthenticatedRoute redirectTo='/'>
-							<LogoutPage />
-						</AuthenticatedRoute>
+						<AuthenticatedRoute
+							redirectTo='/'
+							Component={LogoutPage}
+						/>
 					)}
 				/>
 				<Route

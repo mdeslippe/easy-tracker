@@ -1,5 +1,5 @@
 // React.
-import { Fragment, ReactNode } from 'react';
+import { ComponentType } from 'react';
 
 // React router.
 import { Navigate } from 'react-router';
@@ -19,9 +19,9 @@ export interface RestrictedRouteProps {
 	redirectTo: string;
 
 	/**
-	 * The content that will be rendered if the user is permitted to access the route.
+	 * The component that will be rendered if the user is permitted to access the route.
 	 */
-	children: ReactNode;
+	Component: ComponentType;
 }
 
 /**
@@ -33,11 +33,11 @@ export interface RestrictedRouteProps {
 export function RestrictedRoute({
 	permitted,
 	redirectTo,
-	children
+	Component
 }: RestrictedRouteProps): JSX.Element {
 	// If the user is not permitted to access the restricted route, redirect them.
 	if (!permitted) return <Navigate to={redirectTo} />;
 
 	// If the user is permitted to access the restricted route, render the content.
-	return <Fragment>{children}</Fragment>;
+	return <Component />;
 }
