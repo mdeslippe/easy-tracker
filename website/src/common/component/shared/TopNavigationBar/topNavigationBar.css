@@ -1,0 +1,12 @@
+/* Class Styling */
+.nav-group-skeleton {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.nav-text-skeleton {
+	height: 0.8rem;
+	margin: 8px;
+	width: 4rem;
+}
