@@ -73,7 +73,7 @@ describe('Conditional Authentication Route component rendering', () => {
 		expect(result.getByText('You are authenticated!')).toBeDefined();
 	});
 
-	it('Renders the unauthenticated component when the user is authenticated', () => {
+	it('Renders the unauthenticated component when the user is not authenticated', () => {
 		// Create a react query client.
 		const queryClient = new QueryClient();
 		queryClient.setQueryData(getAuthenticationStatusQueryKey(), { status: 200, data: false });
