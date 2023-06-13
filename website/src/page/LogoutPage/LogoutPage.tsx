@@ -44,7 +44,7 @@ export function LogoutPage(): JSX.Element {
 
 	// If an error occurred.
 	if (error) {
-		// TODO: Redirect to the error page.
+		return <Navigate to='/error' />;
 	}
 
 	// If the user has been logged out.
