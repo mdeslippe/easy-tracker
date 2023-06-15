@@ -70,6 +70,7 @@ describe('Conditional Authentication Route component rendering', () => {
 			</QueryClientProvider>
 		);
 
+		// Make sure the authenticated component was rendered.
 		expect(result.getByText('You are authenticated!')).toBeDefined();
 	});
 
@@ -99,6 +100,7 @@ describe('Conditional Authentication Route component rendering', () => {
 			</QueryClientProvider>
 		);
 
+		// Make sure the unauthenticated component was rendered.
 		expect(result.getByText('You are not authenticated!')).toBeDefined();
 	});
 });
