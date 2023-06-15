@@ -1,0 +1,43 @@
+/* ID Styling */
+#not-found {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	min-height: calc(100vh - var(--nav-size));
+}
+
+#not-found > div {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	max-width: 1000px;
+	width: 100%;
+}
+
+#not-found > div > div {
+	padding: 4%;
+	text-align: center;
+	width: 50%;
+}
+
+#not-found .not-found-message-container > h1 {
+	font-size: 2rem;
+	font-family: 'Impact-Bold', Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+	margin-bottom: 0.5rem;
+}
+
+#not-found .not-found-picture-container > img {
+	width: 100%;
+}
+
+/* Small Screens */
+@media (max-width: 500px) {
+	/* ID Styling */
+	#not-found > div {
+		flex-direction: column;
+	}
+
+	#not-found > div > div {
+		width: 100%;
+	}
+}
