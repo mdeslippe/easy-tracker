@@ -3,7 +3,7 @@
 	align-items: center;
 	display: flex;
 	justify-content: center;
-	min-height: 100vh;
+	min-height: calc(100vh - var(--nav-size));
 }
 
 #not-found > div {
