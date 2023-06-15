@@ -27,5 +27,20 @@ export function NotFoundPage(): JSX.Element {
  * @returns The main content for the not found page.
  */
 function Main(): JSX.Element {
-	return <main></main>;
+	return (
+		<main id='not-found'>
+			<div>
+				<div className='not-found-message-container'>
+					<h1>Not Found</h1>
+					<p>The page you were looking for could not be found.</p>
+				</div>
+				<div className='not-found-picture-container'>
+					<img
+						src='/images/pictures/error-404.svg'
+						alt=''
+					/>
+				</div>
+			</div>
+		</main>
+	);
 }
