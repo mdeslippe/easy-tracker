@@ -1,0 +1,12 @@
+/* Class Styling */
+.user-menu-picture {
+	border-radius: 100%;
+	height: calc(2 * var(--nav-size) / 3);
+	overflow: hidden;
+	width: calc(2 * var(--nav-size) / 3);
+}
+
+.user-menu-content-container {
+	border-radius: var(--normal-border-radius);
+	overflow: hidden;
+}

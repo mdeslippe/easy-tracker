@@ -5,6 +5,7 @@ import { Navigate } from 'react-router';
 import { useAuthenticationStatus } from '@website/feature/auth/hook';
 
 // Custom.
+import { UserMenu } from '@website/common/component/shared';
 import { Skeleton } from '@website/common/component/display';
 import {
 	NavigationBar,
@@ -55,7 +56,9 @@ export function TopNavigationBar(): JSX.Element {
 				</NavigationGroup>
 			) : (
 				<NavigationGroup>
-					<NavigationButton to='/logout'>Logout</NavigationButton>
+					<li>
+						<UserMenu />
+					</li>
 				</NavigationGroup>
 			)}
 		</NavigationBar>
