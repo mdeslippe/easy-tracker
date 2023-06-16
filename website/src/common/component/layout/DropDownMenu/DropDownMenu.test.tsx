@@ -17,6 +17,7 @@ describe('Drop Down Menu component rendering', () => {
 		render(
 			<DropDownMenu
 				accessibilityLabel='Test Menu'
+				align='center'
 				buttonContent={<Fragment />}
 			>
 				<Fragment />
@@ -29,6 +30,7 @@ describe('Drop Down Menu component rendering', () => {
 		const result = render(
 			<DropDownMenu
 				accessibilityLabel='Test Menu'
+				align='center'
 				buttonContent={<Fragment />}
 			>
 				<p>This should not be visible.</p>
@@ -44,6 +46,7 @@ describe('Drop Down Menu component rendering', () => {
 		const result = render(
 			<DropDownMenu
 				accessibilityLabel='Test Menu'
+				align='center'
 				buttonContent={<Fragment />}
 			>
 				<p>This should be visible after clicking the button.</p>
@@ -70,6 +73,7 @@ describe('Drop Down Menu component rendering', () => {
 		const result = render(
 			<DropDownMenu
 				accessibilityLabel='Test Menu'
+				align='center'
 				buttonContent={<Fragment />}
 			>
 				<p>This should be visible after clicking the button.</p>

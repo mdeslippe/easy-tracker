@@ -1,6 +1,9 @@
 // React.
 import { ComponentProps, ReactNode, useState } from 'react';
 
+// CSS.
+import '@website/common/component/layout/DropDownMenu/dropDownMenu.css';
+
 /**
  * Properties for the {@link DropDownMenu} component.
  */
@@ -9,6 +12,11 @@ export interface DropDownMenuProps extends ComponentProps<'div'> {
 	 * A descriptive label that will be used for accessibility purposes.
 	 */
 	accessibilityLabel: string;
+
+	/**
+	 * The alignment of the expanded content, relative to the bottom of the button.
+	 */
+	align: 'left' | 'center' | 'right';
 
 	/**
 	 * The content that will be rendered inside of the drop down menu's button.
@@ -29,6 +37,7 @@ export interface DropDownMenuProps extends ComponentProps<'div'> {
  */
 export function DropDownMenu({
 	accessibilityLabel,
+	align,
 	buttonContent,
 	children,
 	className,
@@ -50,7 +59,7 @@ export function DropDownMenu({
 			>
 				{buttonContent}
 			</button>
-			{isOpen && <div className='drop-down-content'>{children}</div>}
+			{isOpen && <div className={`drop-down-content align-${align}`}>{children}</div>}
 		</div>
 	);
 }

@@ -1,0 +1,58 @@
+/* Class Styling */
+.drop-down-menu {
+	position: relative;
+}
+
+.drop-down-button {
+	align-items: center;
+	border: none;
+	display: flex;
+	justify-content: center;
+	padding: 0px;
+}
+
+.drop-down-button:hover {
+	cursor: pointer;
+}
+
+.drop-down-content {
+	background: var(--secondary-color);
+	border-radius: var(--normal-border-radius);
+	box-shadow: 0 2px 5px 0 var(--tertiary-accent);
+	opacity: 0;
+	padding: 0.5rem;
+	position: absolute;
+	top: calc(100% + 0.25rem);
+	transform: translateY(-10px);
+}
+
+.drop-down-content.align-left {
+	animation: show 100ms 100ms cubic-bezier(0.38, 0.97, 0.56, 0.76) forwards;
+	left: 0;
+}
+
+.drop-down-content.align-center {
+	animation: show-center 100ms 100ms cubic-bezier(0.38, 0.97, 0.56, 0.76) forwards;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.drop-down-content.align-right {
+	animation: show 100ms 100ms cubic-bezier(0.38, 0.97, 0.56, 0.76) forwards;
+	right: 0;
+}
+
+/* Animations */
+@keyframes show {
+	100% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+
+@keyframes show-center {
+	100% {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0px);
+	}
+}
