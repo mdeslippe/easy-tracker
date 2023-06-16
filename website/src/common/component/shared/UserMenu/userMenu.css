@@ -1,4 +1,12 @@
 /* Class Styling */
+.user-menu-skeleton {
+	border-radius: 100%;
+	height: calc(2 * var(--nav-size) / 3);
+	overflow: hidden;
+	width: calc(2 * var(--nav-size) / 3);
+	margin: calc(var(--nav-size) / 6) 0px;
+}
+
 .user-menu-picture {
 	border-radius: 100%;
 	height: calc(2 * var(--nav-size) / 3);
