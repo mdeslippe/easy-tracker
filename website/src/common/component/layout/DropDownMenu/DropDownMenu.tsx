@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps, ReactNode, useState } from 'react';
+import { ComponentProps, Fragment, ReactNode, useState } from 'react';
 
 // CSS.
 import '@website/common/component/layout/DropDownMenu/dropDownMenu.css';
@@ -46,20 +46,28 @@ export function DropDownMenu({
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	return (
-		<div
-			{...props}
-			className={className ? `${className} drop-down-menu` : 'drop-down-menu'}
-		>
-			<button
-				className='drop-down-button'
-				aria-haspopup='menu'
-				aria-expanded={isOpen}
-				aria-label={accessibilityLabel}
-				onClick={() => setIsOpen((status) => !status)}
+		<Fragment>
+			{isOpen && (
+				<div
+					className='full-page-drop-down-overlay'
+					onClick={() => setIsOpen(false)}
+				/>
+			)}
+			<div
+				{...props}
+				className={className ? `${className} drop-down-menu` : 'drop-down-menu'}
 			>
-				{buttonContent}
-			</button>
-			{isOpen && <div className={`drop-down-content align-${align}`}>{children}</div>}
-		</div>
+				<button
+					className='drop-down-button'
+					aria-haspopup='menu'
+					aria-expanded={isOpen}
+					aria-label={accessibilityLabel}
+					onClick={() => setIsOpen((status) => !status)}
+				>
+					{buttonContent}
+				</button>
+				{isOpen && <div className={`drop-down-content align-${align}`}>{children}</div>}
+			</div>
+		</Fragment>
 	);
 }

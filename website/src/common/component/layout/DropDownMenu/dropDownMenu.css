@@ -1,4 +1,12 @@
 /* Class Styling */
+.full-page-drop-down-overlay {
+	height: 100vh;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100vw;
+}
+
 .drop-down-menu {
 	align-items: center;
 	display: flex;
