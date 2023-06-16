@@ -1,5 +1,7 @@
 /* Class Styling */
 .nav-group {
+	align-items: center;
 	display: flex;
+	justify-content: center;
 	min-height: var(--nav-size);
 }

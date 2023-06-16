@@ -56,9 +56,7 @@ export function TopNavigationBar(): JSX.Element {
 				</NavigationGroup>
 			) : (
 				<NavigationGroup>
-					<li>
-						<UserMenu />
-					</li>
+					<UserMenu />
 				</NavigationGroup>
 			)}
 		</NavigationBar>
