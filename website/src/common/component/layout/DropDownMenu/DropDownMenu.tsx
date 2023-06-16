@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps, Fragment, ReactNode, useState } from 'react';
+import { ComponentProps, Fragment, ReactNode, useEffect, useState } from 'react';
 
 // CSS.
 import '@website/common/component/layout/DropDownMenu/dropDownMenu.css';
@@ -44,6 +44,19 @@ export function DropDownMenu({
 	...props
 }: DropDownMenuProps): JSX.Element {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	useEffect(() => {
+		const escapeHandler = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				event.stopPropagation();
+				event.preventDefault();
+				setIsOpen(false);
+			}
+		};
+
+		window.addEventListener('keydown', escapeHandler, false);
+		return () => window.removeEventListener('keydown', escapeHandler, false);
+	}, []);
 
 	return (
 		<Fragment>
