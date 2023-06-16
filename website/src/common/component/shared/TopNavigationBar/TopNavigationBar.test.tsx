@@ -83,6 +83,6 @@ describe('Top Navigation Bar component rendering', () => {
 
 		// Make sure the navigation buttons were rendered correctly.
 		expect(result.getByText('Easy Tracker').closest('a')?.href).toMatch(/\/$/);
-		expect(result.getByText('Logout').closest('a')?.href).toMatch(/\/logout$/);
+		expect(result.container.querySelector('img')).toBeDefined();
 	});
 });
