@@ -43,7 +43,7 @@ export function UserMenu(): JSX.Element {
 			align='right'
 			buttonContent={
 				<img
-					className='user-menu-picture'
+					className='user-menu-picture no-select'
 					src={user?.profilePictureUrl}
 					alt={`@${user?.username}`}
 				/>
