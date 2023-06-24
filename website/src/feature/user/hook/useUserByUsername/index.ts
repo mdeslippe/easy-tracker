@@ -88,8 +88,8 @@ export function useUserByUsername(username: string): UseUserByUsernameResult {
 		isLoading: query.isLoading,
 		isInitialLoading: query.isInitialLoading,
 		isError: query.isError,
-		isAuthenticated: query.data?.status !== 401 ?? false,
-		isFound: query.data?.status === 200 ?? false,
+		isAuthenticated: query.data !== undefined && query.data.status !== 401,
+		isFound: query.data !== undefined && query.data.status === 200,
 		user: query.data?.data ?? null,
 		refetch: async () => await query.refetch()
 	};
