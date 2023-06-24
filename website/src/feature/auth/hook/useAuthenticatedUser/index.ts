@@ -8,9 +8,9 @@ import { User } from '@website/feature/user/model';
 import { getUserThatIsCurrentlyAuthenticated } from '@website/feature/auth/service';
 
 /**
- * A function that can be used to get the underlying query key for the use authenticated user hook.
+ * A function that can be used to get the underlying query key for the useAuthenticatedUser hook.
  *
- * @returns The query key for the user authenticated user hook.
+ * @returns The query key for the useAuthenticatedUser hook.
  */
 export function getAuthenticatedUserQueryKey(): Array<string> {
 	return ['authentication_current_user'];
@@ -52,9 +52,9 @@ export type UseAuthenticatedUserResult = {
 };
 
 /**
- * A hook to get the user that is currently authenticated.
+ * A hook to get information about the user that is currently authenticated.
  *
- * @returns The authenticated user hook result.
+ * @returns The result.
  */
 export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 	const query = useQuery(
@@ -92,7 +92,7 @@ export type UseAuthenticatedUserInvalidatorResult = () => Promise<void>;
 /**
  * A hook to invalidate the useAuthenticatedUser result.
  *
- * @returns The authenticated user invalidator hook result.
+ * @returns The result.
  */
 export function useAuthenticatedUserInvalidator(): UseAuthenticatedUserInvalidatorResult {
 	const queryClient = useQueryClient();
@@ -107,7 +107,7 @@ export type UseAuthenticatedUserResetterResult = () => Promise<void>;
 /**
  * A hook to reset the useAuthenticatedUser result.
  *
- * @returns The authenticated user resetter hook result.
+ * @returns The result.
  */
 export function useAuthenticatedUserResetter(): UseAuthenticatedUserResetterResult {
 	const queryClient = useQueryClient();

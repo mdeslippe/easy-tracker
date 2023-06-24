@@ -5,9 +5,9 @@ import { QueryFunctionContext, useQuery, useQueryClient } from '@tanstack/react-
 import { isAuthenticated } from '@website/feature/auth/service';
 
 /**
- * A function that can be used to get the underlying query key for the use authentication status hook.
+ * A function that can be used to get the underlying query key for the useAuthenticationStatus hook.
  *
- * @returns The query key for the use authentication status hook.
+ * @returns The query key for the useAuthenticationStatus hook.
  */
 export function getAuthenticationStatusQueryKey(): Array<string> {
 	return ['authentication_status'];
@@ -46,7 +46,7 @@ export type UseAuthenticationStatusResult = {
 /**
  * A hook to check if the the user is currently authenticated.
  *
- * @returns The authentication status hook result.
+ * @returns The result.
  */
 export function useAuthenticationStatus(): UseAuthenticationStatusResult {
 	const query = useQuery(
@@ -83,7 +83,7 @@ export type UseAuthenticationStatusInvalidatorResult = () => Promise<void>;
 /**
  * A hook to invalidate the useAuthenticationStatus result.
  *
- * @returns The authentication status invalidator hook result.
+ * @returns The result.
  */
 export function useAuthenticationStatusInvalidator(): UseAuthenticationStatusInvalidatorResult {
 	const queryClient = useQueryClient();
@@ -98,7 +98,7 @@ export type UseAuthenticationStatusResetterResult = () => Promise<void>;
 /**
  * A hook to reset the useAuthenticationStatus result.
  *
- * @returns The authentication status resetter hook result.
+ * @returns The result.
  */
 export function useAuthenticationStatusResetter(): UseAuthenticationStatusResetterResult {
 	const queryClient = useQueryClient();
