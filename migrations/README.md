@@ -15,7 +15,7 @@ rust crate.
 
 All migrations have an `up` and `down` file. The `up` file performs the migration, and the `down` file reverts the migration. To create a new migration, you do the following:
 
-1. Run the command `sqlx migrate new -r <NAME>` from the base repository directory.
+1. Run the command `sqlx migrate add -r <NAME>` from the base repository directory.
 2. Navigate to the `migrations` directory and look for two new files that should have been generated: `<yyyyMMddhhmmss>_<NAME>.up.sql` and `<yyyyMMddhhmmss>_<NAME>.down.sql`.
 3. Implement your migration in the `up` file that was generated.
 4. Implement a way to revert the migration in the `down` file that was generated.
