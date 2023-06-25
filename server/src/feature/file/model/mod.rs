@@ -25,6 +25,7 @@ pub(crate) struct File {
     pub(crate) name: String,
 
     /// The file's raw data.
+    #[validate(length(max = 4294967295))]
     pub(crate) data: Vec<u8>,
 }
 
