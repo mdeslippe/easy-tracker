@@ -23,9 +23,9 @@ pub(crate) trait UserRepository: Interface {
     /// # Returns
     ///
     /// This function returns a result:
-    /// - If the insertion is successful, the Ok variant will be returned with the id of the user
+    /// - If the insertion was successful, the Ok variant will be returned with the id of the user
     /// that was inserted.
-    /// - If the insertion is not successful, the Err variant will be returned with the error that
+    /// - If the insertion was not successful, the Err variant will be returned with the error that
     /// occurred.
     async fn insert(&self, user: &User, context: &mut QueryContext) -> Result<u64, Error>;
 
