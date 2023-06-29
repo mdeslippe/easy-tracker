@@ -14,7 +14,7 @@ use crate::{
     injector::DependencyInjector,
 };
 use shaku::HasComponent;
-use std::sync::Arc;
+use std::{sync::Arc, thread, time::Duration};
 use time::OffsetDateTime;
 
 /// # Description
@@ -377,6 +377,9 @@ async fn updating_a_users_password_expires_existing_tokens() {
             error
         ),
     };
+
+    // Sleep for one second.
+    thread::sleep(Duration::from_secs(1));
 
     // Update the user's password.
     user.password = String::from("NewUpdatedPassword!");
