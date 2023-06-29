@@ -1,14 +1,27 @@
-use sqlx::{mysql::MySqlPoolOptions, pool::PoolConnection, MySql, Pool};
+use core::panic;
+use std::sync::Arc;
+
+use shaku::HasComponent;
+use sqlx::{pool::PoolConnection, Connection, MySql};
 use time::OffsetDateTime;
 
 use crate::{
-    common::utility::generate_random_string, config::Config, feature::user::model::User,
+    common::{
+        enumeration::{DeletionResult, InsertionResult, QueryContext},
+        utility::generate_random_string,
+    },
+    config::Config,
+    database::DatabaseConnectionFactory,
+    feature::{
+        file::model::File,
+        user::{model::User, service::UserService},
+    },
     injector::DependencyInjector,
 };
 
 /// # Description
 ///
-/// A function to create a user that can be used for testing.
+/// Create a user that can be used for testing.
 ///
 /// # Returns
 ///
@@ -39,18 +52,109 @@ fn create_test_user() -> User {
 
 /// # Description
 ///
+/// Create a file that can be used for testing.
+///
+/// # Returns
+///
+/// The file that was created.
+fn create_test_file() -> File {
+    return File {
+        id: 0,
+        user_id: 0,
+        file_created_at: OffsetDateTime::now_utc(),
+        mime_type: String::from("text/plain"),
+        name: format!("{}.txt", generate_random_string(8)),
+        data: generate_random_string(1024).into_bytes(),
+    };
+}
+
+/// # Description
+///
+/// Insert a test user with the user service.
+///
+/// # Arguments
+///
+/// `injector` - The dependency injector that will be used to acquire a user service instance.
+///
+/// `context` - The query context the user will be inserted in.
+///
+/// # Panics
+///
+/// This function will panic if an error occurs while attempting to insert the user with the user
+/// service.
+///
+/// # Returns
+///
+/// The user that was inserted.
+async fn insert_test_user(injector: &DependencyInjector, context: &mut QueryContext<'_>) -> User {
+    // Get a user service instance.
+    let user_service: Arc<dyn UserService> = injector.resolve();
+
+    // Perform the insertion.
+    let user: User = match user_service
+        .insert_with_context(&create_test_user(), context)
+        .await
+    {
+        InsertionResult::Ok(user) => user,
+        InsertionResult::Invalid(details) => panic!("Failed to insert user: {}", details),
+        InsertionResult::Err(error) => panic!("Failed to insert user: {}", error),
+    };
+
+    // Return the user.
+    return user;
+}
+
+/// # Description
+///
+/// Delete a test user with the user service.
+///
+/// # Arguments
+///
+/// `user` - The user to delete.
+///
+/// `injector` - The dependency injector that will be used to acquire a user service instance.
+///
+/// `context` - The query context the user will be inserted in.
+///
+/// # Panics
+///
+/// This function will panic if an error occurs while attempting to delete the user with the user
+/// service.
+async fn delete_test_user(
+    user: User,
+    injector: &DependencyInjector,
+    context: &mut QueryContext<'_>,
+) {
+    // Get a user service instance.
+    let user_service: Arc<dyn UserService> = injector.resolve();
+
+    // Perform the deletion.
+    match user_service.delete_with_context(&user.id, context).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => panic!("Failed to delete test user: User not found"),
+        DeletionResult::Err(error) => panic!("Failed to delete test user: {}", error),
+    }
+}
+
+/// # Description
+///
 /// A utility function to load the server's configuration file.
 ///
 /// # Panics
 ///
-/// This function will panic if an error occurs while attempting
-/// to load or parse the configuration file.
+/// This function will panic if an error occurs while attempting to load or parse the configuration
+/// file.
 ///
 /// # Returns
 ///
 /// The server's configuration.
 fn load_config() -> Config {
-    return Config::load_config(String::from("config.json")).expect("Failed to load config");
+    // Load the config.
+    let config: Config =
+        Config::load_config(String::from("config.json")).expect("Failed to load config");
+
+    // Return the config.
+    return config;
 }
 
 /// # Description
@@ -68,39 +172,41 @@ async fn create_dependency_injector() -> DependencyInjector {
     // Load the config.
     let config: Config = load_config();
 
-    return DependencyInjector::create_from_config(&config)
+    // Create the dependency injector.
+    let injector: DependencyInjector = DependencyInjector::create_from_config(&config)
         .await
         .expect("Failed to load dependency injector");
+
+    // Return the dependency injector.
+    return injector;
 }
 
 /// # Description
 ///
 /// Acquire a database connection.
 ///
+/// # Arguments
+///
+/// `injector` - The dependency injector that will be used to the database connection factory
+/// instance.
+///
 /// # Panics
 ///
-/// This function will panic if an error occurs while attempting
-/// to load or parse the configuration file, or if an error occurs
-/// while attempting to acquire a database connection.
+/// This function will panic if a database connection could not be created.
 ///
 /// # Returns
 ///
-/// The database connection that was acquired.
-async fn get_database_connection() -> PoolConnection<MySql> {
-    // Load the config.
-    let config: Config = load_config();
+/// The database connection that was created.
+async fn get_database_connection(injector: &DependencyInjector) -> PoolConnection<MySql> {
+    // Get the database connection factory.
+    let connection_factory: Arc<dyn DatabaseConnectionFactory> = injector.resolve();
 
-    // Create a connection pool.
-    let database_connection_pool: Pool<MySql> = MySqlPoolOptions::new()
-        .min_connections(config.database.minimum_connections)
-        .max_connections(config.database.maximum_connections)
-        .connect(&config.database.connection_string)
+    // Acquire a database connection.
+    let connection = connection_factory
+        .get_connection()
         .await
-        .expect("Failed to connect to the database");
+        .expect("Failed to acquire a database connection");
 
-    // Acquire and return a connection.
-    return database_connection_pool
-        .acquire()
-        .await
-        .expect("Failed to acquire database connection");
+    // Return the connection.
+    return connection;
 }
