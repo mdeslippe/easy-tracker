@@ -1,10 +1,3 @@
-use core::panic;
-use std::sync::Arc;
-
-use shaku::HasComponent;
-use sqlx::{pool::PoolConnection, Connection, MySql};
-use time::OffsetDateTime;
-
 use crate::{
     common::{
         enumeration::{DeletionResult, InsertionResult, QueryContext},
@@ -13,11 +6,16 @@ use crate::{
     config::Config,
     database::DatabaseConnectionFactory,
     feature::{
-        file::model::File,
+        file::{model::File, repository::FileRepository},
         user::{model::User, service::UserService},
     },
     injector::DependencyInjector,
 };
+use core::panic;
+use shaku::HasComponent;
+use sqlx::{pool::PoolConnection, Connection, MySql};
+use std::sync::Arc;
+use time::OffsetDateTime;
 
 /// # Description
 ///
@@ -32,7 +30,7 @@ fn create_test_user() -> User {
         account_created_at: OffsetDateTime::now_utc(),
         password_reset_at: OffsetDateTime::now_utc(),
         profile_picture_url: format!(
-            "{}.com/{}.png",
+            "https://{}.com/{}.png",
             generate_random_string(8),
             generate_random_string(8)
         ),
@@ -209,4 +207,308 @@ async fn get_database_connection(injector: &DependencyInjector) -> PoolConnectio
 
     // Return the connection.
     return connection;
+}
+
+/// # Description
+///
+/// Test inserting a file into the repository, and validate the id that was returned.
+#[actix_web::test]
+async fn file_id_is_returned_after_insertion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file repository instance.
+    let file_repository: Arc<dyn FileRepository> = injector.resolve();
+
+    // Acquire a database connection.
+    let mut connection = get_database_connection(&injector).await;
+
+    // Start a transaction.
+    let transaction = connection
+        .begin()
+        .await
+        .expect("Failed to start transaction");
+
+    // Create a query context.
+    let mut context: QueryContext = QueryContext::Transaction(transaction);
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector, &mut context).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let id = file_repository
+        .insert(&file, &mut context)
+        .await
+        .expect("Failed to insert file");
+
+    // Make sure the file id was returned.
+    assert!(id > 0);
+
+    // Delete the test file.
+    let rows_deleted = file_repository
+        .delete(&id, &mut context)
+        .await
+        .expect("Failed to delete file");
+
+    // Make sure the file was deleted.
+    assert!(rows_deleted > 0);
+
+    // Delete the test user.
+    delete_test_user(user, &injector, &mut context).await;
+
+    // Rollback the transaction.
+    context
+        .rollback_if_transaction()
+        .await
+        .expect("Failed to roll transaction back");
+}
+
+/// # Description
+///
+/// Test querying a file by id after it has been inserted, and make sure the correct data is returned.
+#[actix_web::test]
+async fn file_is_queryable_after_insertion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file repository instance.
+    let file_repository: Arc<dyn FileRepository> = injector.resolve();
+
+    // Acquire a database connection.
+    let mut connection = get_database_connection(&injector).await;
+
+    // Start a transaction.
+    let transaction = connection
+        .begin()
+        .await
+        .expect("Failed to start transaction");
+
+    // Create a query context.
+    let mut context: QueryContext = QueryContext::Transaction(transaction);
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector, &mut context).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let id = file_repository
+        .insert(&file, &mut context)
+        .await
+        .expect("Failed to insert file");
+
+    file.id = id;
+
+    // Make sure the file id was returned.
+    assert!(id > 0);
+
+    // Query the file.
+    let queried_file: File = file_repository
+        .get(&id, &mut context)
+        .await
+        .expect("Failed to query file after insertion: An error occurred")
+        .expect("Filed to query file after insertion: File not found");
+
+    // Make sure the file contains the correct data.
+    assert_eq!(file, queried_file);
+
+    // Delete the test file.
+    let rows_deleted = file_repository
+        .delete(&id, &mut context)
+        .await
+        .expect("Failed to delete file");
+
+    // Make sure the file was deleted.
+    assert!(rows_deleted > 0);
+
+    // Delete the test user.
+    delete_test_user(user, &injector, &mut context).await;
+
+    // Rollback the transaction.
+    context
+        .rollback_if_transaction()
+        .await
+        .expect("Failed to roll transaction back");
+}
+
+/// # Description
+///
+/// Test updating a file after it has been inserted, and make sure the data was updated correctly.
+#[actix_web::test]
+async fn file_is_updatable_after_insertion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file repository instance.
+    let file_repository: Arc<dyn FileRepository> = injector.resolve();
+
+    // Acquire a database connection.
+    let mut connection = get_database_connection(&injector).await;
+
+    // Start a transaction.
+    let transaction = connection
+        .begin()
+        .await
+        .expect("Failed to start transaction");
+
+    // Create a query context.
+    let mut context: QueryContext = QueryContext::Transaction(transaction);
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector, &mut context).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let id = file_repository
+        .insert(&file, &mut context)
+        .await
+        .expect("Failed to insert file");
+
+    file.id = id;
+
+    // Make sure the file id was returned.
+    assert!(id > 0);
+
+    // Query the file.
+    let queried_file: File = file_repository
+        .get(&id, &mut context)
+        .await
+        .expect("Failed to query file after insertion: An error occurred")
+        .expect("Filed to query file after insertion: File not found");
+
+    // Make sure the file contains the correct data.
+    assert_eq!(file, queried_file);
+
+    // Create a file with updated data.
+    let mut updated_file: File = create_test_file();
+    updated_file.id = file.id;
+    updated_file.user_id = file.user_id;
+
+    // Make sure the updated file is not equal to the existing file.
+    assert_ne!(file, updated_file);
+
+    // Perform the update.
+    let rows_updated = file_repository
+        .update(&updated_file, &mut context)
+        .await
+        .expect("Failed to update file: An error occurred");
+
+    // Make sure the record was modified.
+    assert!(rows_updated == 1);
+
+    // Query the updated file.
+    let queried_updated_file: File = file_repository
+        .get(&id, &mut context)
+        .await
+        .expect("Failed to query file after update: An error occurred")
+        .expect("Filed to query file after update: File not found");
+
+    // Make sure the updated query returned the correct data.
+    assert_eq!(updated_file, queried_updated_file);
+
+    // Delete the test file.
+    let rows_deleted = file_repository
+        .delete(&id, &mut context)
+        .await
+        .expect("Failed to delete file");
+
+    // Make sure the file was deleted.
+    assert!(rows_deleted > 0);
+
+    // Delete the test user.
+    delete_test_user(user, &injector, &mut context).await;
+
+    // Rollback the transaction.
+    context
+        .rollback_if_transaction()
+        .await
+        .expect("Failed to roll transaction back");
+}
+
+/// # Description
+///
+/// Test querying a file by id after it has been deleted, and make sure it no longer exists.
+#[actix_web::test]
+async fn file_is_not_queryable_after_deletion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file repository instance.
+    let file_repository: Arc<dyn FileRepository> = injector.resolve();
+
+    // Acquire a database connection.
+    let mut connection = get_database_connection(&injector).await;
+
+    // Start a transaction.
+    let transaction = connection
+        .begin()
+        .await
+        .expect("Failed to start transaction");
+
+    // Create a query context.
+    let mut context: QueryContext = QueryContext::Transaction(transaction);
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector, &mut context).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let id = file_repository
+        .insert(&file, &mut context)
+        .await
+        .expect("Failed to insert file");
+
+    file.id = id;
+
+    // Make sure the file id was returned.
+    assert!(id > 0);
+
+    // Query the file.
+    let queried_file: File = file_repository
+        .get(&id, &mut context)
+        .await
+        .expect("Failed to query file after insertion: An error occurred")
+        .expect("Filed to query file after insertion: File not found");
+
+    // Make sure the file contains the correct data.
+    assert_eq!(file, queried_file);
+
+    // Delete the test file.
+    let rows_deleted = file_repository
+        .delete(&id, &mut context)
+        .await
+        .expect("Failed to delete file");
+
+    // Make sure the file was deleted.
+    assert!(rows_deleted > 0);
+
+    // Query deleted file.
+    let deleted_query_result: Option<File> = file_repository
+        .get(&id, &mut context)
+        .await
+        .expect("Failed to query file after insertion: An error occurred");
+
+    // Make sure the query did not return the file.
+    assert!(deleted_query_result.is_none());
+
+    // Delete the test user.
+    delete_test_user(user, &injector, &mut context).await;
+
+    // Rollback the transaction.
+    context
+        .rollback_if_transaction()
+        .await
+        .expect("Failed to roll transaction back");
 }
