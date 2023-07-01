@@ -112,14 +112,14 @@ async fn insert_test_user(injector: &DependencyInjector, context: &mut QueryCont
 ///
 /// `injector` - The dependency injector that will be used to acquire a user service instance.
 ///
-/// `context` - The query context the user will be inserted in.
+/// `context` - The query context the user will be deleted in.
 ///
 /// # Panics
 ///
 /// This function will panic if an error occurs while attempting to delete the user with the user
 /// service.
 async fn delete_test_user(
-    user: User,
+    user: &User,
     injector: &DependencyInjector,
     context: &mut QueryContext<'_>,
 ) {
@@ -173,7 +173,7 @@ async fn create_dependency_injector() -> DependencyInjector {
     // Create the dependency injector.
     let injector: DependencyInjector = DependencyInjector::create_from_config(&config)
         .await
-        .expect("Failed to load dependency injector");
+        .expect("Failed to create dependency injector");
 
     // Return the dependency injector.
     return injector;
@@ -185,7 +185,7 @@ async fn create_dependency_injector() -> DependencyInjector {
 ///
 /// # Arguments
 ///
-/// `injector` - The dependency injector that will be used to the database connection factory
+/// `injector` - The dependency injector that will be used to get the database connection factory
 /// instance.
 ///
 /// # Panics
@@ -255,10 +255,10 @@ async fn file_id_is_returned_after_insertion() {
         .expect("Failed to delete file");
 
     // Make sure the file was deleted.
-    assert!(rows_deleted > 0);
+    assert!(rows_deleted == 1);
 
     // Delete the test user.
-    delete_test_user(user, &injector, &mut context).await;
+    delete_test_user(&user, &injector, &mut context).await;
 
     // Rollback the transaction.
     context
@@ -325,10 +325,10 @@ async fn file_is_queryable_after_insertion() {
         .expect("Failed to delete file");
 
     // Make sure the file was deleted.
-    assert!(rows_deleted > 0);
+    assert!(rows_deleted == 1);
 
     // Delete the test user.
-    delete_test_user(user, &injector, &mut context).await;
+    delete_test_user(&user, &injector, &mut context).await;
 
     // Rollback the transaction.
     context
@@ -422,10 +422,10 @@ async fn file_is_updatable_after_insertion() {
         .expect("Failed to delete file");
 
     // Make sure the file was deleted.
-    assert!(rows_deleted > 0);
+    assert!(rows_deleted == 1);
 
     // Delete the test user.
-    delete_test_user(user, &injector, &mut context).await;
+    delete_test_user(&user, &injector, &mut context).await;
 
     // Rollback the transaction.
     context
@@ -492,7 +492,7 @@ async fn file_is_not_queryable_after_deletion() {
         .expect("Failed to delete file");
 
     // Make sure the file was deleted.
-    assert!(rows_deleted > 0);
+    assert!(rows_deleted == 1);
 
     // Query deleted file.
     let deleted_query_result: Option<File> = file_repository
@@ -504,7 +504,7 @@ async fn file_is_not_queryable_after_deletion() {
     assert!(deleted_query_result.is_none());
 
     // Delete the test user.
-    delete_test_user(user, &injector, &mut context).await;
+    delete_test_user(&user, &injector, &mut context).await;
 
     // Rollback the transaction.
     context
