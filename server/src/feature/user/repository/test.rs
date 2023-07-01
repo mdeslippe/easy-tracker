@@ -23,7 +23,7 @@ fn create_test_user() -> User {
         account_created_at: OffsetDateTime::now_utc(),
         password_reset_at: OffsetDateTime::now_utc(),
         profile_picture_url: format!(
-            "{}.com/{}.png",
+            "https://{}.com/{}.png",
             generate_random_string(8),
             generate_random_string(8)
         ),
