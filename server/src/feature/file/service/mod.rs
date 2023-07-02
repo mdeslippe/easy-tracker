@@ -192,7 +192,37 @@ pub(crate) struct FileServiceImpl {
 #[async_trait(?Send)]
 impl FileService for FileServiceImpl {
     async fn insert(&self, file: &File) -> InsertionResult<File, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection.
+        let mut connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // Start a transaction.
+        let transaction = match connection.begin().await {
+            Ok(transaction) => transaction,
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // Create the query context.
+        let mut context = QueryContext::Transaction(transaction);
+
+        // Perform the insertion.
+        let insertion_result = self.insert_with_context(file, &mut context).await;
+
+        // If the insertion was successful, commit the transaction, otherwise roll it back.
+        let transaction_completion_result = match insertion_result {
+            InsertionResult::Ok(_) => context.commit_if_transaction().await,
+            InsertionResult::Invalid(_) => context.rollback_if_transaction().await,
+            InsertionResult::Err(_) => context.rollback_if_transaction().await,
+        };
+
+        // If the transaction completion was successful, return the insertion result, otherwise return
+        // the transaction completion error.
+        return match transaction_completion_result {
+            Ok(()) => insertion_result,
+            Err(error) => InsertionResult::Err(Box::new(error)),
+        };
     }
 
     async fn insert_with_context(
@@ -200,7 +230,32 @@ impl FileService for FileServiceImpl {
         file: &File,
         context: &mut QueryContext,
     ) -> InsertionResult<File, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Validate the file.
+        match file.validate() {
+            Ok(()) => {}
+            Err(errors) => return InsertionResult::Invalid(errors),
+        };
+
+        // Perform the insertion.
+        let file_id = match __self.file_repository.insert(file, context).await {
+            Ok(file_id) => file_id,
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // Query the file was was inserted.
+        let inserted_file_option = match __self.file_repository.get(&file_id, context).await {
+            Ok(inserted_file_option) => inserted_file_option,
+            Err(error) => return InsertionResult::Err(Box::new(error)),
+        };
+
+        // If the file was found, return the file, otherwise return an error.
+        return match inserted_file_option {
+            Some(inserted_file) => InsertionResult::Ok(inserted_file),
+            None => InsertionResult::Err(Box::new(io::Error::new(
+                io::ErrorKind::NotFound,
+                "File could not be found after insertion",
+            ))),
+        };
     }
 
     async fn get(&self, id: &u64) -> QueryResult<File, Box<dyn Error>> {
