@@ -69,7 +69,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Arguments
     ///
-    /// `id` - The id of the user that is being queried from persistent storage.
+    /// `id` - The unique identifier of the user that is being queried from persistent storage.
     ///
     /// # Returns
     ///
@@ -86,7 +86,7 @@ pub(crate) trait UserService: Interface {
     ///
     /// # Arguments
     ///
-    /// `id` - The id of the user that is being queried from persistent storage.
+    /// `id` - The unique identifier of the user that is being queried from persistent storage.
     ///
     /// `context` - The context the query will be performed in.
     ///
