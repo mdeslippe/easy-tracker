@@ -7,8 +7,9 @@ use crate::{
 };
 use async_trait::async_trait;
 use shaku::{Component, Interface};
-use std::{error::Error, sync::Arc};
-use validator::ValidationErrors;
+use sqlx::Connection;
+use std::{error::Error, io, sync::Arc};
+use validator::{Validate, ValidationErrors};
 
 /// A file service trait.
 #[async_trait(?Send)]
@@ -185,4 +186,56 @@ pub(crate) struct FileServiceImpl {
     /// The database connection factory that will be used to acquire database connections.
     #[shaku(inject)]
     connection_factory: Arc<dyn DatabaseConnectionFactory>,
+}
+
+/// A FileService implementation for the FileServiceImpl struct.
+#[async_trait(?Send)]
+impl FileService for FileServiceImpl {
+    async fn insert(&self, file: &File) -> InsertionResult<File, ValidationErrors, Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn insert_with_context(
+        &self,
+        file: &File,
+        context: &mut QueryContext,
+    ) -> InsertionResult<File, ValidationErrors, Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn get(&self, id: &u64) -> QueryResult<File, Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn get_with_context(
+        &self,
+        id: &u64,
+        context: &mut QueryContext,
+    ) -> QueryResult<File, Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn update(&self, file: &File) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn update_with_context(
+        &self,
+        file: &File,
+        context: &mut QueryContext,
+    ) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>> {
+        todo!();
+    }
+
+    async fn delete_with_context(
+        &self,
+        id: &u64,
+        context: &mut QueryContext,
+    ) -> DeletionResult<Box<dyn Error>> {
+        todo!();
+    }
 }
