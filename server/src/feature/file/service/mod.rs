@@ -364,7 +364,17 @@ impl FileService for FileServiceImpl {
     }
 
     async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection.
+        let connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
+            Err(error) => return DeletionResult::Err(Box::new(error)),
+        };
+
+        // Create the query context.
+        let mut context = QueryContext::Connection(connection);
+
+        // Perform the deletion.
+        return self.delete_with_context(id, &mut context).await;
     }
 
     async fn delete_with_context(
@@ -372,6 +382,17 @@ impl FileService for FileServiceImpl {
         id: &u64,
         context: &mut QueryContext,
     ) -> DeletionResult<Box<dyn Error>> {
-        todo!();
+        // Perform the deletion.
+        let records_deleted = match __self.file_repository.delete(id, context).await {
+            Ok(records_deleted) => records_deleted,
+            Err(error) => return DeletionResult::Err(Box::new(error)),
+        };
+
+        // Return the result.
+        if records_deleted > 0 {
+            return DeletionResult::Ok;
+        } else {
+            return DeletionResult::NotFound;
+        }
     }
 }
