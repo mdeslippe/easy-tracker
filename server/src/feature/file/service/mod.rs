@@ -259,7 +259,17 @@ impl FileService for FileServiceImpl {
     }
 
     async fn get(&self, id: &u64) -> QueryResult<File, Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection.
+        let connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // Create the query context.
+        let mut context = QueryContext::Connection(connection);
+
+        // Perform the query.
+        return self.get_with_context(id, &mut context).await;
     }
 
     async fn get_with_context(
@@ -267,7 +277,17 @@ impl FileService for FileServiceImpl {
         id: &u64,
         context: &mut QueryContext,
     ) -> QueryResult<File, Box<dyn Error>> {
-        todo!();
+        // Perform the query.
+        let result = match __self.file_repository.get(id, context).await {
+            Ok(file_option) => file_option,
+            Err(error) => return QueryResult::Err(Box::new(error)),
+        };
+
+        // If the file was found, return the file, otherwise return not found.
+        return match result {
+            Some(file) => QueryResult::Ok(file),
+            None => QueryResult::NotFound,
+        };
     }
 
     async fn update(&self, file: &File) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
