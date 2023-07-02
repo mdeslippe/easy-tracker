@@ -291,7 +291,38 @@ impl FileService for FileServiceImpl {
     }
 
     async fn update(&self, file: &File) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Acquire a database connection.
+        let mut connection = match __self.connection_factory.get_connection().await {
+            Ok(connection) => connection,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Start a transaction.
+        let transaction = match connection.begin().await {
+            Ok(transaction) => transaction,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Create the query context.
+        let mut context = QueryContext::Transaction(transaction);
+
+        // Perform the update.
+        let update_result = self.update_with_context(file, &mut context).await;
+
+        // If the update was successful, commit the transaction, otherwise roll it back.
+        let transaction_completion_result = match update_result {
+            UpdateResult::Ok(_) => context.commit_if_transaction().await,
+            UpdateResult::NotFound => context.rollback_if_transaction().await,
+            UpdateResult::Invalid(_) => context.rollback_if_transaction().await,
+            UpdateResult::Err(_) => context.rollback_if_transaction().await,
+        };
+
+        // If the transaction completion was successful, return the update result, otherwise return
+        // the transaction completion error.
+        return match transaction_completion_result {
+            Ok(()) => update_result,
+            Err(error) => UpdateResult::Err(Box::new(error)),
+        };
     }
 
     async fn update_with_context(
@@ -299,7 +330,37 @@ impl FileService for FileServiceImpl {
         file: &File,
         context: &mut QueryContext,
     ) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
-        todo!();
+        // Validate the file.
+        match file.validate() {
+            Ok(()) => {}
+            Err(errors) => return UpdateResult::Invalid(errors),
+        };
+
+        // Perform the update.
+        let records_updated = match __self.file_repository.update(&file, context).await {
+            Ok(records_updated) => records_updated,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // If no records were updated.
+        if records_updated == 0 {
+            return UpdateResult::NotFound;
+        }
+
+        // Query the updated file.
+        let updated_file_option = match __self.file_repository.get(&file.id, context).await {
+            Ok(updated_file_option) => updated_file_option,
+            Err(error) => return UpdateResult::Err(Box::new(error)),
+        };
+
+        // Make sure the file was found, and return the updated file.
+        return match updated_file_option {
+            Some(updated_file) => UpdateResult::Ok(updated_file),
+            None => UpdateResult::Err(Box::new(io::Error::new(
+                io::ErrorKind::NotFound,
+                "File could not be found after update",
+            ))),
+        };
     }
 
     async fn delete(&self, id: &u64) -> DeletionResult<Box<dyn Error>> {
