@@ -2,11 +2,12 @@ use crate::{
     common::enumeration::{
         DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult,
     },
-    feature::file::model::File,
+    database::DatabaseConnectionFactory,
+    feature::file::{model::File, repository::FileRepository},
 };
 use async_trait::async_trait;
-use shaku::Interface;
-use std::error::Error;
+use shaku::{Component, Interface};
+use std::{error::Error, sync::Arc};
 use validator::ValidationErrors;
 
 /// A file service trait.
@@ -171,4 +172,17 @@ pub(crate) trait FileService: Interface {
         id: &u64,
         context: &mut QueryContext,
     ) -> DeletionResult<Box<dyn Error>>;
+}
+
+/// A FileServiceImpl struct.
+#[derive(Component)]
+#[shaku(interface = FileService)]
+pub(crate) struct FileServiceImpl {
+    /// The file repository that will be used to manage persistent file data.
+    #[shaku(inject)]
+    file_repository: Arc<dyn FileRepository>,
+
+    /// The database connection factory that will be used to acquire database connections.
+    #[shaku(inject)]
+    connection_factory: Arc<dyn DatabaseConnectionFactory>,
 }
