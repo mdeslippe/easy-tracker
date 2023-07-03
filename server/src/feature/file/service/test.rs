@@ -1,19 +1,17 @@
 use crate::{
     common::{
-        enumeration::{DeletionResult, InsertionResult, QueryContext},
+        enumeration::{DeletionResult, InsertionResult, QueryResult, UpdateResult},
         utility::generate_random_string,
     },
     config::Config,
-    database::DatabaseConnectionFactory,
     feature::{
-        file::model::File,
+        file::{model::File, service::FileService},
         user::{model::User, service::UserService},
     },
     injector::DependencyInjector,
 };
 use core::panic;
 use shaku::HasComponent;
-use sqlx::{pool::PoolConnection, MySql};
 use std::sync::Arc;
 use time::OffsetDateTime;
 
@@ -74,8 +72,6 @@ fn create_test_file() -> File {
 ///
 /// `injector` - The dependency injector that will be used to acquire a user service instance.
 ///
-/// `context` - The query context the user will be inserted in.
-///
 /// # Panics
 ///
 /// This function will panic if an error occurs while attempting to insert the user with the user
@@ -84,15 +80,12 @@ fn create_test_file() -> File {
 /// # Returns
 ///
 /// The user that was inserted.
-async fn insert_test_user(injector: &DependencyInjector, context: &mut QueryContext<'_>) -> User {
+async fn insert_test_user(injector: &DependencyInjector) -> User {
     // Get a user service instance.
     let user_service: Arc<dyn UserService> = injector.resolve();
 
     // Perform the insertion.
-    let user: User = match user_service
-        .insert_with_context(&create_test_user(), context)
-        .await
-    {
+    let user: User = match user_service.insert(&create_test_user()).await {
         InsertionResult::Ok(user) => user,
         InsertionResult::Invalid(details) => panic!("Failed to insert user: {}", details),
         InsertionResult::Err(error) => panic!("Failed to insert user: {}", error),
@@ -112,22 +105,16 @@ async fn insert_test_user(injector: &DependencyInjector, context: &mut QueryCont
 ///
 /// `injector` - The dependency injector that will be used to acquire a user service instance.
 ///
-/// `context` - The query context the user will be deleted in.
-///
 /// # Panics
 ///
 /// This function will panic if an error occurs while attempting to delete the user with the user
 /// service.
-async fn delete_test_user(
-    user: &User,
-    injector: &DependencyInjector,
-    context: &mut QueryContext<'_>,
-) {
+async fn delete_test_user(user: &User, injector: &DependencyInjector) {
     // Get a user service instance.
     let user_service: Arc<dyn UserService> = injector.resolve();
 
     // Perform the deletion.
-    match user_service.delete_with_context(&user.id, context).await {
+    match user_service.delete(&user.id).await {
         DeletionResult::Ok => {}
         DeletionResult::NotFound => panic!("Failed to delete test user: User not found"),
         DeletionResult::Err(error) => panic!("Failed to delete test user: {}", error),
@@ -181,30 +168,396 @@ async fn create_dependency_injector() -> DependencyInjector {
 
 /// # Description
 ///
-/// Acquire a database connection.
-///
-/// # Arguments
-///
-/// `injector` - The dependency injector that will be used to get the database connection factory
-/// instance.
-///
-/// # Panics
-///
-/// This function will panic if a database connection could not be created.
-///
-/// # Returns
-///
-/// The database connection that was created.
-async fn get_database_connection(injector: &DependencyInjector) -> PoolConnection<MySql> {
-    // Get the database connection factory.
-    let connection_factory: Arc<dyn DatabaseConnectionFactory> = injector.resolve();
+/// Test inserting a file with the file service, and make sure the correct data is returned.
+#[actix_web::test]
+async fn file_is_returned_after_insertion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
 
-    // Acquire a database connection.
-    let connection = connection_factory
-        .get_connection()
-        .await
-        .expect("Failed to acquire a database connection");
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
 
-    // Return the connection.
-    return connection;
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let inserted_file = match file_service.insert(&file).await {
+        InsertionResult::Ok(file) => file,
+        InsertionResult::Invalid(details) => {
+            panic!("Failed to insert file, the file was invalid: {}", details)
+        }
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Update the file id with the one that was generated.
+    file.id = inserted_file.id;
+
+    // Make sure the correct data was returned.
+    assert_eq!(file, inserted_file);
+
+    // Delete the test file.
+    match file_service.delete(&file.id).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => {
+            panic!("Failed to delete file after testing: file could not be found")
+        }
+        DeletionResult::Err(error) => panic!(
+            "Failed to delete file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
+}
+
+/// # Description
+///
+/// Test inserting a file with validation errors and make sure it does not succeed.
+#[actix_web::test]
+async fn inserting_a_file_with_validation_errors_does_not_succeed() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+    file.name = generate_random_string(1048576);
+
+    // Insert the file, and make sure the validation errors are detected.
+    match file_service.insert(&file).await {
+        InsertionResult::Ok(_) => panic!("Insertion succeeded when it should have failed"),
+        InsertionResult::Invalid(_) => {}
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
+}
+
+/// # Description
+///
+/// Test querying a file after it has been inserted, and make sure the correct data is returned.
+#[actix_web::test]
+async fn file_is_queryable_after_insertion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let inserted_file = match file_service.insert(&file).await {
+        InsertionResult::Ok(file) => file,
+        InsertionResult::Invalid(details) => {
+            panic!("Failed to insert file, the file was invalid: {}", details)
+        }
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Update the file id with the one that was generated.
+    file.id = inserted_file.id;
+
+    // Make sure the correct data was returned.
+    assert_eq!(file, inserted_file);
+
+    // Query the file that was inserted.
+    let queried_file = match file_service.get(&file.id).await {
+        QueryResult::Ok(queried_file) => queried_file,
+        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::Err(error) => panic!(
+            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Make sure the file has the correct data.
+    assert_eq!(file, queried_file);
+
+    // Delete the test file.
+    match file_service.delete(&file.id).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => {
+            panic!("Failed to delete file after testing: file could not be found")
+        }
+        DeletionResult::Err(error) => panic!(
+            "Failed to delete file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
+}
+
+/// # Description
+///
+/// Test updating a file after insertion, and make sure the data is updated correctly.
+#[actix_web::test]
+async fn file_is_updatable_after_insertion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let inserted_file = match file_service.insert(&file).await {
+        InsertionResult::Ok(file) => file,
+        InsertionResult::Invalid(details) => {
+            panic!("Failed to insert file, the file was invalid: {}", details)
+        }
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Update the file id with the one that was generated.
+    file.id = inserted_file.id;
+
+    // Make sure the correct data was returned.
+    assert_eq!(file, inserted_file);
+
+    // Query the file that was inserted.
+    let queried_file = match file_service.get(&file.id).await {
+        QueryResult::Ok(queried_file) => queried_file,
+        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::Err(error) => panic!(
+            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Make sure the file has the correct data.
+    assert_eq!(file, queried_file);
+
+    // Create an updated file.
+    let mut updated_file = create_test_file();
+    updated_file.id = file.id;
+    updated_file.user_id = file.user_id;
+
+    // Perform the update.
+    let returned_updated_file = match file_service.update(&updated_file).await {
+        UpdateResult::Ok(updated_file) => updated_file,
+        UpdateResult::NotFound => panic!("Failed to update file: file not found"),
+        UpdateResult::Invalid(details) => panic!(
+            "Failed to update file, invalid values specified: {}",
+            details
+        ),
+        UpdateResult::Err(error) => panic!(
+            "Failed to update file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Make sure the returned updated file contains the correct information.
+    assert_eq!(updated_file, returned_updated_file);
+
+    // Query the updated file.
+    let queried_updated_file = match file_service.get(&file.id).await {
+        QueryResult::Ok(queried_file) => queried_file,
+        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::Err(error) => panic!(
+            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Make sure the queried updated file contains the correct information.
+    assert_eq!(updated_file, queried_updated_file);
+
+    // Delete the test file.
+    match file_service.delete(&file.id).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => {
+            panic!("Failed to delete file after testing: file could not be found")
+        }
+        DeletionResult::Err(error) => panic!(
+            "Failed to delete file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
+}
+
+/// # Description
+///
+/// Test updating a file with validation errors and make sure it does not succeed.
+#[actix_web::test]
+async fn updating_a_file_with_validation_errors_does_not_succeed() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let inserted_file = match file_service.insert(&file).await {
+        InsertionResult::Ok(file) => file,
+        InsertionResult::Invalid(details) => {
+            panic!("Failed to insert file, the file was invalid: {}", details)
+        }
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Update the file id with the one that was generated.
+    file.id = inserted_file.id;
+
+    // Make sure the correct data was returned.
+    assert_eq!(file, inserted_file);
+
+    // Query the file that was inserted.
+    let queried_file = match file_service.get(&file.id).await {
+        QueryResult::Ok(queried_file) => queried_file,
+        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::Err(error) => panic!(
+            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Make sure the file has the correct data.
+    assert_eq!(file, queried_file);
+
+    // Create an updated file.
+    let mut updated_file = create_test_file();
+    updated_file.id = file.id;
+    updated_file.user_id = file.user_id;
+    updated_file.name = generate_random_string(1048576);
+
+    // Perform the update.
+    match file_service.update(&updated_file).await {
+        UpdateResult::Ok(_) => panic!("File was updated when it contained validation errors"),
+        UpdateResult::NotFound => panic!("Failed to update file: file not found"),
+        UpdateResult::Invalid(_) => {}
+        UpdateResult::Err(error) => panic!(
+            "Failed to update file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test file.
+    match file_service.delete(&file.id).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => {
+            panic!("Failed to delete file after testing: file could not be found")
+        }
+        DeletionResult::Err(error) => panic!(
+            "Failed to delete file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
+}
+
+/// # Description
+///
+/// Test querying a file after it was deleted, and make sure it was not returned.
+#[actix_web::test]
+async fn file_is_not_queryable_after_deletion() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let inserted_file = match file_service.insert(&file).await {
+        InsertionResult::Ok(file) => file,
+        InsertionResult::Invalid(details) => {
+            panic!("Failed to insert file, the file was invalid: {}", details)
+        }
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Update the file id with the one that was generated.
+    file.id = inserted_file.id;
+
+    // Make sure the correct data was returned.
+    assert_eq!(file, inserted_file);
+
+    // Delete the test file.
+    match file_service.delete(&file.id).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => {
+            panic!("Failed to delete file after testing: file could not be found")
+        }
+        DeletionResult::Err(error) => panic!(
+            "Failed to delete file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Query the file and make sure it was not found.
+    match file_service.get(&file.id).await {
+        QueryResult::Ok(_) => {
+            panic!("Filed was returned when it should have been deleted")
+        }
+        QueryResult::NotFound => {}
+        QueryResult::Err(error) => panic!(
+            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
 }
