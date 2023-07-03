@@ -393,7 +393,7 @@ impl UserService for UserServiceImpl {
             Err(error) => return InsertionResult::Err(Box::new(error)),
         };
 
-        // Query and return the user that was inserted.
+        // Query the user that was inserted.
         let inserted_user_option: Option<User> =
             match __self.user_repository.get_by_id(&user_id, context).await {
                 Ok(inserted_user_option) => inserted_user_option,

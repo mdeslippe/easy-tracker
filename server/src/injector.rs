@@ -4,7 +4,7 @@ use crate::{
     feature::{
         auth::service::AuthServiceImpl,
         crypto::service::CryptoServiceImpl,
-        file::repository::FileRepositoryImpl,
+        file::{repository::FileRepositoryImpl, service::FileServiceImpl},
         user::{repository::UserRepositoryImpl, service::UserServiceImpl},
     },
 };
@@ -29,6 +29,7 @@ module! {
 
             // File
             FileRepositoryImpl,
+            FileServiceImpl,
 
             // Authentication
             AuthServiceImpl
