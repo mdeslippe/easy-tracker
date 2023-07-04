@@ -70,6 +70,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .configure(crate::feature::user::controller::configure)
             .configure(crate::feature::auth::controller::configure)
+            .configure(crate::feature::file::controller::configure)
     };
 
     // Log the address the server will be bound to.
