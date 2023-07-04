@@ -168,7 +168,7 @@ async fn create_dependency_injector() -> DependencyInjector {
 
 /// # Description
 ///
-/// Test inserting a file with the file service, and make sure the correct data is returned.
+/// Test inserting a file and make sure the correct data is returned.
 #[actix_web::test]
 async fn file_is_returned_after_insertion() {
     // Create a dependency injector.
@@ -186,7 +186,7 @@ async fn file_is_returned_after_insertion() {
 
     // Insert the file.
     let inserted_file = match file_service.insert(&file).await {
-        InsertionResult::Ok(file) => file,
+        InsertionResult::Ok(inserted_file) => inserted_file,
         InsertionResult::Invalid(details) => {
             panic!("Failed to insert file, the file was invalid: {}", details)
         }
@@ -206,7 +206,7 @@ async fn file_is_returned_after_insertion() {
     match file_service.delete(&file.id).await {
         DeletionResult::Ok => {}
         DeletionResult::NotFound => {
-            panic!("Failed to delete file after testing: file could not be found")
+            panic!("Failed to delete file: File could not be found")
         }
         DeletionResult::Err(error) => panic!(
             "Failed to delete file, an unexpected error has occurred: {}",
@@ -253,7 +253,7 @@ async fn inserting_a_file_with_validation_errors_does_not_succeed() {
 
 /// # Description
 ///
-/// Test querying a file after it has been inserted, and make sure the correct data is returned.
+/// Test querying a file after it has been inserted and make sure the correct data is returned.
 #[actix_web::test]
 async fn file_is_queryable_after_insertion() {
     // Create a dependency injector.
@@ -271,7 +271,7 @@ async fn file_is_queryable_after_insertion() {
 
     // Insert the file.
     let inserted_file = match file_service.insert(&file).await {
-        InsertionResult::Ok(file) => file,
+        InsertionResult::Ok(inserted_file) => inserted_file,
         InsertionResult::Invalid(details) => {
             panic!("Failed to insert file, the file was invalid: {}", details)
         }
@@ -290,7 +290,7 @@ async fn file_is_queryable_after_insertion() {
     // Query the file that was inserted.
     let queried_file = match file_service.get(&file.id).await {
         QueryResult::Ok(queried_file) => queried_file,
-        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::NotFound => panic!("Failed to query file after insertion: File not found"),
         QueryResult::Err(error) => panic!(
             "Failed to query file after insertion: an unexpected error has occurred: {}",
             error
@@ -304,7 +304,7 @@ async fn file_is_queryable_after_insertion() {
     match file_service.delete(&file.id).await {
         DeletionResult::Ok => {}
         DeletionResult::NotFound => {
-            panic!("Failed to delete file after testing: file could not be found")
+            panic!("Failed to delete file: File could not be found")
         }
         DeletionResult::Err(error) => panic!(
             "Failed to delete file, an unexpected error has occurred: {}",
@@ -318,7 +318,7 @@ async fn file_is_queryable_after_insertion() {
 
 /// # Description
 ///
-/// Test updating a file after insertion, and make sure the data is updated correctly.
+/// Test updating a file after insertion and make sure the data is updated correctly.
 #[actix_web::test]
 async fn file_is_updatable_after_insertion() {
     // Create a dependency injector.
@@ -336,7 +336,7 @@ async fn file_is_updatable_after_insertion() {
 
     // Insert the file.
     let inserted_file = match file_service.insert(&file).await {
-        InsertionResult::Ok(file) => file,
+        InsertionResult::Ok(inserted_file) => inserted_file,
         InsertionResult::Invalid(details) => {
             panic!("Failed to insert file, the file was invalid: {}", details)
         }
@@ -355,7 +355,7 @@ async fn file_is_updatable_after_insertion() {
     // Query the file that was inserted.
     let queried_file = match file_service.get(&file.id).await {
         QueryResult::Ok(queried_file) => queried_file,
-        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::NotFound => panic!("Failed to query file after insertion: File not found"),
         QueryResult::Err(error) => panic!(
             "Failed to query file after insertion: an unexpected error has occurred: {}",
             error
@@ -372,8 +372,8 @@ async fn file_is_updatable_after_insertion() {
 
     // Perform the update.
     let returned_updated_file = match file_service.update(&updated_file).await {
-        UpdateResult::Ok(updated_file) => updated_file,
-        UpdateResult::NotFound => panic!("Failed to update file: file not found"),
+        UpdateResult::Ok(returned_updated_file) => returned_updated_file,
+        UpdateResult::NotFound => panic!("Failed to update file: File not found"),
         UpdateResult::Invalid(details) => panic!(
             "Failed to update file, invalid values specified: {}",
             details
@@ -389,10 +389,10 @@ async fn file_is_updatable_after_insertion() {
 
     // Query the updated file.
     let queried_updated_file = match file_service.get(&file.id).await {
-        QueryResult::Ok(queried_file) => queried_file,
-        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::Ok(queried_updated_file) => queried_updated_file,
+        QueryResult::NotFound => panic!("Failed to query file after update: File not found"),
         QueryResult::Err(error) => panic!(
-            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            "Failed to query file after update: an unexpected error has occurred: {}",
             error
         ),
     };
@@ -404,7 +404,7 @@ async fn file_is_updatable_after_insertion() {
     match file_service.delete(&file.id).await {
         DeletionResult::Ok => {}
         DeletionResult::NotFound => {
-            panic!("Failed to delete file after testing: file could not be found")
+            panic!("Failed to delete file: file could not be found")
         }
         DeletionResult::Err(error) => panic!(
             "Failed to delete file, an unexpected error has occurred: {}",
@@ -436,7 +436,7 @@ async fn updating_a_file_with_validation_errors_does_not_succeed() {
 
     // Insert the file.
     let inserted_file = match file_service.insert(&file).await {
-        InsertionResult::Ok(file) => file,
+        InsertionResult::Ok(inserted_file) => inserted_file,
         InsertionResult::Invalid(details) => {
             panic!("Failed to insert file, the file was invalid: {}", details)
         }
@@ -455,7 +455,7 @@ async fn updating_a_file_with_validation_errors_does_not_succeed() {
     // Query the file that was inserted.
     let queried_file = match file_service.get(&file.id).await {
         QueryResult::Ok(queried_file) => queried_file,
-        QueryResult::NotFound => panic!("Failed to query file after insertion: file not found"),
+        QueryResult::NotFound => panic!("Failed to query file after insertion: File not found"),
         QueryResult::Err(error) => panic!(
             "Failed to query file after insertion: an unexpected error has occurred: {}",
             error
@@ -474,7 +474,7 @@ async fn updating_a_file_with_validation_errors_does_not_succeed() {
     // Perform the update.
     match file_service.update(&updated_file).await {
         UpdateResult::Ok(_) => panic!("File was updated when it contained validation errors"),
-        UpdateResult::NotFound => panic!("Failed to update file: file not found"),
+        UpdateResult::NotFound => panic!("Failed to update file: File not found"),
         UpdateResult::Invalid(_) => {}
         UpdateResult::Err(error) => panic!(
             "Failed to update file, an unexpected error has occurred: {}",
@@ -486,7 +486,7 @@ async fn updating_a_file_with_validation_errors_does_not_succeed() {
     match file_service.delete(&file.id).await {
         DeletionResult::Ok => {}
         DeletionResult::NotFound => {
-            panic!("Failed to delete file after testing: file could not be found")
+            panic!("Failed to delete file: file could not be found")
         }
         DeletionResult::Err(error) => panic!(
             "Failed to delete file, an unexpected error has occurred: {}",
@@ -500,7 +500,7 @@ async fn updating_a_file_with_validation_errors_does_not_succeed() {
 
 /// # Description
 ///
-/// Test querying a file after it was deleted, and make sure it was not returned.
+/// Test querying a file after it was deleted and make sure it was not returned.
 #[actix_web::test]
 async fn file_is_not_queryable_after_deletion() {
     // Create a dependency injector.
@@ -518,7 +518,7 @@ async fn file_is_not_queryable_after_deletion() {
 
     // Insert the file.
     let inserted_file = match file_service.insert(&file).await {
-        InsertionResult::Ok(file) => file,
+        InsertionResult::Ok(inserted_file) => inserted_file,
         InsertionResult::Invalid(details) => {
             panic!("Failed to insert file, the file was invalid: {}", details)
         }
@@ -538,7 +538,7 @@ async fn file_is_not_queryable_after_deletion() {
     match file_service.delete(&file.id).await {
         DeletionResult::Ok => {}
         DeletionResult::NotFound => {
-            panic!("Failed to delete file after testing: file could not be found")
+            panic!("Failed to delete file: File could not be found")
         }
         DeletionResult::Err(error) => panic!(
             "Failed to delete file, an unexpected error has occurred: {}",
@@ -553,7 +553,7 @@ async fn file_is_not_queryable_after_deletion() {
         }
         QueryResult::NotFound => {}
         QueryResult::Err(error) => panic!(
-            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            "Failed to query file after insertion, an unexpected error has occurred: {}",
             error
         ),
     };
