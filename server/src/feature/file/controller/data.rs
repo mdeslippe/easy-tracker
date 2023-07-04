@@ -26,3 +26,11 @@ impl Into<File> for CreateFileRequestBody {
         };
     }
 }
+
+/// A get file request query parameter struct.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(super) struct GetFileRequestParams {
+    /// If the raw file data should be returned.
+    pub(super) raw: Option<bool>,
+}
