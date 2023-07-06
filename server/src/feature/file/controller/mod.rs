@@ -25,7 +25,7 @@ use shaku_actix::Inject;
 ///
 /// `config` - The service config that the file controller configuration will be added to.
 pub(crate) fn configure(config: &mut ServiceConfig) {
-    config.service(web::scope("/files").service(create_file).service(get));
+    config.service(web::scope("/files").service(create_file).service(get_file));
 }
 
 /// # Description
@@ -94,7 +94,7 @@ async fn create_file(
 ///
 /// An http response.
 #[get("/{id}")]
-async fn get(
+async fn get_file(
     request: HttpRequest,
     id: web::Path<u64>,
     params: web::Query<GetFileRequestParams>,
