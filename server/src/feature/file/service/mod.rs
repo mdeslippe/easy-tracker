@@ -358,10 +358,25 @@ impl FileService for FileServiceImpl {
         context: &mut QueryContext,
     ) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
         // Validate the file.
-        match file.validate() {
-            Ok(()) => {}
-            Err(errors) => return UpdateResult::Invalid(errors),
+        let mut validation_errors = match file.validate() {
+            Ok(()) => ValidationErrors::new(),
+            Err(errors) => errors,
         };
+
+        // Check if the user id specified exists.
+        match __self.user_service.get_by_id(&file.user_id).await {
+            QueryResult::Ok(_) => {}
+            QueryResult::NotFound => validation_errors.add(
+                name_of!(user_id in File),
+                create_value_validation_error("not_found", &file.user_id),
+            ),
+            QueryResult::Err(error) => return UpdateResult::Err(error),
+        }
+
+        // If any validation errors exist, return them.
+        if !validation_errors.is_empty() {
+            return UpdateResult::Invalid(validation_errors);
+        }
 
         // Perform the update.
         let records_updated = match __self.file_repository.update(&file, context).await {
