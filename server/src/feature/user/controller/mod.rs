@@ -233,7 +233,7 @@ async fn get_user_by_email(
 ///
 /// `request` - The http request.
 ///
-/// `update` - The update request data.
+/// `body` - The request body which contains information about the user that is being updated.
 ///
 /// `auth_service` - The authentication service that will be used to authenticate the user sending
 /// the request.
@@ -246,7 +246,7 @@ async fn get_user_by_email(
 #[patch("")]
 async fn update_user(
     request: HttpRequest,
-    update: web::Json<UpdateUserRequestBody>,
+    body: web::Json<UpdateUserRequestBody>,
     auth_service: Inject<DependencyInjector, dyn AuthService>,
     user_service: Inject<DependencyInjector, dyn UserService>,
 ) -> HttpResponse {
@@ -258,7 +258,7 @@ async fn update_user(
     };
 
     // Apply the update to the user.
-    update.apply(&mut user);
+    body.apply(&mut user);
 
     // Update the user.
     return match user_service.update(&user).await {

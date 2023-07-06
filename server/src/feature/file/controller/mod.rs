@@ -1,8 +1,8 @@
 mod data;
 
-use self::data::{CreateFileRequestBody, GetFileRequestParams};
+use self::data::{CreateFileRequestBody, GetFileRequestParams, UpdateFileRequestBody};
 use crate::{
-    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult},
+    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult, UpdateResult},
     feature::auth::service::AuthService,
     feature::{
         file::{model::File, service::FileService},
@@ -11,7 +11,7 @@ use crate::{
     injector::DependencyInjector,
 };
 use actix_web::{
-    get, post,
+    get, patch, post,
     web::{self, ServiceConfig},
     HttpRequest, HttpResponse,
 };
@@ -25,7 +25,12 @@ use shaku_actix::Inject;
 ///
 /// `config` - The service config that the file controller configuration will be added to.
 pub(crate) fn configure(config: &mut ServiceConfig) {
-    config.service(web::scope("/files").service(create_file).service(get_file));
+    config.service(
+        web::scope("/files")
+            .service(create_file)
+            .service(get_file)
+            .service(update_file),
+    );
 }
 
 /// # Description
@@ -64,14 +69,11 @@ async fn create_file(
     file.user_id = user.id;
 
     // Create the file.
-    let created_file: File = match file_service.insert(&file).await {
-        InsertionResult::Ok(created_file) => created_file,
-        InsertionResult::Invalid(details) => return HttpResponse::BadRequest().json(details),
-        InsertionResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    return match file_service.insert(&file).await {
+        InsertionResult::Ok(created_file) => HttpResponse::Ok().json(created_file),
+        InsertionResult::Invalid(details) => HttpResponse::BadRequest().json(details),
+        InsertionResult::Err(_) => HttpResponse::InternalServerError().finish(),
     };
-
-    // Return the file.
-    return HttpResponse::Ok().json(created_file);
 }
 
 /// # Description
@@ -123,4 +125,62 @@ async fn get_file(
     } else {
         return HttpResponse::Ok().json(file);
     }
+}
+
+/// # Description
+///
+/// An api endpoint to update a file.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `id` - The id of the file that is being updated.
+///
+/// `body` - The request body which contains information about the file that is being updated.
+///
+/// `auth_service` - The authentication service that will be used to authenticate the sending user.
+///
+/// `file_service` - The file service that will be used to update the file.
+///
+/// # Returns
+///
+/// An http response.
+#[patch("/{id}")]
+async fn update_file(
+    request: HttpRequest,
+    id: web::Path<u64>,
+    body: web::Json<UpdateFileRequestBody>,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+    file_service: Inject<DependencyInjector, dyn FileService>,
+) -> HttpResponse {
+    // Authenticate the user.
+    let user: User = match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(user) => user,
+        AuthenticationResult::NotAuthenticated => return HttpResponse::Unauthorized().finish(),
+        AuthenticationResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Get the file that is being updated.
+    let mut file: File = match file_service.get(&id).await {
+        QueryResult::Ok(file) => file,
+        QueryResult::NotFound => return HttpResponse::NotFound().finish(),
+        QueryResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // If the user is not the owner of the file, they are not allowed to updated it.
+    if user.id != file.user_id {
+        return HttpResponse::Forbidden().finish();
+    }
+
+    // Apply the update to the file.
+    body.apply(&mut file);
+
+    // Update the file.
+    return match file_service.update(&file).await {
+        UpdateResult::Ok(file) => HttpResponse::Ok().json(file),
+        UpdateResult::NotFound => HttpResponse::NotFound().finish(),
+        UpdateResult::Invalid(details) => HttpResponse::BadRequest().json(details),
+        UpdateResult::Err(_) => HttpResponse::InternalServerError().finish(),
+    };
 }
