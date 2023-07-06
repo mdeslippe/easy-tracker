@@ -6,7 +6,10 @@ use crate::{
         DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult,
     },
     database::DatabaseConnectionFactory,
-    feature::file::{model::File, repository::FileRepository},
+    feature::{
+        file::{model::File, repository::FileRepository},
+        user::service::UserService,
+    },
 };
 use async_trait::async_trait;
 use shaku::{Component, Interface};
@@ -185,6 +188,9 @@ pub(crate) struct FileServiceImpl {
     /// The file repository that will be used to manage persistent file data.
     #[shaku(inject)]
     file_repository: Arc<dyn FileRepository>,
+
+    /// The user service that will be used to validate user data.
+    user_service: Arc<dyn UserService>,
 
     /// The database connection factory that will be used to acquire database connections.
     #[shaku(inject)]
