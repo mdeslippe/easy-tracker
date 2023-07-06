@@ -2,7 +2,9 @@ mod data;
 
 use self::data::{CreateFileRequestBody, GetFileRequestParams, UpdateFileRequestBody};
 use crate::{
-    common::enumeration::{AuthenticationResult, InsertionResult, QueryResult, UpdateResult},
+    common::enumeration::{
+        AuthenticationResult, DeletionResult, InsertionResult, QueryResult, UpdateResult,
+    },
     feature::auth::service::AuthService,
     feature::{
         file::{model::File, service::FileService},
@@ -11,7 +13,7 @@ use crate::{
     injector::DependencyInjector,
 };
 use actix_web::{
-    get, patch, post,
+    delete, get, patch, post,
     web::{self, ServiceConfig},
     HttpRequest, HttpResponse,
 };
@@ -29,7 +31,8 @@ pub(crate) fn configure(config: &mut ServiceConfig) {
         web::scope("/files")
             .service(create_file)
             .service(get_file)
-            .service(update_file),
+            .service(update_file)
+            .service(delete_file),
     );
 }
 
@@ -182,5 +185,56 @@ async fn update_file(
         UpdateResult::NotFound => HttpResponse::NotFound().finish(),
         UpdateResult::Invalid(details) => HttpResponse::BadRequest().json(details),
         UpdateResult::Err(_) => HttpResponse::InternalServerError().finish(),
+    };
+}
+
+/// # Description
+///
+/// An api endpoint to delete a file.
+///
+/// # Arguments
+///
+/// `request` - The http request.
+///
+/// `id` - The id of the file that is being deleted.
+///
+/// `auth_service` - The authentication service that will be used to authenticate the sending user.
+///
+/// `file_service` - The file service that will be used to delete the file.
+///
+/// # Returns
+///
+/// An http response.
+#[delete("/{id}")]
+async fn delete_file(
+    request: HttpRequest,
+    id: web::Path<u64>,
+    auth_service: Inject<DependencyInjector, dyn AuthService>,
+    file_service: Inject<DependencyInjector, dyn FileService>,
+) -> HttpResponse {
+    // Authenticate the user.
+    let user: User = match auth_service.authenticate_request(&request).await {
+        AuthenticationResult::Ok(user) => user,
+        AuthenticationResult::NotAuthenticated => return HttpResponse::Unauthorized().finish(),
+        AuthenticationResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // Get the file that is being deleted.
+    let file: File = match file_service.get(&id).await {
+        QueryResult::Ok(file) => file,
+        QueryResult::NotFound => return HttpResponse::NotFound().finish(),
+        QueryResult::Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
+
+    // If the user is not the owner of the file, they are not allowed to delete it.
+    if user.id != file.user_id {
+        return HttpResponse::Forbidden().finish();
+    }
+
+    // Delete the file.
+    return match file_service.delete(&id).await {
+        DeletionResult::Ok => HttpResponse::Ok().finish(),
+        DeletionResult::NotFound => HttpResponse::NotFound().finish(),
+        DeletionResult::Err(_) => HttpResponse::InternalServerError().finish(),
     };
 }
