@@ -253,6 +253,32 @@ async fn inserting_a_file_with_validation_errors_does_not_succeed() {
 
 /// # Description
 ///
+/// Test inserting a file with an invalid user id and make sure it does not succeed.
+#[actix_web::test]
+async fn inserting_a_file_with_an_invalid_user_id_does_not_succeed() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = 0;
+
+    // Insert the file, and make sure the invalid user id is detected.
+    match file_service.insert(&file).await {
+        InsertionResult::Ok(_) => panic!("Inserted succeeded when it should have failed"),
+        InsertionResult::Invalid(_) => {}
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    }
+}
+
+/// # Description
+///
 /// Test querying a file after it has been inserted and make sure the correct data is returned.
 #[actix_web::test]
 async fn file_is_queryable_after_insertion() {
@@ -470,6 +496,87 @@ async fn updating_a_file_with_validation_errors_does_not_succeed() {
     updated_file.id = file.id;
     updated_file.user_id = file.user_id;
     updated_file.name = generate_random_string(1048576);
+
+    // Perform the update.
+    match file_service.update(&updated_file).await {
+        UpdateResult::Ok(_) => panic!("File was updated when it contained validation errors"),
+        UpdateResult::NotFound => panic!("Failed to update file: File not found"),
+        UpdateResult::Invalid(_) => {}
+        UpdateResult::Err(error) => panic!(
+            "Failed to update file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test file.
+    match file_service.delete(&file.id).await {
+        DeletionResult::Ok => {}
+        DeletionResult::NotFound => {
+            panic!("Failed to delete file: file could not be found")
+        }
+        DeletionResult::Err(error) => panic!(
+            "Failed to delete file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Delete the test user.
+    delete_test_user(&user, &injector).await;
+}
+
+/// # Description
+///
+/// Test updating a file with an invalid user id and make sure it does not succeed.
+#[actix_web::test]
+async fn updating_a_file_with_an_invalid_user_id_does_not_succeed() {
+    // Create a dependency injector.
+    let injector: DependencyInjector = create_dependency_injector().await;
+
+    // Get a file service instance.
+    let file_service: Arc<dyn FileService> = injector.resolve();
+
+    // Insert a test user.
+    let user: User = insert_test_user(&injector).await;
+
+    // Create a test file.
+    let mut file: File = create_test_file();
+    file.user_id = user.id;
+
+    // Insert the file.
+    let inserted_file = match file_service.insert(&file).await {
+        InsertionResult::Ok(inserted_file) => inserted_file,
+        InsertionResult::Invalid(details) => {
+            panic!("Failed to insert file, the file was invalid: {}", details)
+        }
+        InsertionResult::Err(error) => panic!(
+            "Failed to insert file, an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Update the file id with the one that was generated.
+    file.id = inserted_file.id;
+
+    // Make sure the correct data was returned.
+    assert_eq!(file, inserted_file);
+
+    // Query the file that was inserted.
+    let queried_file = match file_service.get(&file.id).await {
+        QueryResult::Ok(queried_file) => queried_file,
+        QueryResult::NotFound => panic!("Failed to query file after insertion: File not found"),
+        QueryResult::Err(error) => panic!(
+            "Failed to query file after insertion: an unexpected error has occurred: {}",
+            error
+        ),
+    };
+
+    // Make sure the file has the correct data.
+    assert_eq!(file, queried_file);
+
+    // Create an updated file.
+    let mut updated_file = create_test_file();
+    updated_file.id = file.id;
+    updated_file.user_id = 0;
 
     // Perform the update.
     match file_service.update(&updated_file).await {
