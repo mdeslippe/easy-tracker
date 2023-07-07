@@ -33,7 +33,7 @@ export type File = {
 	/**
 	 * The file's raw data.
 	 */
-	data: Uint8Array;
+	data: number[];
 };
 
 /**
@@ -53,7 +53,7 @@ export type CreateFileRequestData = {
 	/**
 	 * The file's raw data.
 	 */
-	data: Uint8Array;
+	data: number[];
 };
 
 /**
@@ -93,7 +93,7 @@ export type UpdateFileRequestData = {
 	/**
 	 * The file's raw data.
 	 */
-	data?: Uint8Array;
+	data?: number[];
 };
 
 /**
