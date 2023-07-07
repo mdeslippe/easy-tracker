@@ -79,7 +79,7 @@ pub(super) struct UpdateUserRequestBody {
 impl UpdateUserRequestBody {
     /// # Description
     ///
-    /// Apply the changes in a the request body to a user.
+    /// Apply the changes in the update user request body to a user.
     ///
     /// # Arguments
     ///
