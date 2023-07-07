@@ -38,6 +38,16 @@ export function createUniqueErrorMessage(field: string) {
 }
 
 /**
+ * Create a not found error message.
+ *
+ * @param field The field that was not found.
+ * @returns The not found error message that was created.
+ */
+export function createNotFoundErrorMessage(field: string) {
+	return `${capitalizeFirstLetter(field)} was not found.`;
+}
+
+/**
  * Create an invalid email error message.
  *
  * @returns The invalid email error message that was created.
@@ -181,6 +191,8 @@ export function convertValidationErrorToMessage(
 			return createRequiredErrorMessage(field);
 		case ValidationErrorType.UNIQUE:
 			return createUniqueErrorMessage(field);
+		case ValidationErrorType.NOT_FOUND:
+			return createNotFoundErrorMessage(field);
 		case ValidationErrorType.INVALID_EMAIL:
 			return createInvalidEmailErrorMessage();
 		case ValidationErrorType.INVALID_URL:

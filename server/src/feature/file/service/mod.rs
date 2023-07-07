@@ -2,13 +2,18 @@
 mod test;
 
 use crate::{
-    common::enumeration::{
-        DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult,
+    common::{
+        enumeration::{DeletionResult, InsertionResult, QueryContext, QueryResult, UpdateResult},
+        utility::create_value_validation_error,
     },
     database::DatabaseConnectionFactory,
-    feature::file::{model::File, repository::FileRepository},
+    feature::{
+        file::{model::File, repository::FileRepository},
+        user::service::UserService,
+    },
 };
 use async_trait::async_trait;
+use nameof::name_of;
 use shaku::{Component, Interface};
 use sqlx::Connection;
 use std::{error::Error, io, sync::Arc};
@@ -186,6 +191,10 @@ pub(crate) struct FileServiceImpl {
     #[shaku(inject)]
     file_repository: Arc<dyn FileRepository>,
 
+    /// The user service that will be used to validate user data.
+    #[shaku(inject)]
+    user_service: Arc<dyn UserService>,
+
     /// The database connection factory that will be used to acquire database connections.
     #[shaku(inject)]
     connection_factory: Arc<dyn DatabaseConnectionFactory>,
@@ -234,10 +243,25 @@ impl FileService for FileServiceImpl {
         context: &mut QueryContext,
     ) -> InsertionResult<File, ValidationErrors, Box<dyn Error>> {
         // Validate the file.
-        match file.validate() {
-            Ok(()) => {}
-            Err(errors) => return InsertionResult::Invalid(errors),
+        let mut validation_errors = match file.validate() {
+            Ok(()) => ValidationErrors::new(),
+            Err(errors) => errors,
         };
+
+        // Check if the user id specified exists.
+        match __self.user_service.get_by_id(&file.user_id).await {
+            QueryResult::Ok(_) => {}
+            QueryResult::NotFound => validation_errors.add(
+                name_of!(user_id in File),
+                create_value_validation_error("not_found", &file.user_id),
+            ),
+            QueryResult::Err(error) => return InsertionResult::Err(error),
+        }
+
+        // If any validation errors exist, return them.
+        if !validation_errors.is_empty() {
+            return InsertionResult::Invalid(validation_errors);
+        }
 
         // Perform the insertion.
         let file_id = match __self.file_repository.insert(file, context).await {
@@ -334,10 +358,25 @@ impl FileService for FileServiceImpl {
         context: &mut QueryContext,
     ) -> UpdateResult<File, ValidationErrors, Box<dyn Error>> {
         // Validate the file.
-        match file.validate() {
-            Ok(()) => {}
-            Err(errors) => return UpdateResult::Invalid(errors),
+        let mut validation_errors = match file.validate() {
+            Ok(()) => ValidationErrors::new(),
+            Err(errors) => errors,
         };
+
+        // Check if the user id specified exists.
+        match __self.user_service.get_by_id(&file.user_id).await {
+            QueryResult::Ok(_) => {}
+            QueryResult::NotFound => validation_errors.add(
+                name_of!(user_id in File),
+                create_value_validation_error("not_found", &file.user_id),
+            ),
+            QueryResult::Err(error) => return UpdateResult::Err(error),
+        }
+
+        // If any validation errors exist, return them.
+        if !validation_errors.is_empty() {
+            return UpdateResult::Invalid(validation_errors);
+        }
 
         // Perform the update.
         let records_updated = match __self.file_repository.update(&file, context).await {

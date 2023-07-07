@@ -13,6 +13,11 @@ export enum ValidationErrorType {
 	UNIQUE = 'unique',
 
 	/**
+	 * A validation error type that indicates that the value could not be found.
+	 */
+	NOT_FOUND = 'not_found',
+
+	/**
 	 * A validation error type that indicates that the value must be a valid email address.
 	 */
 	INVALID_EMAIL = 'email',
