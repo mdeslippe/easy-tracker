@@ -94,3 +94,19 @@ export function useFile(id: number): UseFileResult {
 		refetch: async () => await query.refetch()
 	};
 }
+
+/**
+ * The data that will be returned from the useFileInvalidator hook.
+ */
+export type UseFileInvalidatorResult = () => Promise<void>;
+
+/**
+ * A hook to invalidate the useFile result.
+ *
+ * @param id The id of the file that the result is being invalidated for.
+ * @returns The result.
+ */
+export function useFileInvalidator(id: number): UseFileInvalidatorResult {
+	const queryClient = useQueryClient();
+	return () => queryClient.invalidateQueries({ queryKey: getFileQueryKey(id) });
+}
