@@ -110,3 +110,19 @@ export function useFileInvalidator(id: number): UseFileInvalidatorResult {
 	const queryClient = useQueryClient();
 	return () => queryClient.invalidateQueries({ queryKey: getFileQueryKey(id) });
 }
+
+/**
+ * The data that will be returned from the useFileResetter hook.
+ */
+export type UseFileResetterResult = () => Promise<void>;
+
+/**
+ * A hook to reset the useFile result.
+ *
+ * @param id The id of the file that the result is being reset for.
+ * @returns The result.
+ */
+export function useFileResetter(id: number): UseFileInvalidatorResult {
+	const queryClient = useQueryClient();
+	return () => queryClient.resetQueries({ queryKey: getFileQueryKey(id) });
+}
