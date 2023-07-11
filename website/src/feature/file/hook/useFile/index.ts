@@ -122,7 +122,7 @@ export type UseFileResetterResult = () => Promise<void>;
  * @param id The id of the file that the result is being reset for.
  * @returns The result.
  */
-export function useFileResetter(id: number): UseFileInvalidatorResult {
+export function useFileResetter(id: number): UseFileResetterResult {
 	const queryClient = useQueryClient();
 	return () => queryClient.resetQueries({ queryKey: getFileQueryKey(id) });
 }
