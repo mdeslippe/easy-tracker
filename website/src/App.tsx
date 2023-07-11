@@ -32,6 +32,11 @@ const SignUpPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 const LogoutPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page/LogoutPage').then((module) => ({ default: module.LogoutPage }))
 );
+const UserSettingsPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
+	import('@website/page/UserSettingsPage').then((module) => ({
+		default: module.UserSettingsPage
+	}))
+);
 const ErrorPage: LazyExoticComponent<() => JSX.Element> = lazy(() =>
 	import('@website/page/ErrorPage').then((module) => ({ default: module.ErrorPage }))
 );
@@ -100,6 +105,15 @@ function Router(): JSX.Element {
 						<AuthenticatedRoute
 							redirectTo='/'
 							Component={LogoutPage}
+						/>
+					)}
+				/>
+				<Route
+					path='/settings'
+					Component={() => (
+						<AuthenticatedRoute
+							redirectTo='/login'
+							Component={UserSettingsPage}
 						/>
 					)}
 				/>
