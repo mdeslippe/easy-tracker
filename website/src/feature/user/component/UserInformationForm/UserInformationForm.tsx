@@ -131,7 +131,7 @@ export function UserInformationForm(): JSX.Element {
 
 	return (
 		<form
-			id='user-settings-form'
+			id='user-information-form'
 			onSubmit={handleSubmit((values) => {
 				handleUserInformationFormSubmission(
 					values,
