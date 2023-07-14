@@ -21,6 +21,11 @@ export type Snack = {
 	readonly duration: number;
 
 	/**
+	 * The timeout handler for the snack.
+	 */
+	readonly timeout: ReturnType<typeof setTimeout>;
+
+	/**
 	 * The message that the snack will display.
 	 */
 	readonly message: string;
@@ -40,7 +45,7 @@ export type SnackBarContextData = {
 	 *
 	 * @param snack The snack to add to the snack bar.
 	 */
-	readonly addSnack: (snack: Omit<Snack, 'id'>) => void;
+	readonly addSnack: (snack: Omit<Snack, 'id' | 'timeout'>) => void;
 
 	/**
 	 * A function that can be used to remove a snack from the snack bar.
