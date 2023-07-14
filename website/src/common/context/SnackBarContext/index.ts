@@ -2,6 +2,26 @@
 import { Context, createContext } from 'react';
 
 /**
+ * An enumeration of all of the snack types.
+ */
+export enum SnackType {
+	/**
+	 * A snack type indicating that the snack will display a success message.
+	 */
+	SUCCESS,
+
+	/**
+	 * A snack type indicating that the snack will display a warning message.
+	 */
+	WARNING,
+
+	/**
+	 * A snack type indicating that the snack will display an error message.
+	 */
+	ERROR
+}
+
+/**
  * A snack that can be displayed in a snack bar.
  */
 export type Snack = {
@@ -13,7 +33,7 @@ export type Snack = {
 	/**
 	 * The type of snack.
 	 */
-	readonly type: 'success' | 'warning' | 'error';
+	readonly type: SnackType;
 
 	/**
 	 * The duration in milliseconds that the snack will be displayed for.
