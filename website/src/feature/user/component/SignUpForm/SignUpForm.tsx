@@ -47,7 +47,7 @@ const SignUpFormSchema = z
 	.intersection(
 		CreateUserRequestDataSchema,
 		z.object({
-			confirmPassword: z.string()
+			confirmPassword: z.string().optional()
 		})
 	)
 	.refine((data) => data.password === data.confirmPassword, {
