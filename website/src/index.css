@@ -30,6 +30,13 @@
 	--skeleton-color: #aaaaaa;
 	--skeleton-background-color: #cccccc;
 
+	--success-snack-color: #ffffff;
+	--success-snack-background: #008200;
+	--normal-snack-color: #ffffff;
+	--normal-snack-background: #1d212e;
+	--error-snack-color: #ffffff;
+	--error-snack-background: #e10000;
+
 	/* Numbers */
 	--max-content-width: 1920px;
 	--min-content-width: 320px;
