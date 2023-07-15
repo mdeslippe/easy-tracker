@@ -61,7 +61,7 @@ const UserInformationFormSchema = z
  * @param invalidateAuthenticationStatus A function that can be used to invalidate the authentication status data.
  * @returns A promise.
  */
-async function handleUserInformationFormSubmission(
+async function handleUserInformationUpdate(
 	values: FieldValues,
 	setFieldError: UseFormSetError<FieldValues>,
 	invalidateAuthenticatedUser: UseAuthenticatedUserInvalidatorResult,
@@ -133,7 +133,7 @@ export function UserInformationForm(): JSX.Element {
 		<form
 			id='user-information-form'
 			onSubmit={handleSubmit((values) => {
-				handleUserInformationFormSubmission(
+				handleUserInformationUpdate(
 					values,
 					setError,
 					invalidateAuthenticatedUser,
