@@ -8,6 +8,10 @@
 	right: 8px;
 }
 
+#snackbar .snack {
+	animation: slide-in 0.5s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
 #snackbar > .snack:hover {
 	transform: scale(102.5%);
 }
@@ -57,5 +61,16 @@
 
 	#snackbar > .snack > button {
 		width: 100%;
+	}
+}
+
+/* Animations */
+@keyframes slide-in {
+	from {
+		transform: translateX(100%);
+	}
+
+	to {
+		transform: translateX(0%);
 	}
 }
