@@ -8,17 +8,17 @@ export enum SnackType {
 	/**
 	 * A snack type indicating that the snack will display a success message.
 	 */
-	SUCCESS,
+	SUCCESS = 'success',
 
 	/**
-	 * A snack type indicating that the snack will display a warning message.
+	 * A snack type indicating that the snack will display a normal message.
 	 */
-	WARNING,
+	NORMAL = 'normal',
 
 	/**
 	 * A snack type indicating that the snack will display an error message.
 	 */
-	ERROR
+	ERROR = 'error'
 }
 
 /**
