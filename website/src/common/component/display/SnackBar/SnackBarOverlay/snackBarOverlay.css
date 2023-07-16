@@ -1,0 +1,76 @@
+/* ID Styling */
+#snackbar {
+	bottom: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	position: fixed;
+	right: 8px;
+}
+
+#snackbar > .snack {
+	animation: slide-in 0.25s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+#snackbar > .snack:hover {
+	transform: scale(102.5%);
+}
+
+#snackbar > .snack > button {
+	align-items: center;
+	border: none;
+	border-radius: var(--normal-border-radius);
+	cursor: pointer;
+	display: flex;
+	gap: 0.75rem;
+	justify-content: center;
+	padding: 0.75rem;
+	width: 20rem;
+}
+
+#snackbar > .snack > button > img {
+	width: 1.25rem;
+}
+
+#snackbar > .snack > button > span {
+	flex: 1;
+	font-size: 1rem;
+}
+
+#snackbar > .success-snack > button {
+	background: var(--success-snack-background);
+	color: var(--success-snack-color);
+}
+
+#snackbar > .normal-snack > button {
+	background: var(--normal-snack-background);
+	color: var(--normal-snack-color);
+}
+
+#snackbar > .error-snack > button {
+	background: var(--error-snack-background);
+	color: var(--error-snack-color);
+}
+
+/* Small Screens */
+@media (max-width: 500px) {
+	/* ID Styling */
+	#snackbar {
+		left: 8px;
+	}
+
+	#snackbar > .snack > button {
+		width: 100%;
+	}
+}
+
+/* Animations */
+@keyframes slide-in {
+	from {
+		transform: translateX(100%);
+	}
+
+	to {
+		transform: translateX(0%);
+	}
+}

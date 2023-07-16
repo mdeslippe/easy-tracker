@@ -9,7 +9,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Custom.
-import { LoadingOverlay } from '@website/common/component/display';
+import {
+	LoadingOverlay,
+	SnackBarOverlay,
+	SnackBarProvider
+} from '@website/common/component/display';
 import {
 	AuthenticatedRoute,
 	ConditionalAuthenticationRoute,
@@ -56,7 +60,10 @@ function App(): JSX.Element {
 	return (
 		<Suspense fallback={<LoadingOverlay />}>
 			<QueryClientProvider client={queryClient}>
-				<Router />
+				<SnackBarProvider>
+					<Router />
+					<SnackBarOverlay />
+				</SnackBarProvider>
 				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>
 		</Suspense>
