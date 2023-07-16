@@ -1,5 +1,5 @@
 // React.
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,6 +25,9 @@ import {
 	useAuthenticatedUserInvalidator,
 	useAuthenticationStatusInvalidator
 } from '@website/feature/auth/hook';
+
+// Context.
+import { SnackBarContext, SnackType } from '@website/common/context';
 
 // Custom.
 import { ErrorBox } from '@website/common/component/display';
@@ -59,13 +62,15 @@ const UserInformationFormSchema = z
  * @param setFieldError A function that can be used to set field errors.
  * @param invalidateAuthenticatedUser A function that can be used to invalidate the authenticated user data.
  * @param invalidateAuthenticationStatus A function that can be used to invalidate the authentication status data.
+ * @param onSuccess A function that will be invoked if the user's information was successfully updated.
  * @returns A promise.
  */
 async function handleUserInformationUpdate(
 	values: FieldValues,
 	setFieldError: UseFormSetError<FieldValues>,
 	invalidateAuthenticatedUser: UseAuthenticatedUserInvalidatorResult,
-	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult
+	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult,
+	onSuccess: () => void
 ): Promise<void> {
 	// Send a request to update the user's information.
 	const response = await updateUser(await UpdateUserRequestDataSchema.parseAsync(values));
@@ -75,6 +80,7 @@ async function handleUserInformationUpdate(
 		case 200:
 			invalidateAuthenticatedUser();
 			invalidateAuthenticationStatus();
+			onSuccess();
 			return;
 		case 400:
 			// Parse the validation error response.
@@ -103,6 +109,7 @@ async function handleUserInformationUpdate(
  * @returns The user information form.
  */
 export function UserInformationForm(): JSX.Element {
+	const snackbar = useContext(SnackBarContext);
 	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
 	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -129,6 +136,15 @@ export function UserInformationForm(): JSX.Element {
 		}
 	});
 
+	// Define a function that will be invoked if the user's information was successfully updated.
+	const onSuccessfulUpdate = () => {
+		snackbar.addSnack({
+			type: SnackType.SUCCESS,
+			duration: 5000,
+			message: 'Successfully updated information.'
+		});
+	};
+
 	return (
 		<form
 			id='user-information-form'
@@ -137,8 +153,15 @@ export function UserInformationForm(): JSX.Element {
 					values,
 					setError,
 					invalidateAuthenticatedUser,
-					invalidateAuthenticationStatus
-				).catch(() => setErrorMessage('An unexpected error has occurred.'));
+					invalidateAuthenticationStatus,
+					onSuccessfulUpdate
+				).catch(() => {
+					snackbar.addSnack({
+						type: SnackType.ERROR,
+						duration: 5000,
+						message: 'An unexpected error has occurred.'
+					});
+				});
 			})}
 		>
 			{errorMessage !== null && (
