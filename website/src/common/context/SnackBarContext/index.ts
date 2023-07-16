@@ -6,17 +6,17 @@ import { Context, createContext } from 'react';
  */
 export enum SnackType {
 	/**
-	 * A snack type indicating that the snack will display a success message.
+	 * A snack type indicating that the snack contains a success message.
 	 */
 	SUCCESS = 'success',
 
 	/**
-	 * A snack type indicating that the snack will display a normal message.
+	 * A snack type indicating that the snack contains a normal message.
 	 */
 	NORMAL = 'normal',
 
 	/**
-	 * A snack type indicating that the snack will display an error message.
+	 * A snack type indicating that the snack contains an error message.
 	 */
 	ERROR = 'error'
 }

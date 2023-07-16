@@ -36,9 +36,9 @@ export function SnackBarProvider({ children }: SnackBarProviderProps): JSX.Eleme
 		},
 		removeSnack: (id) => {
 			setSnacks((currentSnacks) =>
-				currentSnacks.filter((currentSnack) => {
-					if (currentSnack.id === id) clearTimeout(currentSnack.timeout);
-					return currentSnack.id !== id;
+				currentSnacks.filter((snack) => {
+					if (snack.id === id) clearTimeout(snack.timeout);
+					return snack.id !== id;
 				})
 			);
 		}
