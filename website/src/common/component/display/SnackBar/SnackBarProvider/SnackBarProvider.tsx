@@ -14,7 +14,7 @@ export interface SnackBarProviderProps {
 	/**
 	 * The nodes that will be rendered as the component's children.
 	 */
-	children: ReactNode;
+	children?: ReactNode;
 }
 
 /**
