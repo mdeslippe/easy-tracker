@@ -3,11 +3,17 @@ import { ComponentProps, useEffect, useRef } from 'react';
 
 // CSS.
 import '@website/common/component/layout/modal/Modal/modal.css';
+import { CloseIcon } from '@website/common/component/display';
 
 /**
  * Properties for the {@link Modal} component.
  */
 export interface ModalProps extends ComponentProps<'dialog'> {
+	/**
+	 * The modal's title.
+	 */
+	title: string;
+
 	/**
 	 * If the modal is open.
 	 */
@@ -28,6 +34,7 @@ export interface ModalProps extends ComponentProps<'dialog'> {
 export function Modal({
 	className,
 	children,
+	title,
 	open,
 	onClose,
 	onClick,
@@ -72,7 +79,17 @@ export function Modal({
 				}
 			}}
 		>
-			{children}
+			<div className='modal-header'>
+				<h1>{title}</h1>
+				<button
+					title='Close'
+					type='button'
+					onClick={() => onClose()}
+				>
+					<CloseIcon color='var(--secondary-color)' />
+				</button>
+			</div>
+			<div className='modal-body'>{children}</div>
 		</dialog>
 	);
 }
