@@ -1,9 +1,11 @@
 // React.
 import { ComponentProps, useEffect, useRef } from 'react';
 
-// CSS.
-import '@website/common/component/layout/modal/Modal/modal.css';
+// Custom.
 import { CloseIcon } from '@website/common/component/display';
+
+// CSS.
+import '@website/common/component/layout/Modal/modal.css';
 
 /**
  * Properties for the {@link Modal} component.
