@@ -17,10 +17,12 @@
 	font-family: 'Roboto-Regular', Arial, Helvetica, sans-serif !important;
 }
 
-:root {
+:root,
+::backdrop {
 	/* Colors */
 	--primary-color: #1d212e;
 	--secondary-color: #ffffff;
+	--tertiary-color: #000000;
 	--primary-accent: #f2994a;
 	--secondary-accent: #eac543;
 	--tertiary-accent: #cccccc;

@@ -1,0 +1,36 @@
+/* Class Styling */
+.modal {
+	border: 0px;
+	padding: 0px;
+}
+
+.modal[open] {
+	animation: modal-open 0.2s;
+}
+
+.modal[open]::backdrop {
+	animation: modal-backdrop-open 0.2s;
+	background: var(--tertiary-color);
+	opacity: 50%;
+}
+
+/* Animations */
+@keyframes modal-open {
+	from {
+		opacity: 0;
+		transform: scale(75%);
+	}
+	to {
+		opacity: 1;
+		transform: scale(100%);
+	}
+}
+
+@keyframes modal-backdrop-open {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 50%;
+	}
+}
