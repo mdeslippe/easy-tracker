@@ -10,7 +10,13 @@ import '@website/common/component/layout/Modal/modal.css';
 /**
  * Properties for the {@link Modal} component.
  */
-export interface ModalProps extends ComponentProps<'dialog'> {
+export interface ModalProps
+	extends Omit<ComponentProps<'dialog'>, 'role' | 'aria-labelledby' | 'aria-describedby'> {
+	/**
+	 * The dialogs id.
+	 */
+	id: string;
+
 	/**
 	 * The modal's title.
 	 */
@@ -36,6 +42,7 @@ export interface ModalProps extends ComponentProps<'dialog'> {
 export function Modal({
 	className,
 	children,
+	id,
 	title,
 	open,
 	onClose,
@@ -65,7 +72,11 @@ export function Modal({
 		<dialog
 			{...props}
 			ref={ref}
+			id={id}
 			className={className ? `${className} modal` : 'modal'}
+			role='dialog'
+			aria-labelledby={`${id}-title`}
+			aria-describedby={`${id}-description`}
 			onClose={onClose}
 			onClick={(event) => {
 				// If the user clicked outside of the modal's content, the modal should be closed.
@@ -82,7 +93,7 @@ export function Modal({
 			}}
 		>
 			<div className='modal-header'>
-				<h1>{title}</h1>
+				<h1 id={`${id}-title`}>{title}</h1>
 				<button
 					title='Close'
 					type='button'
@@ -91,7 +102,12 @@ export function Modal({
 					<CloseIcon color='var(--secondary-color)' />
 				</button>
 			</div>
-			<div className='modal-body'>{children}</div>
+			<div
+				id={`${id}-description`}
+				className='modal-body'
+			>
+				{children}
+			</div>
 		</dialog>
 	);
 }
