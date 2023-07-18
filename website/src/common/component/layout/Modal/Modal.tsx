@@ -13,7 +13,7 @@ import '@website/common/component/layout/Modal/modal.css';
 export interface ModalProps
 	extends Omit<ComponentProps<'dialog'>, 'role' | 'aria-labelledby' | 'aria-describedby'> {
 	/**
-	 * The dialogs id.
+	 * The modal's id.
 	 */
 	id: string;
 
