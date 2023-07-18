@@ -54,6 +54,21 @@ body {
 }
 
 /* Class Styling */
+.large-icon {
+	height: 2rem;
+	width: 2rem;
+}
+
+.medium-icon {
+	height: 1rem;
+	width: 1rem;
+}
+
+.small-icon {
+	height: 0.5rem;
+	width: 0.5rem;
+}
+
 .large-button {
 	border: none;
 	border-radius: calc(2 * var(--normal-border-radius));
