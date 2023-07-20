@@ -1,8 +1,11 @@
 // React.
-import { ComponentProps, useContext } from 'react';
+import { ComponentProps } from 'react';
 
 // Context.
-import { SnackBarContext, SnackType } from '@website/common/context';
+import { SnackType } from '@website/common/context';
+
+// Hooks.
+import { useSnackBar } from '@website/common/hook';
 
 // CSS.
 import '@website/common/component/display/SnackBar/SnackBarOverlay/snackBarOverlay.css';
@@ -19,7 +22,7 @@ export interface SnackBarOverlayProps extends Omit<ComponentProps<'div'>, 'id' |
  * @returns The snackbar overlay.
  */
 export function SnackBarOverlay(props: SnackBarOverlayProps): JSX.Element {
-	const snackbar = useContext(SnackBarContext);
+	const snackbar = useSnackBar();
 
 	return (
 		<div

@@ -1,5 +1,5 @@
 // React.
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,16 +18,17 @@ import {
 // Services.
 import { updateUser } from '@website/feature/user/service';
 
-// Hook.
+// Context.
+import { SnackType } from '@website/common/context';
+
+// Hooks.
+import { useSnackBar } from '@website/common/hook';
 import {
 	UseAuthenticatedUserInvalidatorResult,
 	UseAuthenticationStatusInvalidatorResult,
 	useAuthenticatedUserInvalidator,
 	useAuthenticationStatusInvalidator
 } from '@website/feature/auth/hook';
-
-// Context.
-import { SnackBarContext, SnackType } from '@website/common/context';
 
 // Custom.
 import { ErrorBox } from '@website/common/component/display';
@@ -109,7 +110,7 @@ async function handleUserInformationUpdate(
  * @returns The user information form.
  */
 export function UserInformationForm(): JSX.Element {
-	const snackbar = useContext(SnackBarContext);
+	const snackbar = useSnackBar();
 	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
 	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
