@@ -17,10 +17,12 @@
 	font-family: 'Roboto-Regular', Arial, Helvetica, sans-serif !important;
 }
 
-:root {
+:root,
+::backdrop {
 	/* Colors */
 	--primary-color: #1d212e;
 	--secondary-color: #ffffff;
+	--tertiary-color: #000000;
 	--primary-accent: #f2994a;
 	--secondary-accent: #eac543;
 	--tertiary-accent: #cccccc;
@@ -54,6 +56,21 @@ body {
 }
 
 /* Class Styling */
+.large-icon {
+	height: 2rem;
+	width: 2rem;
+}
+
+.medium-icon {
+	height: 1rem;
+	width: 1rem;
+}
+
+.small-icon {
+	height: 0.5rem;
+	width: 0.5rem;
+}
+
 .large-button {
 	border: none;
 	border-radius: calc(2 * var(--normal-border-radius));
