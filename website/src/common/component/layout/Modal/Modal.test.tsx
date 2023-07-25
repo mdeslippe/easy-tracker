@@ -121,6 +121,7 @@ describe('Modal component rendering', () => {
 		// Click the close button.
 		fireEvent.click(closeButton!);
 
+		// Make sure the modal is closed.
 		await waitFor(() => {
 			expect(open).toBe(false);
 		});

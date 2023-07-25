@@ -28,7 +28,7 @@ export interface ModalProps
 	open: boolean;
 
 	/**
-	 * A function that will be invoked when the modal closes.
+	 * A function that will be invoked when the user wants to close the modal.
 	 */
 	onClose: () => void;
 }
