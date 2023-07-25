@@ -63,14 +63,3 @@
 		width: 100%;
 	}
 }
-
-/* Animations */
-@keyframes slide-in {
-	from {
-		transform: translateX(100%);
-	}
-
-	to {
-		transform: translateX(0%);
-	}
-}
