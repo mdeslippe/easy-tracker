@@ -1,5 +1,5 @@
 // React.
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ComponentProps } from 'react';
 
 // CSS.
 import '@website/common/component/input/ImageSelectionBox/imageSelectionBox.css';
@@ -7,7 +7,8 @@ import '@website/common/component/input/ImageSelectionBox/imageSelectionBox.css'
 /**
  * Properties for the {@link ImageSelectionBox} component.
  */
-export interface ImageSelectionBoxProps {
+export interface ImageSelectionBoxProps
+	extends Omit<ComponentProps<'input'>, 'id' | 'type' | 'onChange'> {
 	/**
 	 * The image selection box's label.
 	 */
@@ -41,7 +42,8 @@ export function ImageSelectionBox({
 	label,
 	name,
 	accept,
-	onSelect
+	onSelect,
+	...props
 }: ImageSelectionBoxProps): JSX.Element {
 	return (
 		<div className='image-selection-box'>
@@ -52,6 +54,7 @@ export function ImageSelectionBox({
 				accept={accept}
 				type='file'
 				onChange={onSelect}
+				{...props}
 			/>
 		</div>
 	);
