@@ -1,0 +1,24 @@
+.image-selection-box {
+	border: dashed var(--primary-color) var(--normal-border-width);
+	height: 100%;
+	position: relative;
+	width: 100%;
+}
+
+.image-selection-box label {
+	align-items: center;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	width: 100%;
+}
+
+.image-selection-box input {
+	cursor: pointer;
+	display: block;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
