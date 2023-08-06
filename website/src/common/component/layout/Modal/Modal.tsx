@@ -78,21 +78,23 @@ export function Modal({
 			aria-describedby={`${id}-description`}
 			onClose={onClose}
 		>
-			<div className='modal-header'>
-				<h1 id={`${id}-title`}>{title}</h1>
-				<button
-					title='Close'
-					type='button'
-					onClick={() => onClose()}
+			<div className='modal-content'>
+				<div className='modal-header'>
+					<h1 id={`${id}-title`}>{title}</h1>
+					<button
+						title='Close'
+						type='button'
+						onClick={() => onClose()}
+					>
+						<CloseIcon color='var(--secondary-color)' />
+					</button>
+				</div>
+				<div
+					id={`${id}-description`}
+					className='modal-body'
 				>
-					<CloseIcon color='var(--secondary-color)' />
-				</button>
-			</div>
-			<div
-				id={`${id}-description`}
-				className='modal-body'
-			>
-				{children}
+					{children}
+				</div>
 			</div>
 		</dialog>
 	);
