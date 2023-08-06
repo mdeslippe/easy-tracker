@@ -5,6 +5,10 @@
 	width: 100%;
 }
 
+.image-selection-box:focus-within {
+	border: dashed var(--primary-accent) var(--normal-border-width);
+}
+
 .image-selection-box label {
 	align-items: center;
 	display: flex;
