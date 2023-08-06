@@ -26,7 +26,7 @@
 	 Text indent is needed to remove the default button that file input boxes display.
 	 Without this, mouse events at the top-left corner are not consistent with the rest of the
 	 image selection box.
-	 */
+	*/
 	text-indent: -1000vw;
 	top: 0;
 	width: 100%;

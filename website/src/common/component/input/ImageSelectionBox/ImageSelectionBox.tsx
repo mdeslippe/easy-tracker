@@ -1,11 +1,11 @@
 // React.
-import { ChangeEvent, ComponentProps } from 'react';
+import { ChangeEvent, ComponentProps, forwardRef } from 'react';
 
 // CSS.
 import '@website/common/component/input/ImageSelectionBox/imageSelectionBox.css';
 
 /**
- * Properties for the {@link ImageSelectionBox} component.
+ * Properties for the {@link ImageSelectionBoxWithRef} component.
  */
 export interface ImageSelectionBoxProps
 	extends Omit<ComponentProps<'input'>, 'id' | 'type' | 'onChange'> {
@@ -33,22 +33,21 @@ export interface ImageSelectionBoxProps
 }
 
 /**
- * An image selection box component.
+ * An image selection box component with a forwarded reference.
  *
  * @param props The component's properties.
+ * @param ref The reference that will be forwarded.
  * @returns The image selection box.
  */
-export function ImageSelectionBox({
-	label,
-	name,
-	accept,
-	onSelect,
-	...props
-}: ImageSelectionBoxProps): JSX.Element {
+function ImageSelectionBoxWithRef(
+	{ label, name, accept, onSelect, ...props }: ImageSelectionBoxProps,
+	ref: React.ForwardedRef<HTMLInputElement>
+): JSX.Element {
 	return (
 		<div className='image-selection-box'>
 			<label htmlFor={name}>{label}</label>
 			<input
+				ref={ref}
 				id={name}
 				name={name}
 				accept={accept}
@@ -59,3 +58,8 @@ export function ImageSelectionBox({
 		</div>
 	);
 }
+
+/**
+ * An image selection box component.
+ */
+export const ImageSelectionBox = forwardRef(ImageSelectionBoxWithRef);
