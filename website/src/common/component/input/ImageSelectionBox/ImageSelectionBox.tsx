@@ -1,5 +1,5 @@
 // React.
-import { ChangeEvent, ComponentProps, forwardRef } from 'react';
+import { ChangeEvent, ComponentProps, ForwardedRef, forwardRef } from 'react';
 
 // CSS.
 import '@website/common/component/input/ImageSelectionBox/imageSelectionBox.css';
@@ -41,7 +41,7 @@ export interface ImageSelectionBoxProps
  */
 function ImageSelectionBoxWithRef(
 	{ label, name, accept, onSelect, ...props }: ImageSelectionBoxProps,
-	ref: React.ForwardedRef<HTMLInputElement>
+	ref: ForwardedRef<HTMLInputElement>
 ): JSX.Element {
 	return (
 		<div className='image-selection-box'>
