@@ -46,7 +46,6 @@ export function Modal({
 	title,
 	open,
 	onClose,
-	onClick,
 	...props
 }: ModalProps): JSX.Element {
 	const ref = useRef<HTMLDialogElement | null>(null);
@@ -78,19 +77,6 @@ export function Modal({
 			aria-labelledby={`${id}-title`}
 			aria-describedby={`${id}-description`}
 			onClose={onClose}
-			onClick={(event) => {
-				// If the user clicked outside of the modal's content, the modal should be closed.
-				if (event?.target instanceof HTMLDialogElement) {
-					onClose();
-					return;
-				}
-
-				// If a click event handler has been passed in, propagate the click event.
-				if (onClick !== undefined) {
-					onClick(event);
-					return;
-				}
-			}}
 		>
 			<div className='modal-header'>
 				<h1 id={`${id}-title`}>{title}</h1>
