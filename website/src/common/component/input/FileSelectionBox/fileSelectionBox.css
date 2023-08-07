@@ -1,12 +1,12 @@
 .file-selection-box {
-	border: dashed var(--primary-color) var(--normal-border-width);
+	border: dashed var(--primary-color) calc(2 * var(--normal-border-width));
 	height: 100%;
 	position: relative;
 	width: 100%;
 }
 
 .file-selection-box:focus-within {
-	border: dashed var(--primary-accent) var(--normal-border-width);
+	border: dashed var(--primary-accent) calc(2 * var(--normal-border-width));
 }
 
 .file-selection-box label {
