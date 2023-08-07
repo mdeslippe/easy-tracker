@@ -25,7 +25,7 @@ export interface FileSelectionBoxProps
 	accept: string;
 
 	/**
-	 * A function that will be invoked when the user selects an file.
+	 * A function that will be invoked when the user selects a file.
 	 *
 	 * @param event The file selection event.
 	 */
@@ -33,7 +33,7 @@ export interface FileSelectionBoxProps
 }
 
 /**
- * An file selection box component.
+ * A file selection box component.
  *
  * @param props The component's properties.
  * @returns The file selection box.

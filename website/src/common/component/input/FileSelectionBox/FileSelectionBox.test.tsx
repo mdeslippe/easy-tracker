@@ -9,7 +9,7 @@ import { FileSelectionBox } from '@website/common/component/input/FileSelectionB
 
 // Test cases for rendering the file selection box component.
 describe('File Selection Box component rendering', () => {
-	it('Renders an file selection box without crashing', () => {
+	it('Renders a file selection box without crashing', () => {
 		// Render the component.
 		render(
 			<FileSelectionBox
