@@ -1,0 +1,29 @@
+.file-selection-box {
+	border: dashed var(--primary-color) calc(2 * var(--normal-border-width));
+	height: 100%;
+	position: relative;
+	width: 100%;
+}
+
+.file-selection-box:focus-within {
+	border: dashed var(--primary-accent) calc(2 * var(--normal-border-width));
+}
+
+.file-selection-box > label {
+	align-items: center;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	width: 100%;
+}
+
+.file-selection-box > input {
+	cursor: pointer;
+	display: block;
+	height: 100%;
+	opacity: 0;
+	position: absolute;
+	text-indent: -1000vw;
+	top: 0;
+	width: 100%;
+}

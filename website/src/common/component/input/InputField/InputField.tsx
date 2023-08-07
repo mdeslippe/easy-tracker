@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps, HTMLInputTypeAttribute, forwardRef } from 'react';
+import { ComponentProps, ForwardedRef, HTMLInputTypeAttribute, forwardRef } from 'react';
 
 // CSS.
 import '@website/common/component/input/InputField/inputField.css';
@@ -38,7 +38,7 @@ export interface InputFieldProps extends Omit<ComponentProps<'input'>, 'id'> {
  */
 function InputFieldWithRef(
 	{ label, name, error, required, ...props }: InputFieldProps,
-	ref: React.ForwardedRef<HTMLInputElement>
+	ref: ForwardedRef<HTMLInputElement>
 ): JSX.Element {
 	return (
 		<div className='input-container'>
