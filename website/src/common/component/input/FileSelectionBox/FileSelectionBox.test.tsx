@@ -5,28 +5,28 @@ import { describe, expect, it } from 'vitest';
 import { render } from '@testing-library/react';
 
 // Custom.
-import { ImageSelectionBox } from '@website/common/component/input/ImageSelectionBox/ImageSelectionBox';
+import { FileSelectionBox } from '@website/common/component/input/FileSelectionBox/FileSelectionBox';
 
-// Test cases for rendering the image selection box component.
-describe('Image Selection Box component rendering', () => {
-	it('Renders an image selection box without crashing', () => {
+// Test cases for rendering the file selection box component.
+describe('File Selection Box component rendering', () => {
+	it('Renders an file selection box without crashing', () => {
 		// Render the component.
 		render(
-			<ImageSelectionBox
+			<FileSelectionBox
 				name='avatar'
-				accept='image/png, image/jpeg'
+				accept='file/png, file/jpeg'
 				label='Select an Avatar'
 				onSelect={() => {}}
 			/>
 		);
 	});
 
-	it('Renders an accessible label for the image selection box', () => {
+	it('Renders an accessible label for the file selection box', () => {
 		// Render the component.
 		const result = render(
-			<ImageSelectionBox
+			<FileSelectionBox
 				name='avatar'
-				accept='image/png, image/jpeg'
+				accept='file/png, file/jpeg'
 				label='Select an Avatar'
 				onSelect={() => {}}
 			/>

@@ -1,15 +1,15 @@
-.image-selection-box {
+.file-selection-box {
 	border: dashed var(--primary-color) var(--normal-border-width);
 	height: 100%;
 	position: relative;
 	width: 100%;
 }
 
-.image-selection-box:focus-within {
+.file-selection-box:focus-within {
 	border: dashed var(--primary-accent) var(--normal-border-width);
 }
 
-.image-selection-box label {
+.file-selection-box label {
 	align-items: center;
 	display: flex;
 	height: 100%;
@@ -17,16 +17,11 @@
 	width: 100%;
 }
 
-.image-selection-box input {
+.file-selection-box input {
 	cursor: pointer;
 	display: block;
 	opacity: 0;
 	position: absolute;
-	/* 
-	 Text indent is needed to remove the default button that file input boxes display.
-	 Without this, mouse events at the top-left corner are not consistent with the rest of the
-	 image selection box.
-	*/
 	text-indent: -1000vw;
 	top: 0;
 	width: 100%;
