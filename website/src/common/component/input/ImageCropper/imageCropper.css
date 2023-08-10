@@ -9,6 +9,6 @@
 .image-cropper-container > .image-cropper-button-container {
 	align-items: center;
 	display: flex;
-	gap: 16px;
+	gap: 8px;
 	justify-content: center;
 }
