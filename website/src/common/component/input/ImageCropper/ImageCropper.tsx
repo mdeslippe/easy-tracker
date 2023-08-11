@@ -119,7 +119,7 @@ export function ImageCropper({
 				className='image-cropper'
 				crop={crop}
 				onChange={(_, percentCrop) => setCrop(percentCrop)}
-				onComplete={(c) => setCompletedCrop(c)}
+				onComplete={(crop) => setCompletedCrop(crop)}
 				aspect={aspectRatio}
 				circularCrop={circular}
 			>
