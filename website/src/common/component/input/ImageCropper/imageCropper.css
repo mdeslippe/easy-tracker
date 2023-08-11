@@ -3,13 +3,13 @@
 	align-items: center;
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 1rem;
 	justify-content: center;
 }
 
 .image-cropper-container > .image-cropper-button-container {
 	align-items: center;
 	display: flex;
-	gap: 8px;
+	gap: 0.5rem;
 	justify-content: center;
 }
