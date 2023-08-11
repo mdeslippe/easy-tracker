@@ -1,11 +1,11 @@
 // React.
-import { ChangeEvent, ComponentProps } from 'react';
+import { ChangeEvent, ComponentProps, ForwardedRef, forwardRef } from 'react';
 
 // CSS.
 import '@website/common/component/input/FileSelectionBox/fileSelectionBox.css';
 
 /**
- * Properties for the {@link FileSelectionBox} component.
+ * Properties for the {@link FileSelectionBoxWithRef} component.
  */
 export interface FileSelectionBoxProps
 	extends Omit<ComponentProps<'input'>, 'id' | 'type' | 'onChange'> {
@@ -33,22 +33,21 @@ export interface FileSelectionBoxProps
 }
 
 /**
- * A file selection box component.
+ * A file selection box component with a forwarded reference.
  *
  * @param props The component's properties.
+ * @param ref The reference that will be forwarded.
  * @returns The file selection box.
  */
-export function FileSelectionBox({
-	label,
-	name,
-	accept,
-	onSelect,
-	...props
-}: FileSelectionBoxProps): JSX.Element {
+function FileSelectionBoxWithRef(
+	{ label, name, accept, onSelect, ...props }: FileSelectionBoxProps,
+	ref: ForwardedRef<HTMLInputElement>
+): JSX.Element {
 	return (
 		<div className='file-selection-box'>
 			<label htmlFor={name}>{label}</label>
 			<input
+				ref={ref}
 				id={name}
 				name={name}
 				accept={accept}
@@ -59,3 +58,8 @@ export function FileSelectionBox({
 		</div>
 	);
 }
+
+/**
+ * A file selection box component.
+ */
+export const FileSelectionBox = forwardRef(FileSelectionBoxWithRef);
