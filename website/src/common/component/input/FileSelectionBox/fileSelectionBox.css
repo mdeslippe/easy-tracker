@@ -1,3 +1,4 @@
+/* Class Styling */
 .file-selection-box {
 	border: dashed var(--primary-color) calc(2 * var(--normal-border-width));
 	height: 100%;
