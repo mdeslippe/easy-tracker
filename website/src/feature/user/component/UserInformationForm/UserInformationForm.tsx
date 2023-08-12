@@ -150,7 +150,7 @@ export function UserInformationForm(): JSX.Element {
 		}
 	});
 
-	// Populate the user values for the first time.
+	// Populate the default field values after the user data is loaded for the first time.
 	useEffect(() => {
 		if (user !== null) {
 			reset({
