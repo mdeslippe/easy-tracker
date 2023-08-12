@@ -11,14 +11,31 @@
 #user-information-form .form-button-container {
 	align-items: center;
 	display: flex;
-	gap: 4px;
+	gap: 0.5rem;
 	justify-content: center;
 	width: 100%;
 }
 
+#user-information-form section {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	justify-content: center;
+	width: 100%;
+}
+
+#user-information-form section h2 {
+	font-size: 1.125rem;
+	font-weight: bold;
+	margin: 0rem 0rem 0.75rem 0rem;
+	text-align: center;
+}
+
 #user-information-form .avatar-input-container {
 	display: flex;
-	gap: 1rem;
+	justify-content: space-evenly;
+	width: 100%;
 }
 
 #user-information-form .avatar-input-container img {
@@ -31,7 +48,12 @@
 }
 
 #user-information-form .avatar-input-container .avatar-control-container {
+	align-items: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
+}
+
+#user-information-form .avatar-input-container .avatar-control-container > * {
+	width: 100%;
 }

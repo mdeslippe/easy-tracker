@@ -214,52 +214,58 @@ export function UserInformationForm(): JSX.Element {
 						onClose={() => setErrorMessage(null)}
 					/>
 				)}
-				<div className='avatar-input-container'>
-					<img
-						src={getValues('profilePictureUrl')}
-						alt='Avatar'
-					/>
-					<div className='avatar-control-container'>
-						<p>Upload a new avatar</p>
-						<button
-							className='secondary-button small-button'
-							type='button'
-							title='Click to edit your avatar'
-							onClick={() => setShowAvatarSelector(true)}
-						>
-							Choose picture...
-						</button>
-						{errors.profilePictureUrl && (
-							<span className='input-error-message'>
-								{errors.profilePictureUrl?.message?.toString()}
-							</span>
-						)}
+				<section>
+					<h2>Avatar Settings</h2>
+					<div className='avatar-input-container'>
+						<img
+							src={getValues('profilePictureUrl')}
+							alt='Avatar'
+						/>
+						<div className='avatar-control-container'>
+							<p>Upload a new avatar</p>
+							<button
+								className='primary-button small-button'
+								type='button'
+								title='Click to edit your avatar'
+								onClick={() => setShowAvatarSelector(true)}
+							>
+								Choose picture...
+							</button>
+							{errors.profilePictureUrl && (
+								<span className='input-error-message'>
+									{errors.profilePictureUrl?.message?.toString()}
+								</span>
+							)}
+						</div>
 					</div>
-				</div>
-				<InputField
-					label='Username'
-					type='text'
-					{...register('username')}
-					error={errors.username?.message?.toString()}
-				/>
-				<InputField
-					label='Email'
-					type='email'
-					{...register('email')}
-					error={errors.email?.message?.toString()}
-				/>
-				<InputField
-					label='Password'
-					type='password'
-					{...register('password')}
-					error={errors.password?.message?.toString()}
-				/>
-				<InputField
-					label='Confirm password'
-					type='password'
-					{...register('confirmPassword')}
-					error={errors.confirmPassword?.message?.toString()}
-				/>
+				</section>
+				<section>
+					<h2>Account Settings</h2>
+					<InputField
+						label='Username'
+						type='text'
+						{...register('username')}
+						error={errors.username?.message?.toString()}
+					/>
+					<InputField
+						label='Email'
+						type='email'
+						{...register('email')}
+						error={errors.email?.message?.toString()}
+					/>
+					<InputField
+						label='Password'
+						type='password'
+						{...register('password')}
+						error={errors.password?.message?.toString()}
+					/>
+					<InputField
+						label='Confirm password'
+						type='password'
+						{...register('confirmPassword')}
+						error={errors.confirmPassword?.message?.toString()}
+					/>
+				</section>
 				<div className='form-button-container'>
 					<input
 						className='medium-button primary-button'
