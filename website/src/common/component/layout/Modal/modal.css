@@ -2,6 +2,7 @@
 .modal {
 	border: 0px;
 	padding: 0px;
+	min-width: var(--min-content-width);
 }
 
 .modal[open] {

@@ -40,11 +40,11 @@ export interface FileSelectionBoxProps
  * @returns The file selection box.
  */
 function FileSelectionBoxWithRef(
-	{ label, name, accept, onSelect, ...props }: FileSelectionBoxProps,
+	{ label, name, accept, onSelect, className, ...props }: FileSelectionBoxProps,
 	ref: ForwardedRef<HTMLInputElement>
 ): JSX.Element {
 	return (
-		<div className='file-selection-box'>
+		<div className={className ? `${className} file-selection-box` : 'file-selection-box'}>
 			<label htmlFor={name}>{label}</label>
 			<input
 				ref={ref}

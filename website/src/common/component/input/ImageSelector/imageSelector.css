@@ -1,0 +1,21 @@
+/* Class Styling */
+.image-selector .image-selector-content {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	min-height: calc(var(--min-content-width) - 2rem);
+	min-width: calc(var(--min-content-width) - 2rem);
+}
+
+.image-selector .image-selector-box {
+	height: calc(var(--min-content-width) - 2rem);
+	min-height: 100%;
+	min-width: 100%;
+	width: calc(var(--min-content-width) - 2rem);
+}
+
+.image-selector .image-selector-cropper {
+	max-width: 64rem;
+}

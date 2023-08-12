@@ -17,10 +17,15 @@ export type HttpResponse<T> = {
 };
 
 /**
+ * The base url for the server.
+ */
+export const SERVER_BASE_URL: string = import.meta.env.VITE_API_SERVER_URL;
+
+/**
  * An axios instance that can be used to send requests to the API.
  */
 const API = axios.create({
-	baseURL: import.meta.env.VITE_API_SERVER_URL
+	baseURL: SERVER_BASE_URL
 });
 
 /**
