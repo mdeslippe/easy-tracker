@@ -138,12 +138,16 @@ export function ImageSelector({
 
 								// Add event listeners to the file reader.
 								reader.addEventListener('load', () => {
-									setError(null);
-									setImageSource(reader.result?.toString() || '');
+									if (reader.result === null) {
+										setError('Failed to load the picture.');
+										setImageSource(null);
+									} else {
+										setError(null);
+										setImageSource(reader.result.toString());
+									}
 								});
 
 								reader.addEventListener('error', () => {
-									// Reset the value.
 									if (fileInputRef.current !== null) {
 										fileInputRef.current.value = '';
 									}
