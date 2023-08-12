@@ -159,6 +159,7 @@ export function ImageSelector({
 					/>
 				) : (
 					<ImageCropper
+						className='image-selector-cropper'
 						src={imageSource}
 						aspectRatio={1}
 						circular={true}
