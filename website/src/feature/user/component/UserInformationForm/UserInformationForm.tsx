@@ -1,5 +1,8 @@
 // React.
-import { useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+
+// React router.
+import { Navigate } from 'react-router';
 
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,13 +29,14 @@ import { useSnackBar } from '@website/common/hook';
 import {
 	UseAuthenticatedUserInvalidatorResult,
 	UseAuthenticationStatusInvalidatorResult,
+	useAuthenticatedUser,
 	useAuthenticatedUserInvalidator,
 	useAuthenticationStatusInvalidator
 } from '@website/feature/auth/hook';
 
 // Custom.
 import { ErrorBox } from '@website/common/component/display';
-import { InputField } from '@website/common/component/input';
+import { ImageSelector, InputField } from '@website/common/component/input';
 
 // Utils.
 import { capitalizeFirstLetter } from '@website/utility/string';
@@ -114,11 +118,20 @@ export function UserInformationForm(): JSX.Element {
 	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
 	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [showAvatarSelector, setShowAvatarSelector] = useState<boolean>(false);
+	const {
+		isLoading: isUserLoading,
+		isInitialLoading: isInitialUserLoading,
+		isAuthenticated: isUserAuthenticated,
+		user
+	} = useAuthenticatedUser();
 	const {
 		register,
 		handleSubmit,
 		reset,
 		setError,
+		setValue,
+		getValues,
 		formState: { errors }
 	} = useForm({
 		resolver: async (values, context, options) => {
@@ -137,6 +150,24 @@ export function UserInformationForm(): JSX.Element {
 		}
 	});
 
+	// Populate the default field values after the user data is loaded for the first time.
+	useEffect(() => {
+		if (user !== null) {
+			reset({
+				profilePictureUrl: user.profilePictureUrl,
+				username: user.username,
+				email: user.email,
+				password: '',
+				confirmPassword: ''
+			});
+		}
+	}, [user === null]);
+
+	// If the user is not authenticated.
+	if (!isUserLoading && !isUserAuthenticated) {
+		return <Navigate to='/login' />;
+	}
+
 	// Define a function that will be invoked if the user's information was successfully updated.
 	const onSuccessfulUpdate = () => {
 		snackbar.addSnack({
@@ -147,71 +178,129 @@ export function UserInformationForm(): JSX.Element {
 	};
 
 	return (
-		<form
-			id='user-information-form'
-			onSubmit={handleSubmit((values) => {
-				handleUserInformationUpdate(
-					values,
-					setError,
-					invalidateAuthenticatedUser,
-					invalidateAuthenticationStatus,
-					onSuccessfulUpdate
-				).catch(() => {
-					snackbar.addSnack({
-						type: SnackType.ERROR,
-						duration: 5000,
-						message: 'An unexpected error has occurred.'
+		<Fragment>
+			<ImageSelector
+				id='avatar'
+				title='Select an Avatar'
+				open={showAvatarSelector}
+				onClose={() => setShowAvatarSelector(false)}
+				onSelect={(url) => {
+					setValue('profilePictureUrl', url);
+					setShowAvatarSelector(false);
+				}}
+			/>
+			<form
+				id='user-information-form'
+				onSubmit={handleSubmit((values) => {
+					handleUserInformationUpdate(
+						values,
+						setError,
+						invalidateAuthenticatedUser,
+						invalidateAuthenticationStatus,
+						onSuccessfulUpdate
+					).catch(() => {
+						snackbar.addSnack({
+							type: SnackType.ERROR,
+							duration: 5000,
+							message: 'An unexpected error has occurred.'
+						});
 					});
-				});
-			})}
-		>
-			{errorMessage !== null && (
-				<ErrorBox
-					className='form-error-message'
-					message={errorMessage}
-					onClose={() => setErrorMessage(null)}
-				/>
-			)}
-			<InputField
-				label='Username'
-				type='text'
-				{...register('username')}
-				error={errors.username?.message?.toString()}
-			/>
-			<InputField
-				label='Email'
-				type='email'
-				{...register('email')}
-				error={errors.email?.message?.toString()}
-			/>
-			<InputField
-				label='Password'
-				type='password'
-				{...register('password')}
-				error={errors.password?.message?.toString()}
-			/>
-			<InputField
-				label='Confirm password'
-				type='password'
-				{...register('confirmPassword')}
-				error={errors.confirmPassword?.message?.toString()}
-			/>
-			<div className='form-button-container'>
-				<input
-					className='medium-button primary-button'
-					type='submit'
-					value='Save'
-				/>
-				<input
-					className='medium-button secondary-button'
-					type='reset'
-					value='Reset'
-					onClick={() => {
-						reset();
-						setErrorMessage(null);
-					}}
-				/>
-			</div>
-		</form>
+				})}
+			>
+				{errorMessage !== null && (
+					<ErrorBox
+						className='form-error-message'
+						message={errorMessage}
+						onClose={() => setErrorMessage(null)}
+					/>
+				)}
+				<section>
+					<h2>Avatar Settings</h2>
+					<div className='avatar-input-container'>
+						<img
+							src={getValues('profilePictureUrl')}
+							alt='Avatar'
+						/>
+						<div className='avatar-control-container'>
+							<p>Upload a new avatar</p>
+							<button
+								className='primary-button small-button'
+								type='button'
+								title='Click to edit your avatar'
+								onClick={() => setShowAvatarSelector(true)}
+							>
+								Choose picture...
+							</button>
+							{errors.profilePictureUrl && (
+								<span className='input-error-message'>
+									{errors.profilePictureUrl?.message?.toString()}
+								</span>
+							)}
+						</div>
+					</div>
+				</section>
+				<section>
+					<h2>Account Settings</h2>
+					<InputField
+						label='Username'
+						type='text'
+						{...register('username')}
+						error={errors.username?.message?.toString()}
+					/>
+					<InputField
+						label='Email'
+						type='email'
+						{...register('email')}
+						error={errors.email?.message?.toString()}
+					/>
+					<InputField
+						label='Password'
+						type='password'
+						{...register('password')}
+						error={errors.password?.message?.toString()}
+					/>
+					<InputField
+						label='Confirm password'
+						type='password'
+						{...register('confirmPassword')}
+						error={errors.confirmPassword?.message?.toString()}
+					/>
+				</section>
+				<div className='form-button-container'>
+					<input
+						className='medium-button primary-button'
+						type='submit'
+						value='Save'
+						disabled={isInitialUserLoading || user === null}
+					/>
+					<input
+						className='medium-button secondary-button'
+						type='reset'
+						value='Reset'
+						disabled={isInitialUserLoading || user === null}
+						onClick={(event) => {
+							// Prevent the default handler.
+							event.preventDefault();
+
+							// Remove the error message.
+							setErrorMessage(null);
+
+							// Reset the form.
+							if (user === null) {
+								reset();
+							} else {
+								reset({
+									profilePictureUrl: user.profilePictureUrl,
+									username: user.username,
+									email: user.email,
+									password: '',
+									confirmPassword: ''
+								});
+							}
+						}}
+					/>
+				</div>
+			</form>
+		</Fragment>
 	);
 }
