@@ -115,16 +115,16 @@ async function handleUserInformationUpdate(
  */
 export function UserInformationForm(): JSX.Element {
 	const snackbar = useSnackBar();
+	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
+	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [showAvatarSelector, setShowAvatarSelector] = useState<boolean>(false);
 	const {
 		isLoading: isUserLoading,
 		isInitialLoading: isInitialUserLoading,
 		isAuthenticated: isUserAuthenticated,
 		user
 	} = useAuthenticatedUser();
-	const invalidateAuthenticatedUser = useAuthenticatedUserInvalidator();
-	const invalidateAuthenticationStatus = useAuthenticationStatusInvalidator();
-	const [showAvatarSelector, setShowAvatarSelector] = useState<boolean>(false);
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const {
 		register,
 		handleSubmit,

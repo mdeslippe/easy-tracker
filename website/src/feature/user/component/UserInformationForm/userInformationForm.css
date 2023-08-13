@@ -34,7 +34,8 @@
 
 #user-information-form > section > .avatar-input-container {
 	display: flex;
-	justify-content: space-evenly;
+	gap: 1rem;
+	justify-content: center;
 	width: 100%;
 }
 
