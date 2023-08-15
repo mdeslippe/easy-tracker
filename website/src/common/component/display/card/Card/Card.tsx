@@ -13,7 +13,7 @@ export interface CardProps extends ComponentProps<'div'> {}
  * A card component.
  *
  * @param props The component's properties.
- * @returns The card component.
+ * @returns The card.
  */
 export function Card({ className, children, ...props }: CardProps): JSX.Element {
 	return (
