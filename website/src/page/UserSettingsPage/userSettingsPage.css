@@ -16,7 +16,7 @@
 	width: 100%;
 }
 
-#user-settings h1 {
+#user-settings > .card > .card-header h1 {
 	font-size: 1.125rem;
 	font-weight: bold;
 }
