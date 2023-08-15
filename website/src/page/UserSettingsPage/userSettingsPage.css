@@ -1,0 +1,22 @@
+/* ID Styling */
+#user-settings {
+	align-items: center;
+	background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+		url('/images/backgrounds/data-center.webp') center no-repeat;
+	background-size: cover;
+	box-shadow: inset 0px 1px var(--secondary-color);
+	display: flex;
+	justify-content: center;
+	min-height: calc(100vh - var(--nav-size));
+	padding: 4%;
+}
+
+#user-settings > .card {
+	max-width: 32rem;
+	width: 100%;
+}
+
+#user-settings h1 {
+	font-size: 1.125rem;
+	font-weight: bold;
+}

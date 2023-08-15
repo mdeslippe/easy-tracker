@@ -26,10 +26,9 @@
 }
 
 #user-information-form > section > h2 {
-	font-size: 1.125rem;
 	font-weight: bold;
 	margin: 0rem 0rem 0.75rem 0rem;
-	text-align: center;
+	width: 100%;
 }
 
 #user-information-form > section > .avatar-input-container {
