@@ -1,6 +1,8 @@
 /* Class Styling */
 .card-header {
 	border-bottom: solid var(--tertiary-accent) var(--normal-border-width);
+	font-size: 1.125rem;
+	font-weight: bold;
 	padding: 0.75rem 1rem;
 	text-align: center;
 	width: 100%;
