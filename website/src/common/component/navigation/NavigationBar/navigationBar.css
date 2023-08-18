@@ -8,6 +8,6 @@
 	display: flex;
 	justify-content: space-between;
 	min-height: var(--nav-size);
-	padding: 0px 8px;
+	padding: 0rem 0.5rem;
 	width: 100%;
 }
