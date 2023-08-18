@@ -8,8 +8,9 @@ Before you will be able to run any migrations, you must globally install the [sq
 rust crate.
 
 1. If you have not already done so, clone the repository and navigate to the to **base directory**, if you are not in this directory, the cli tool will not be able to find the migrations.
-2. Run the command `sqlx migrate run --database-url <DATABASE_URL>`.
-3. Check the database to verify it has been setup.
+2. Run the command `cargo install sqlx-cli --no-default-features --features mysql`.
+3. Run the command `sqlx migrate run --database-url <DATABASE_URL>`.
+4. Check the database to verify it has been setup.
 
 ## Creating Migrations
 
