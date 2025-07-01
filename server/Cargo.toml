@@ -20,6 +20,6 @@ serde = { version = "1.0.169", features = ["derive"] }
 serde_json = "1.0.100"
 shaku = "0.6.1"
 shaku_actix = "0.2.0"
-sqlx = { version = "0.6.3", features = ["runtime-actix-native-tls", "mysql", "macros", "time", "tls", "offline"] }
+sqlx = { version = "0.8.6", features = ["runtime-tokio-native-tls", "mysql", "macros", "time", "tls-native-tls"] }
 time = { version = "0.3.23", features = ["serde"] }
 validator = { version = "0.16.1", features = ["derive", "unic"] }
