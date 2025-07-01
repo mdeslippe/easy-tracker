@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                UPDATE\n                    `users`\n                SET\n                    `account_created_at` = ?,\n                    `password_reset_at` = ?,\n                    `profile_picture_url` = ?,\n                    `username` = ?,\n                    `password` = ?,\n                    `email` = ?,\n                    `email_is_verified` = ?,\n                    `password_reset_is_required` = ?,\n                    `account_is_locked` = ?,\n                    `account_is_banned` = ?\n                WHERE\n                    `id` = ?;\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 11
+    },
+    "nullable": []
+  },
+  "hash": "1bd02159c864210880da5cf14f3bffacf0b2d8fc38e4de2ccaa35feb3e7aced9"
+}

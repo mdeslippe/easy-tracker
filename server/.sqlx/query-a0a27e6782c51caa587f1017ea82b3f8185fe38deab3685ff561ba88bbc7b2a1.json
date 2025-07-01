@@ -1,0 +1,124 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                SELECT\n                    `id` AS `id: u64`,\n                    `account_created_at` AS `account_created_at: OffsetDateTime`,\n                    `password_reset_at` AS `password_reset_at: OffsetDateTime`,\n                    `profile_picture_url` AS `profile_picture_url: String`,\n                    `username` AS `username: String`,\n                    `password` AS `password: String`,\n                    `email` AS `email: String`,\n                    `email_is_verified` AS `email_is_verified: bool`,\n                    `password_reset_is_required` AS `password_reset_is_required: bool`,\n                    `account_is_locked` AS `account_is_locked: bool`,\n                    `account_is_banned` AS `account_is_banned: bool`\n                FROM\n                    `users`\n                WHERE\n                    `id` = ?;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id: u64",
+        "type_info": {
+          "type": "LongLong",
+          "flags": "NOT_NULL | PRIMARY_KEY | UNSIGNED | AUTO_INCREMENT",
+          "max_size": 20
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "account_created_at: OffsetDateTime",
+        "type_info": {
+          "type": "Timestamp",
+          "flags": "NOT_NULL | UNSIGNED | BINARY | TIMESTAMP",
+          "max_size": 19
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "password_reset_at: OffsetDateTime",
+        "type_info": {
+          "type": "Timestamp",
+          "flags": "NOT_NULL | UNSIGNED | BINARY | TIMESTAMP",
+          "max_size": 19
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "profile_picture_url: String",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 32768
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "username: String",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | UNIQUE_KEY | NO_DEFAULT_VALUE",
+          "max_size": 512
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "password: String",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "max_size": 4096
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "email: String",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | UNIQUE_KEY | NO_DEFAULT_VALUE",
+          "max_size": 4096
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "email_is_verified: bool",
+        "type_info": {
+          "type": "Bit",
+          "flags": "NOT_NULL | UNSIGNED",
+          "max_size": 1
+        }
+      },
+      {
+        "ordinal": 8,
+        "name": "password_reset_is_required: bool",
+        "type_info": {
+          "type": "Bit",
+          "flags": "NOT_NULL | UNSIGNED",
+          "max_size": 1
+        }
+      },
+      {
+        "ordinal": 9,
+        "name": "account_is_locked: bool",
+        "type_info": {
+          "type": "Bit",
+          "flags": "NOT_NULL | UNSIGNED",
+          "max_size": 1
+        }
+      },
+      {
+        "ordinal": 10,
+        "name": "account_is_banned: bool",
+        "type_info": {
+          "type": "Bit",
+          "flags": "NOT_NULL | UNSIGNED",
+          "max_size": 1
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "a0a27e6782c51caa587f1017ea82b3f8185fe38deab3685ff561ba88bbc7b2a1"
+}
