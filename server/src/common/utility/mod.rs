@@ -2,7 +2,7 @@ use actix_web::{
     http::header::{HeaderValue, AUTHORIZATION},
     HttpRequest,
 };
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use rand::{distr::Alphanumeric, rng, Rng};
 use serde::Serialize;
 use std::{borrow::Cow, env};
 use validator::ValidationError;
@@ -45,7 +45,7 @@ pub(crate) fn get_config_path() -> String {
 ///
 /// The string that was randomly generated.
 pub(crate) fn generate_random_string(size: usize) -> String {
-    let mut rng = thread_rng();
+    let mut rng = rng();
 
     return (&mut rng)
         .sample_iter(Alphanumeric)
