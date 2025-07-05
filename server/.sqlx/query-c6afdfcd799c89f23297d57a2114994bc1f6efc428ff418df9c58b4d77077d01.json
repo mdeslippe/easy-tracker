@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                UPDATE\n                    `files`\n                SET\n                    `user_id` = ?,\n                    `file_created_at` = ?,\n                    `mime_type` = ?,\n                    `name` = ?,\n                    `data` = ?\n                WHERE\n                    `id` = ?;\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "c6afdfcd799c89f23297d57a2114994bc1f6efc428ff418df9c58b4d77077d01"
+}

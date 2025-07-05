@@ -183,8 +183,8 @@ impl UserRepository for UserRepositoryImpl {
 
         // Execute the query.
         let result = match context {
-            QueryContext::Connection(connection) => query.fetch_one(connection).await,
-            QueryContext::Transaction(transaction) => query.fetch_one(transaction).await,
+            QueryContext::Connection(connection) => query.fetch_one(connection.as_mut()).await,
+            QueryContext::Transaction(transaction) => query.fetch_one(transaction.as_mut()).await,
         }?;
 
         return result.try_get(0);
@@ -217,8 +217,8 @@ impl UserRepository for UserRepositoryImpl {
 
         // Execute the query.
         return match context {
-            QueryContext::Connection(connection) => query.fetch_optional(connection).await,
-            QueryContext::Transaction(transaction) => query.fetch_optional(transaction).await,
+            QueryContext::Connection(connection) => query.fetch_optional(connection.as_mut()).await,
+            QueryContext::Transaction(transaction) => query.fetch_optional(transaction.as_mut()).await,
         };
     }
 
@@ -253,8 +253,8 @@ impl UserRepository for UserRepositoryImpl {
 
         // Execute the query.
         return match context {
-            QueryContext::Connection(connection) => query.fetch_optional(connection).await,
-            QueryContext::Transaction(transaction) => query.fetch_optional(transaction).await,
+            QueryContext::Connection(connection) => query.fetch_optional(connection.as_mut()).await,
+            QueryContext::Transaction(transaction) => query.fetch_optional(transaction.as_mut()).await,
         };
     }
 
@@ -289,8 +289,8 @@ impl UserRepository for UserRepositoryImpl {
 
         // Execute the query.
         return match context {
-            QueryContext::Connection(connection) => query.fetch_optional(connection).await,
-            QueryContext::Transaction(transaction) => query.fetch_optional(transaction).await,
+            QueryContext::Connection(connection) => query.fetch_optional(connection.as_mut()).await,
+            QueryContext::Transaction(transaction) => query.fetch_optional(transaction.as_mut()).await,
         };
     }
 
@@ -329,8 +329,8 @@ impl UserRepository for UserRepositoryImpl {
 
         // Execute the query.
         let result = match context {
-            QueryContext::Connection(connection) => query.execute(connection).await,
-            QueryContext::Transaction(transaction) => query.execute(transaction).await,
+            QueryContext::Connection(connection) => query.execute(connection.as_mut()).await,
+            QueryContext::Transaction(transaction) => query.execute(transaction.as_mut()).await,
         }?;
 
         return Ok(result.rows_affected());
@@ -350,8 +350,8 @@ impl UserRepository for UserRepositoryImpl {
 
         // Execute the query.
         let result = match context {
-            QueryContext::Connection(connection) => query.execute(connection).await,
-            QueryContext::Transaction(transaction) => query.execute(transaction).await,
+            QueryContext::Connection(connection) => query.execute(connection.as_mut()).await,
+            QueryContext::Transaction(transaction) => query.execute(transaction.as_mut()).await,
         }?;
 
         return Ok(result.rows_affected());

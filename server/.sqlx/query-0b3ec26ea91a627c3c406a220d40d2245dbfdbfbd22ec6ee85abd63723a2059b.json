@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                INSERT INTO `users` (\n                    `id`,\n                    `account_created_at`,\n                    `password_reset_at`,\n                    `profile_picture_url`,\n                    `username`,\n                    `password`,\n                    `email`,\n                    `email_is_verified`,\n                    `password_reset_is_required`,\n                    `account_is_locked`,\n                    `account_is_banned`\n                ) VALUES (\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?,\n                    ?\n                ) RETURNING `id`;\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 11
+    },
+    "nullable": []
+  },
+  "hash": "0b3ec26ea91a627c3c406a220d40d2245dbfdbfbd22ec6ee85abd63723a2059b"
+}
