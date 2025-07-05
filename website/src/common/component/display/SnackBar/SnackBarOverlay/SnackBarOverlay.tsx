@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps } from 'react';
+import { JSX, ComponentProps } from 'react';
 
 // Context.
 import { SnackType } from '@website/common/context';

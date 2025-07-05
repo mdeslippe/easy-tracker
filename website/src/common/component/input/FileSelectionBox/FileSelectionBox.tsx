@@ -1,5 +1,5 @@
 // React.
-import { ChangeEvent, ComponentProps, ForwardedRef, forwardRef } from 'react';
+import { JSX, ChangeEvent, ComponentProps, ForwardedRef, forwardRef } from 'react';
 
 // CSS.
 import '@website/common/component/input/FileSelectionBox/fileSelectionBox.css';

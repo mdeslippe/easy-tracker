@@ -1,5 +1,5 @@
 // React.
-import { Fragment } from 'react';
+import { JSX, Fragment } from 'react';
 
 // React router.
 import { Link } from 'react-router-dom';

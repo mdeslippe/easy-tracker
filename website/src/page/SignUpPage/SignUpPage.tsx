@@ -1,5 +1,5 @@
 // React.
-import { Fragment } from 'react';
+import { JSX, Fragment } from 'react';
 
 // Custom.
 import { SignUpForm } from '@website/feature/user/component';

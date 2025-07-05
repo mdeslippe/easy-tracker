@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps } from 'react';
+import { JSX, ComponentProps } from 'react';
 
 // CSS.
 import '@website/common/component/display/card/CardHeader/cardHeader.css';

@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps, ForwardedRef, HTMLInputTypeAttribute, forwardRef } from 'react';
+import { JSX, ComponentProps, ForwardedRef, HTMLInputTypeAttribute, forwardRef } from 'react';
 
 // CSS.
 import '@website/common/component/input/InputField/inputField.css';

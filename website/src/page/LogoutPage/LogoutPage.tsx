@@ -1,5 +1,5 @@
 // React.
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 
 // React router.
 import { Navigate } from 'react-router';

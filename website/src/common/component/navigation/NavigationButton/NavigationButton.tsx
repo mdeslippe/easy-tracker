@@ -1,3 +1,6 @@
+// React.
+import { JSX } from 'react';
+
 // React router.
 import { NavLink, NavLinkProps } from 'react-router-dom';
 

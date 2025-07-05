@@ -1,5 +1,5 @@
 // React.
-import { Fragment } from 'react';
+import { JSX, Fragment } from 'react';
 
 // Custom.
 import { TopNavigationBar } from '@website/common/component/shared';

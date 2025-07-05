@@ -1,3 +1,6 @@
+// React.
+import { JSX } from 'react';
+
 // Custom.
 import { IconSize } from '@website/common/component/display';
 

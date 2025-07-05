@@ -1,5 +1,5 @@
 // React.
-import { Fragment } from 'react';
+import { JSX, Fragment } from 'react';
 
 // Custom.
 import { LoginForm } from '@website/feature/auth/component';

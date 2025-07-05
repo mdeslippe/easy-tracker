@@ -1,5 +1,5 @@
 // React.
-import { LazyExoticComponent, Suspense, lazy } from 'react';
+import { JSX, LazyExoticComponent, Suspense, lazy } from 'react';
 
 // React router.
 import { BrowserRouter, Route, Routes } from 'react-router-dom';

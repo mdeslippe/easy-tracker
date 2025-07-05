@@ -1,3 +1,6 @@
+// React.
+import { JSX } from 'react';
+
 // React router.
 import { Navigate } from 'react-router';
 

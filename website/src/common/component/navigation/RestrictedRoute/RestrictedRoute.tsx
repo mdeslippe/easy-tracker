@@ -1,5 +1,5 @@
 // React.
-import { ComponentType } from 'react';
+import { JSX, ComponentType } from 'react';
 
 // React router.
 import { Navigate } from 'react-router';
