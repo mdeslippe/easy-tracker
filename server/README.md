@@ -4,7 +4,7 @@ This directory contains the source code for the public-facing Easy Tracker serve
 
 ## Installation Guide
 
-Before installing, make sure you have the latest stable version of [Rust](https://www.rust-lang.org/) and [OpenSSL version 1.1.1](https://www.openssl.org/news/openssl-1.1.1-notes.html) installed on your system. You also need to make sure the `OPENSSL_DIR` environment variable contains the path to your local OpenSSL installation; this will be used to locate the OpenSSL installation during the server's compilation.
+Before installing, make sure you have the latest stable version of [Rust](https://www.rust-lang.org/) and [OpenSSL](https://www.openssl-library.org/) installed on your system. You also need to make sure the `OPENSSL_DIR` environment variable contains the path to your local OpenSSL installation; this will be used to locate the OpenSSL installation during the server's compilation.
 
 1. If you have not already done so, clone the repository and navigate to the server directory.
 2. Configure the `config.json` configuration file in the `server` directory.
