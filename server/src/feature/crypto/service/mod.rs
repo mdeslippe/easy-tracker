@@ -2,11 +2,13 @@
 mod test;
 
 use crate::feature::{crypto::model::UserClaims, user::model::User};
-use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
+use argon2::{
+    password_hash::rand_core::OsRng, password_hash::SaltString, Argon2, PasswordHash,
+    PasswordHasher, PasswordVerifier,
+};
 use jsonwebtoken::{
     decode, encode, Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation,
 };
-use rand::rngs::OsRng;
 use shaku::{Component, Interface};
 use time::OffsetDateTime;
 
