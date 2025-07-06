@@ -78,7 +78,7 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 		isLoading: query.isLoading,
 		isInitialLoading: query.isInitialLoading,
 		isError: query.isError,
-		isAuthenticated: query.data?.status === 200 ?? false,
+		isAuthenticated: query.data?.status === 200,
 		user: query.data?.data ?? null,
 		refetch: async () => await query.refetch()
 	};
