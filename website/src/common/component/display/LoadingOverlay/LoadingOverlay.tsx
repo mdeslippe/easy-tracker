@@ -1,3 +1,6 @@
+// React.
+import { JSX } from 'react';
+
 // Custom.
 import { Spinner } from '@website/common/component/display';
 

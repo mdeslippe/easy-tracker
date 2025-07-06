@@ -1,5 +1,5 @@
 // React.
-import { Fragment } from 'react';
+import { JSX, Fragment } from 'react';
 
 // CSS.
 import '@website/page/ErrorPage/errorPage.css';

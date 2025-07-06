@@ -1,5 +1,5 @@
 // React.
-import { useState, Dispatch, SetStateAction } from 'react';
+import { JSX, useState, Dispatch, SetStateAction } from 'react';
 
 // React router.
 import { NavigateFunction, useNavigate } from 'react-router-dom';

@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps } from 'react';
+import { JSX, ComponentProps } from 'react';
 
 // Custom.
 import { MaxWidthContainer } from '@website/common/component/layout';

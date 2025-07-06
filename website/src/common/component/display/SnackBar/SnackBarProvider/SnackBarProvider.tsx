@@ -1,5 +1,5 @@
 // React.
-import { ReactNode, useState } from 'react';
+import { JSX, ReactNode, useState } from 'react';
 
 // Hooks.
 import { useCounter } from '@website/common/hook';

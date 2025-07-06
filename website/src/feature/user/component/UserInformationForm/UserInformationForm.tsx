@@ -1,5 +1,5 @@
 // React.
-import { Fragment, useEffect, useState } from 'react';
+import { JSX, Fragment, useEffect, useState } from 'react';
 
 // React router.
 import { Navigate } from 'react-router';

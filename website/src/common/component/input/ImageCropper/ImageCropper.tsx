@@ -1,5 +1,5 @@
 // React.
-import { ChangeEvent, ComponentProps, useEffect, useRef, useState } from 'react';
+import { JSX, ChangeEvent, ComponentProps, useEffect, useRef, useState } from 'react';
 
 // React image crop.
 import ReactCrop, {

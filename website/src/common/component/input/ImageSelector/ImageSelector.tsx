@@ -1,5 +1,5 @@
 // React.
-import { useState, ChangeEvent, useEffect, useRef } from 'react';
+import { JSX, useState, ChangeEvent, useEffect, useRef } from 'react';
 
 // Models.
 import { File, FileSchema } from '@website/feature/file/model';

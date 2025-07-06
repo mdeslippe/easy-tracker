@@ -1,5 +1,5 @@
 // React.
-import { ComponentProps, useEffect, useRef } from 'react';
+import { JSX, ComponentProps, useEffect, useRef } from 'react';
 
 // Custom.
 import { CloseIcon } from '@website/common/component/display';
