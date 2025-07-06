@@ -58,19 +58,19 @@ export type UseAuthenticatedUserResult = {
  */
 export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 	const query = useQuery(
-		getAuthenticatedUserQueryKey(),
-		async (context: QueryFunctionContext<string[], unknown>) => {
-			// Send the request.
-			const result = await getUserThatIsCurrentlyAuthenticated(undefined, context.signal);
-
-			// If an error occurred.
-			if (result.status >= 500) throw Error();
-
-			// Return the result.
-			return result;
-		},
 		{
-			cacheTime: Infinity
+			queryKey: getAuthenticatedUserQueryKey(),
+			queryFn: async (context: QueryFunctionContext) => {
+				// Send the request.
+				const result = await getUserThatIsCurrentlyAuthenticated(undefined, context.signal);
+
+				// If an error occurred.
+				if (result.status >= 500) throw Error();
+
+				// Return the result.
+				return result;
+			},
+			staleTime: Infinity
 		}
 	);
 

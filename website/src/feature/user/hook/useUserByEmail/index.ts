@@ -65,19 +65,19 @@ export type UseUserByEmailResult = {
  */
 export function useUserByEmail(email: string): UseUserByEmailResult {
 	const query = useQuery(
-		getUserByEmailQueryKey(email),
-		async (context: QueryFunctionContext<string[], unknown>) => {
-			// Send the request.
-			const result = await getUserByEmail(email, context.signal);
-
-			// If an error occurred.
-			if (result.status >= 500) throw Error();
-
-			// Return the result.
-			return result;
-		},
 		{
-			cacheTime: Infinity,
+			queryKey: getUserByEmailQueryKey(email),
+			queryFn: async (context: QueryFunctionContext) => {
+				// Send the request.
+				const result = await getUserByEmail(email, context.signal);
+
+				// If an error occurred.
+				if (result.status >= 500) throw Error();
+
+				// Return the result.
+				return result;
+			},
+			staleTime: Infinity,
 			refetchOnWindowFocus: false,
 			refetchOnReconnect: false,
 			refetchOnMount: false

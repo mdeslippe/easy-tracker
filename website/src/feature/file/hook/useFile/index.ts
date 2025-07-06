@@ -65,19 +65,19 @@ export type UseFileResult = {
  */
 export function useFile(id: number): UseFileResult {
 	const query = useQuery(
-		getFileQueryKey(id),
-		async (context: QueryFunctionContext<string[], unknown>) => {
-			// Send the request.
-			const result = await getFile(id, context.signal);
-
-			// If an error occurred.
-			if (result.status >= 500) throw Error();
-
-			// Return the result.
-			return result;
-		},
 		{
-			cacheTime: Infinity,
+			queryKey: getFileQueryKey(id),
+			queryFn: async (context: QueryFunctionContext) => {
+				// Send the request.
+				const result = await getFile(id, context.signal);
+
+				// If an error occurred.
+				if (result.status >= 500) throw Error();
+
+				// Return the result.
+				return result;
+			},
+			staleTime: Infinity,
 			refetchOnWindowFocus: false,
 			refetchOnReconnect: false,
 			refetchOnMount: false
