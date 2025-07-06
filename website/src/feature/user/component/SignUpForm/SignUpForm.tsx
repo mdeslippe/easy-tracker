@@ -2,7 +2,7 @@
 import { JSX, useState } from 'react';
 
 // React router.
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router';
 
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';

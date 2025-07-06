@@ -2,7 +2,7 @@
 import { JSX, Fragment } from 'react';
 
 // React router.
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 // Custom.
 import { TopNavigationBar } from '@website/common/component/shared';

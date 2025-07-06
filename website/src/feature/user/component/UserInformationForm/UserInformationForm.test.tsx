@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 
 // React router.
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 
 // React testing library.
 import { render } from '@testing-library/react';
