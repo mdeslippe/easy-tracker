@@ -5,8 +5,11 @@ import { JSX, useState, Dispatch, SetStateAction } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router';
 
 // React hook form.
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldValues, useForm } from 'react-hook-form';
+
+// Zod.
+import { z } from 'zod';
 
 // Models.
 import { LoginRequestDataSchema } from '@website/feature/auth/model';
@@ -32,7 +35,12 @@ import '@website/feature/auth/component/LoginForm/loginForm.css';
 /**
  * A schema that can be used to validate the login form values.
  */
-const LoginFormSchema = LoginRequestDataSchema;
+const LoginFormDataSchema = LoginRequestDataSchema;
+
+/**
+ * The login form data values.
+ */
+type LoginFormData = z.infer<typeof LoginFormDataSchema>;
 
 /**
  * A function that can be used to handle the login form submission.
@@ -45,14 +53,14 @@ const LoginFormSchema = LoginRequestDataSchema;
  * @returns A promise.
  */
 async function handleLogin(
-	values: FieldValues,
+	values: LoginFormData,
 	setError: Dispatch<SetStateAction<string | null>>,
 	navigate: NavigateFunction,
 	resetAuthenticatedUser: UseAuthenticatedUserResetterResult,
 	resetAuthenticationStatus: UseAuthenticationStatusResetterResult
 ) {
 	// Send a request to authenticate the user.
-	const response = await login(await LoginRequestDataSchema.parseAsync(values));
+	const response = await login(values);
 
 	// Handle the response.
 	switch (response.status) {
@@ -86,8 +94,8 @@ export function LoginForm(): JSX.Element {
 		handleSubmit,
 		reset,
 		formState: { errors }
-	} = useForm({
-		resolver: zodResolver(LoginFormSchema)
+	} = useForm<LoginFormData>({
+		resolver: zodResolver(LoginFormDataSchema)
 	});
 
 	return (

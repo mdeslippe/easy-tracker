@@ -6,7 +6,7 @@ import { NavigateFunction, useNavigate } from 'react-router';
 
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldValues, UseFormSetError, useForm } from 'react-hook-form';
+import { UseFormSetError, useForm } from 'react-hook-form';
 
 // Zod.
 import { z } from 'zod';
@@ -43,7 +43,7 @@ import '@website/feature/user/component/SignUpForm/signUpForm.css';
 /**
  * A schema that can be used to validate the sign up form values.
  */
-const SignUpFormSchema = z
+const SignUpFormDataSchema = z
 	.intersection(
 		CreateUserRequestDataSchema,
 		z.object({
@@ -56,6 +56,11 @@ const SignUpFormSchema = z
 	});
 
 /**
+ * The sign up form data values.
+ */
+type SignUpFormData = z.infer<typeof SignUpFormDataSchema>;
+
+/**
  * A function that can be used to handle the sign up form submission.
  *
  * @param values The values the user entered in the input fields.
@@ -66,14 +71,14 @@ const SignUpFormSchema = z
  * @returns A promise.
  */
 async function handleSignUp(
-	values: FieldValues,
-	setFieldError: UseFormSetError<FieldValues>,
+	values: SignUpFormData,
+	setFieldError: UseFormSetError<SignUpFormData>,
 	navigate: NavigateFunction,
 	resetAuthenticatedUser: UseAuthenticatedUserResetterResult,
 	resetAuthenticationStatus: UseAuthenticationStatusResetterResult
 ): Promise<void> {
 	// Send a request to sign the user up.
-	const response = await createUser(await CreateUserRequestDataSchema.parseAsync(values));
+	const response = await createUser(values);
 
 	// Handle the response.
 	switch (response.status) {
@@ -89,11 +94,13 @@ async function handleSignUp(
 
 			// Update the field errors.
 			for (let [key, value] of Object.entries(errors)) {
-				setFieldError(key, {
-					// There could be multiple validation errors, but we only want to display one at
-					// a time - to keep things simple, we just take the first error in the array.
-					message: convertValidationErrorToMessage(capitalizeFirstLetter(key), value[0])
-				});
+				if (Object.prototype.hasOwnProperty.call(values, key)) {
+					setFieldError(key as keyof SignUpFormData, {
+						// There could be multiple validation errors, but we only want to display one at
+						// a time - to keep things simple, we just take the first error in the array.
+						message: convertValidationErrorToMessage(capitalizeFirstLetter(key), value[0])
+					});
+				}
 			}
 			return;
 		case 500:
@@ -119,8 +126,8 @@ export function SignUpForm(): JSX.Element {
 		reset,
 		setError,
 		formState: { errors }
-	} = useForm({
-		resolver: zodResolver(SignUpFormSchema)
+	} = useForm<SignUpFormData>({
+		resolver: zodResolver(SignUpFormDataSchema)
 	});
 
 	return (
