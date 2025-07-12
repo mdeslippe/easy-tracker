@@ -26,11 +26,6 @@ export type UseAuthenticatedUserResult = {
 	isLoading: boolean;
 
 	/**
-	 * If the data is being fetched for the first time.
-	 */
-	isInitialLoading: boolean;
-
-	/**
 	 * If an error occurred while fetching data.
 	 */
 	isError: boolean;
@@ -76,7 +71,6 @@ export function useAuthenticatedUser(): UseAuthenticatedUserResult {
 
 	return {
 		isLoading: query.isLoading,
-		isInitialLoading: query.isInitialLoading,
 		isError: query.isError,
 		isAuthenticated: query.data?.status === 200,
 		user: query.data?.data ?? null,

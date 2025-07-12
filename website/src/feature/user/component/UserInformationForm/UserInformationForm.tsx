@@ -103,7 +103,10 @@ async function handleUserInformationUpdate(
 					setFieldError(key as keyof UserInformationFormData, {
 						// There could be multiple validation errors, but we only want to display one at
 						// a time - to keep things simple, we just take the first error in the array.
-						message: convertValidationErrorToMessage(capitalizeFirstLetter(key), value[0])
+						message: convertValidationErrorToMessage(
+							capitalizeFirstLetter(key),
+							value[0]
+						)
 					});
 				}
 			}
@@ -128,7 +131,6 @@ export function UserInformationForm(): JSX.Element {
 	const [showAvatarSelector, setShowAvatarSelector] = useState<boolean>(false);
 	const {
 		isLoading: isUserLoading,
-		isInitialLoading: isInitialUserLoading,
 		isAuthenticated: isUserAuthenticated,
 		user
 	} = useAuthenticatedUser();
@@ -278,13 +280,13 @@ export function UserInformationForm(): JSX.Element {
 						className='medium-button primary-button'
 						type='submit'
 						value='Save'
-						disabled={isInitialUserLoading || user === null}
+						disabled={isUserLoading || user === null}
 					/>
 					<input
 						className='medium-button secondary-button'
 						type='reset'
 						value='Reset'
-						disabled={isInitialUserLoading || user === null}
+						disabled={isUserLoading || user === null}
 						onClick={(event) => {
 							// Prevent the default handler.
 							event.preventDefault();

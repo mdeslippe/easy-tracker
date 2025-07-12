@@ -23,11 +23,6 @@ export type UseAuthenticationStatusResult = {
 	isLoading: boolean;
 
 	/**
-	 * If the data is being fetched for the first time.
-	 */
-	isInitialLoading: boolean;
-
-	/**
 	 * If an error occurred while fetching data.
 	 */
 	isError: boolean;
@@ -68,7 +63,6 @@ export function useAuthenticationStatus(): UseAuthenticationStatusResult {
 
 	return {
 		isLoading: query.isLoading,
-		isInitialLoading: query.isInitialLoading,
 		isError: query.isError,
 		isAuthenticated: query.data?.data ?? false,
 		refetch: async () => await query.refetch()

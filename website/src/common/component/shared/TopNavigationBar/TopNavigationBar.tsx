@@ -24,15 +24,15 @@ import '@website/common/component/shared/TopNavigationBar/topNavigationBar.css';
  * @returns The top navigation bar.
  */
 export function TopNavigationBar(): JSX.Element {
-	const { isLoading, isInitialLoading, isError, isAuthenticated } = useAuthenticationStatus();
+	const { isLoading, isError, isAuthenticated } = useAuthenticationStatus();
 
 	// If an error occurred while getting the user's authentication status.
 	if (isError) {
 		return <Navigate to='/error' />;
 	}
 
-	// If the navigation bar is loading for the first time, return a skeleton.
-	if (isLoading && isInitialLoading) {
+	// If the navigation bar is loading, return a skeleton.
+	if (isLoading) {
 		return (
 			<NavigationBar>
 				<NavigationGroup>
