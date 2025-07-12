@@ -2,7 +2,7 @@
 import { JSX } from 'react';
 
 // React router.
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { NavLink, NavLinkProps } from 'react-router';
 
 // CSS.
 import '@website/common/component/navigation/NavigationButton/navigationButton.css';

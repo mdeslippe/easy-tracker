@@ -6,7 +6,7 @@ import { Navigate } from 'react-router';
 
 // React hook form.
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldValues, UseFormSetError, useForm } from 'react-hook-form';
+import { UseFormSetError, useForm } from 'react-hook-form';
 
 // Zod.
 import { z } from 'zod';
@@ -48,7 +48,7 @@ import '@website/feature/user/component/UserInformationForm/userInformationForm.
 /**
  * A schema that can be used to validate the user information form values.
  */
-const UserInformationFormSchema = z
+const UserInformationFormDataSchema = z
 	.intersection(
 		UpdateUserRequestDataSchema,
 		z.object({
@@ -61,6 +61,11 @@ const UserInformationFormSchema = z
 	});
 
 /**
+ * The user information form data values.
+ */
+type UserInformationFormData = z.infer<typeof UserInformationFormDataSchema>;
+
+/**
  * A function that can be used to handle the user information form submission.
  *
  * @param values The values the user entered in the input fields.
@@ -71,14 +76,14 @@ const UserInformationFormSchema = z
  * @returns A promise.
  */
 async function handleUserInformationUpdate(
-	values: FieldValues,
-	setFieldError: UseFormSetError<FieldValues>,
+	values: UserInformationFormData,
+	setFieldError: UseFormSetError<UserInformationFormData>,
 	invalidateAuthenticatedUser: UseAuthenticatedUserInvalidatorResult,
 	invalidateAuthenticationStatus: UseAuthenticationStatusInvalidatorResult,
 	onSuccess: () => void
 ): Promise<void> {
 	// Send a request to update the user's information.
-	const response = await updateUser(await UpdateUserRequestDataSchema.parseAsync(values));
+	const response = await updateUser(values);
 
 	// Handle the response.
 	switch (response.status) {
@@ -94,11 +99,13 @@ async function handleUserInformationUpdate(
 
 			// Update the field errors.
 			for (let [key, value] of Object.entries(errors)) {
-				setFieldError(key, {
-					// There could be multiple validation errors, but we only want to display one at
-					// a time - to keep things simple, we just take the first error in the array.
-					message: convertValidationErrorToMessage(capitalizeFirstLetter(key), value[0])
-				});
+				if (Object.prototype.hasOwnProperty.call(values, key)) {
+					setFieldError(key as keyof UserInformationFormData, {
+						// There could be multiple validation errors, but we only want to display one at
+						// a time - to keep things simple, we just take the first error in the array.
+						message: convertValidationErrorToMessage(capitalizeFirstLetter(key), value[0])
+					});
+				}
 			}
 			return;
 		case 500:
@@ -133,20 +140,20 @@ export function UserInformationForm(): JSX.Element {
 		setValue,
 		getValues,
 		formState: { errors }
-	} = useForm({
+	} = useForm<UserInformationFormData>({
 		resolver: async (values, context, options) => {
 			// Create a shallow copy of the values so that we do not modify the original object.
 			let valuesCopy = { ...values };
 
 			// All empty input fields must be converted to undefined before validation.
-			for (const key in valuesCopy) {
-				if (valuesCopy[key] === '') {
-					valuesCopy[key] = undefined;
+			for (const key of Object.keys(valuesCopy)) {
+				if (valuesCopy[key as keyof UserInformationFormData] === '') {
+					valuesCopy[key as keyof UserInformationFormData] = undefined;
 				}
 			}
 
 			// Perform validation and return the result.
-			return await zodResolver(UserInformationFormSchema)(valuesCopy, context, options);
+			return await zodResolver(UserInformationFormDataSchema)(valuesCopy, context, options);
 		}
 	});
 

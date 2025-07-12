@@ -2,7 +2,7 @@
 import { JSX, LazyExoticComponent, Suspense, lazy } from 'react';
 
 // React router.
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 
 // React Query.
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';

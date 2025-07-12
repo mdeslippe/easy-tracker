@@ -65,19 +65,19 @@ export type UseUserByUsernameResult = {
  */
 export function useUserByUsername(username: string): UseUserByUsernameResult {
 	const query = useQuery(
-		getUserByUsernameQueryKey(username),
-		async (context: QueryFunctionContext<string[], unknown>) => {
-			// Send the request.
-			const result = await getUserByUsername(username, context.signal);
-
-			// If an error occurred.
-			if (result.status >= 500) throw Error();
-
-			// Return the result.
-			return result;
-		},
 		{
-			cacheTime: Infinity,
+			queryKey: getUserByUsernameQueryKey(username),
+			queryFn: async (context: QueryFunctionContext) => {
+				// Send the request.
+				const result = await getUserByUsername(username, context.signal);
+
+				// If an error occurred.
+				if (result.status >= 500) throw Error();
+
+				// Return the result.
+				return result;
+			},
+			staleTime: Infinity,
 			refetchOnWindowFocus: false,
 			refetchOnReconnect: false,
 			refetchOnMount: false

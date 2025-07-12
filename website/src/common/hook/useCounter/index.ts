@@ -13,7 +13,7 @@ export type UseCounterResult = () => number;
  * @returns A function that retrieves the next count.
  */
 export function useCounter(initialValue: number = 0): UseCounterResult {
-	const [count, nextCount] = useReducer<(count: number) => number>(
+	const [count, nextCount] = useReducer<number, []>(
 		(count) => count + 1,
 		initialValue
 	);
