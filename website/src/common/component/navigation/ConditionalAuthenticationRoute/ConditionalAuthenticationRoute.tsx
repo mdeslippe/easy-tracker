@@ -35,15 +35,15 @@ export function ConditionalAuthenticationRoute({
 	AuthenticatedComponent,
 	UnauthenticatedComponent
 }: ConditionalAuthenticationRouteProps): JSX.Element {
-	const { isLoading, isInitialLoading, isError, isAuthenticated } = useAuthenticationStatus();
+	const { isLoading, isError, isAuthenticated } = useAuthenticationStatus();
 
 	// If an error occurred while loading the user's authentication status.
 	if (isError) {
 		return <Navigate to='/error' />;
 	}
 
-	// If the user's authentication status is loading for the first time.
-	if (isLoading && isInitialLoading) {
+	// If the user's authentication status is loading.
+	if (isLoading) {
 		return <LoadingOverlay />;
 	}
 
