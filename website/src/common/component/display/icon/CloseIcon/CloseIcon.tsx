@@ -9,6 +9,16 @@ import { IconSize } from '@website/common/component/display';
  */
 export interface CloseIconProps {
 	/**
+	 * The id of the icon.
+	 */
+	id?: string;
+
+	/**
+	 * The class of the icon.
+	 */
+	className?: string;
+
+	/**
 	 * The color of the icon.
 	 */
 	color?: string;
@@ -25,10 +35,11 @@ export interface CloseIconProps {
  * @param props The component's properties.
  * @returns The close icon.
  */
-export function CloseIcon({ color, size }: CloseIconProps): JSX.Element {
+export function CloseIcon({ id, className, color, size }: CloseIconProps): JSX.Element {
 	return (
 		<svg
-			className={size ? `icon ${size}-icon` : 'icon medium-icon'}
+			id={id}
+			className={['icon', `${size || IconSize.MEDIUM}-icon`, className].filter(Boolean).join(' ')}
 			fill={color ?? 'var(--primary-color)'}
 			version='1.1'
 			xmlns='http://www.w3.org/2000/svg'
