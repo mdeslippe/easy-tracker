@@ -39,10 +39,7 @@ export function ErrorBox({ message, onClose, className, ...props }: ErrorBoxProp
 				type='button'
 				title='Dismiss the alert'
 			>
-				<CloseIcon
-					size={IconSize.MEDIUM}
-					color='var(--primary-color)'
-				/>
+				<CloseIcon />
 			</button>
 			<span>{message}</span>
 		</div>
