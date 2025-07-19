@@ -2,7 +2,7 @@
 import { JSX, ComponentProps } from 'react';
 
 // Custom.
-import { CloseIcon, IconSize } from '@website/common/component/display';
+import { CloseIcon } from '@website/common/component/display';
 
 // CSS.
 import '@website/common/component/display/ErrorBox/errorBox.css';
