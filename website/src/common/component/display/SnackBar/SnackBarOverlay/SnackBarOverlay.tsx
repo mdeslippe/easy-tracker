@@ -43,9 +43,31 @@ export function SnackBarOverlay(props: SnackBarOverlayProps): JSX.Element {
 						type='button'
 						title='Click to dismiss the alert'
 					>
-						{snack.type === SnackType.SUCCESS && <CheckIcon />}
-						{snack.type === SnackType.NORMAL && <InformationIcon />}
-						{snack.type === SnackType.ERROR && <CloseIcon />}
+						{/* If the snack is a success snack, render the success icon. */}
+						{snack.type === SnackType.SUCCESS && (
+							<CheckIcon
+								color='var(--secondary-color)'
+								backgroundColor='var(--success-snack-background)'
+							/>
+						)}
+
+						{/* If the snack is a normal snack, render the normal icon. */}
+						{snack.type === SnackType.NORMAL && (
+							<InformationIcon
+								color='var(--secondary-color)'
+								backgroundColor='var(--normal-snack-background)'
+							/>
+						)}
+
+						{/* If the snack is a error snack. render the error icon. */}
+						{snack.type === SnackType.ERROR && (
+							<CloseIcon
+								color='var(--secondary-color)'
+								backgroundColor='var(--error-snack-background)'
+							/>
+						)}
+
+						{/* Render the snack message. */}
 						<span>{snack.message}</span>
 					</button>
 				</div>
