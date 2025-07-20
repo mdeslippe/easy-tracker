@@ -1,6 +1,9 @@
 // React.
 import { JSX, ComponentProps } from 'react';
 
+// Custom.
+import { CloseIcon } from '@website/common/component/display';
+
 // CSS.
 import '@website/common/component/display/ErrorBox/errorBox.css';
 
@@ -36,10 +39,7 @@ export function ErrorBox({ message, onClose, className, ...props }: ErrorBoxProp
 				type='button'
 				title='Dismiss the alert'
 			>
-				<img
-					src='/images/icons/x.svg'
-					alt='Close'
-				/>
+				<CloseIcon />
 			</button>
 			<span>{message}</span>
 		</div>

@@ -23,13 +23,8 @@
 	cursor: pointer;
 }
 
-.error-box > button > img {
-	display: block;
-	width: 1rem;
-}
-
-.error-box > button > img:hover {
-	transform: scale(125%);
+.error-box > button > .icon:hover {
+	transform: scale(120%);
 }
 
 .error-box > span {
