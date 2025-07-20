@@ -7,6 +7,9 @@ import { SnackType } from '@website/common/context';
 // Hooks.
 import { useSnackBar } from '@website/common/hook';
 
+// Custom.
+import { CheckIcon, InformationIcon, CloseIcon } from '@website/common/component/display';
+
 // CSS.
 import '@website/common/component/display/SnackBar/SnackBarOverlay/snackBarOverlay.css';
 
@@ -40,33 +43,13 @@ export function SnackBarOverlay(props: SnackBarOverlayProps): JSX.Element {
 						type='button'
 						title='Click to dismiss the alert'
 					>
-						<img
-							src={getSnackIconUrl(snack.type)}
-							alt=''
-						/>
+						{snack.type === SnackType.SUCCESS && <CheckIcon />}
+						{snack.type === SnackType.NORMAL && <InformationIcon />}
+						{snack.type === SnackType.ERROR && <CloseIcon />}
 						<span>{snack.message}</span>
 					</button>
 				</div>
 			))}
 		</div>
 	);
-}
-
-/**
- * A function that can be used to get the icon that should be displayed based on the snack type.
- *
- * @param type The snack type.
- * @returns The icon that should be displayed.
- */
-function getSnackIconUrl(type: SnackType) {
-	switch (type) {
-		case SnackType.SUCCESS:
-			return '/images/icons/inverted-circle-check.svg';
-		case SnackType.NORMAL:
-			return '/images/icons/inverted-circle-info.svg';
-		case SnackType.ERROR:
-			return '/images/icons/inverted-circle-x.svg';
-		default:
-			return '/images/icons/inverted-circle-info.svg';
-	}
 }

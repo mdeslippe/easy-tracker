@@ -1,4 +1,6 @@
 export * from '@website/common/component/display/icon/CloseIcon';
+export * from '@website/common/component/display/icon/CheckIcon';
+export * from '@website/common/component/display/icon/InformationIcon';
 
 /**
  * An enumeration of the possible icons sizes.
