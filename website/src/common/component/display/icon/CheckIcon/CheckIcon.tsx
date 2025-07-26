@@ -5,9 +5,9 @@ import { JSX } from 'react';
 import { IconSize } from '@website/common/component/display';
 
 /**
- * Properties for the {@link CloseIcon} component.
+ * Properties for the {@link CheckIcon} component.
  */
-export interface CloseIconProps {
+export interface CheckIconProps {
 	/**
 	 * The id of the icon.
 	 */
@@ -35,18 +35,18 @@ export interface CloseIconProps {
 }
 
 /**
- * A close icon component.
+ * A check icon component.
  *
  * @param props The component's properties.
- * @returns The close icon.
+ * @returns The check icon.
  */
-export function CloseIcon({
+export function CheckIcon({
 	id,
 	className,
 	color,
 	backgroundColor,
 	size
-}: CloseIconProps): JSX.Element {
+}: CheckIconProps): JSX.Element {
 	return (
 		<svg
 			id={id}
@@ -66,7 +66,7 @@ export function CloseIcon({
 				cy='12'
 				r='11'
 			/>
-			<path d='M16 8L8 16M8 8L16 16' />
+			<path d='M6.5 12l4 4l7-7' />
 		</svg>
 	);
 }
