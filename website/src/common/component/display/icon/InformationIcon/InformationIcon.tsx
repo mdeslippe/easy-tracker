@@ -50,11 +50,12 @@ export function InformationIcon({
 	return (
 		<svg
 			id={id}
-			className={['icon', `${size || IconSize.MEDIUM}-icon`, className].filter(Boolean).join(' ')}
+			className={['icon', `${size ?? IconSize.MEDIUM}-icon`, className].filter(Boolean).join(' ')}
 			version='1.1'
 			xmlns='http://www.w3.org/2000/svg'
 			viewBox='0 0 24 24'
-			stroke={color || 'var(--primary-color)'}
+			fill='none'
+			stroke={color ?? 'var(--primary-color)'}
 			strokeWidth='2'
 			strokeLinecap='round'
 			strokeLinejoin='round'
