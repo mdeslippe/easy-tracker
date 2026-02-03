@@ -9,7 +9,7 @@ actix-web = { version = "4.11.0", features = ["openssl"] }
 argon2 = "0.5.3"
 async-trait = "0.1.88"
 env_logger = { version = "0.11.8", features = ["color"] }
-jsonwebtoken = "9.3.1"
+jsonwebtoken = "10.3.0"
 log = "0.4.27"
 nameof = "1.2.2"
 no-panic = "0.1.35"
